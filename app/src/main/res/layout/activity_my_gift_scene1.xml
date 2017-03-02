@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_my_gift_scene1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@mipmap/bg_my"
+    android:orientation="vertical"
+    tools:context="com.example.sweetgirl.magiccup1.outdated.MyGiftScene1Activity">
+
+    <include layout="@layout/my_gift_scene1_toolbar"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="5dp"/>
+
+    <ListView
+        android:id="@+id/lv_story"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:divider="#00000000"
+        android:dividerHeight="12dp"
+        tools:ignore="InefficientWeight" />
+
+
+</LinearLayout>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="toolbar">#33417f</color>
+    <color name="tips">#fde56c</color>
+    <color name="text_g">#c66411</color>
+    <color name="text_p">#cccccc</color>
+    <color name="text_b">#333333</color>
+    <color name="text">#666666</color>
+    <color name="text_page">#ffffff</color>
+
+    <color name="divider">@color/grey</color>
+    <color name="grey">#e0e0e0</color>
+
+
+</resources>

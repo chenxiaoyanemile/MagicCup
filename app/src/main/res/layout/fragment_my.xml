@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/bg_select">
+
+    <include layout="@layout/magic_cup_toolbar"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <ImageView
+            android:id="@+id/picture_me"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="24dp"
+            android:layout_centerHorizontal="true"
+            android:scaleType="centerInside"
+            android:src="@mipmap/im_elfin"
+            android:contentDescription=""
+            tools:ignore="ContentDescription" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/picture_me"
+            android:layout_centerHorizontal="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:text="@string/myName"
+                android:textColor="#ffffff"
+                android:id="@+id/user_name" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/section_shape"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        tools:ignore="RtlHardcoded,RtlSymmetry"
+        android:id="@+id/layout_my_record">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="12dp"
+            android:src="@mipmap/im_record"
+            android:layout_marginTop="12dp"
+            tools:ignore="ContentDescription" />
+        <TextView
+            android:id="@+id/MyFragment_MyRecord"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="50dp"
+            android:textSize="16sp"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/text"
+            android:text="@string/myRecord"
+            tools:ignore="RtlHardcoded" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/text_p"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        tools:ignore="RtlHardcoded" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#ffffff"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:id="@+id/layout_my_gift">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="12dp"
+            android:src="@mipmap/im_gift"
+            android:layout_marginTop="12dp"
+            tools:ignore="ContentDescription,RtlHardcoded" />
+        <TextView
+            android:id="@+id/MyFragment_MakeARGift"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="50dp"
+            android:textSize="16sp"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/text"
+            android:text="@string/makeARGift"
+            tools:ignore="RtlHardcoded" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/text_p"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        tools:ignore="RtlHardcoded" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/item_shape"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:id="@+id/layout_my_card">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="12dp"
+            android:src="@mipmap/im_card"
+            android:layout_marginTop="12dp"
+            tools:ignore="ContentDescription,RtlHardcoded" />
+
+        <TextView
+            android:id="@+id/MyFragment_CustomMadeGreetingCard"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="50dp"
+            android:textSize="16sp"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/text"
+            android:text="@string/doCard"
+            tools:ignore="RtlHardcoded" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/edit_view_shape"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:id="@+id/layout_my_help">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="12dp"
+            android:src="@mipmap/im_help"
+            android:layout_marginTop="12dp"
+            tools:ignore="ContentDescription,RtlHardcoded" />
+
+        <TextView
+            android:id="@+id/MyFragment_Help"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="50dp"
+            android:textSize="16sp"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/text"
+            android:text="@string/help"
+            tools:ignore="RtlHardcoded" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/edit_view_shape"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:id="@+id/layout_my_set">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="12dp"
+            android:src="@mipmap/im_set"
+            android:layout_marginTop="12dp"
+            tools:ignore="ContentDescription,RtlHardcoded" />
+
+        <TextView
+            android:id="@+id/MyFragment_Set"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="50dp"
+            android:textSize="16sp"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/text"
+            android:text="@string/set"
+            tools:ignore="RtlHardcoded" />
+
+    </RelativeLayout>
+</LinearLayout>

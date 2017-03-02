@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main_page"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.sweetgirl.magiccup1.activity.MainPageActivity">
+
+    <FrameLayout
+        android:id="@+id/content_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        tools:ignore="UselessLeaf">
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="600dp"
+        android:background="@color/text_b"
+        tools:ignore="DisableBaselineAlignment,UselessLeaf,UselessParent">
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingTop="18dp"
+            tools:ignore="UseCompoundDrawables"
+            android:id="@+id/layout_main_ar">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@mipmap/bg_scan_h"
+                android:id="@+id/iv_page_scan"
+                android:layout_marginLeft="60dp"
+                tools:ignore="ContentDescription,NestedWeights,RtlHardcoded" />
+
+            <TextView
+                android:text="AR扫描"
+                android:textSize="18sp"
+                android:layout_marginLeft="8dp"
+                android:textColor="@color/text_page"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_page_scan"
+                tools:ignore="HardcodedText,RtlHardcoded" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingTop="18dp"
+            tools:ignore="UseCompoundDrawables"
+            android:id="@+id/layout_main_my">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@mipmap/bg_me_n"
+                android:layout_marginLeft="60dp"
+                tools:ignore="ContentDescription,NestedWeights,RtlHardcoded"
+                android:id="@+id/iv_page_my" />
+
+            <TextView
+                android:text="我"
+                android:textSize="18sp"
+                android:layout_marginLeft="8dp"
+                android:textColor="@color/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="HardcodedText,RtlHardcoded"
+                android:id="@+id/tv_page_my" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

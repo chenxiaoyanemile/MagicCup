@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_start"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/im_scan"
+    tools:context="com.example.sweetgirl.magiccup1.activity.StartActivity">
+
+    <Button
+        android:id="@+id/btn_start_scan"
+        android:background="@mipmap/btn_bg"
+        android:layout_width="204dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="149dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>

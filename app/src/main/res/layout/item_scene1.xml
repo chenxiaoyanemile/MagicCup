@@ -1,0 +1,46 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@drawable/edit_view_shape"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:onClick="onItemClick"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp">
+
+    <TextView
+        android:id="@+id/scene1_tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/text_b"
+        android:text="唠叨"
+        android:paddingTop="5dp"
+        tools:ignore="HardcodedText,SpUsage" />
+    <TextView
+        android:id="@+id/scene1_tv_dep"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:textSize="14sp"
+        android:text="说你是爱你"
+        android:textColor="@color/text"
+        tools:ignore="HardcodedText" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.jit.lib.SmartImageView
+            android:id="@+id/scene1_iv_photo"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="fitXY"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginBottom="12dp"
+            android:src="@mipmap/iv_item"
+            tools:ignore="ContentDescription" />
+    </LinearLayout>
+
+</LinearLayout>

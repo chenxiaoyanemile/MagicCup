@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_my_help"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@mipmap/bg_my"
+    tools:context="com.example.sweetgirl.magiccup1.activity.MyHelpActivity"
+    android:weightSum="1">
+
+    <include layout="@layout/my_help_toolbar"/>
+
+    <LinearLayout
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:background="@mipmap/section_b_bg"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        tools:ignore="InefficientWeight,RtlHardcoded"
+        android:layout_weight="0.03">
+
+        <TextView
+            android:text="@string/help_1"
+            android:textSize="16sp"
+            android:layout_marginLeft="12dp"
+            android:textColor="@color/text_b"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView4"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            tools:ignore="HardcodedText,NestedWeights" />
+        <Button
+            android:layout_marginRight="12dp"
+            android:background="@mipmap/get_bg"
+            android:layout_width="30dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center"
+            tools:ignore="RtlHardcoded" />
+
+    </LinearLayout>
+
+    <TextView
+        android:text="@string/help_1_answer"
+        android:textSize="14sp"
+        android:textColor="@color/text"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:background="@drawable/edit_view_shape"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView11"
+        tools:ignore="HardcodedText"
+        android:visibility="gone" />
+    <LinearLayout
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:background="@mipmap/section_b_bg"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        tools:ignore="InefficientWeight,RtlHardcoded"
+        android:layout_weight="0.03">
+
+        <TextView
+            android:text="@string/help_1"
+            android:textSize="16sp"
+            android:layout_marginLeft="12dp"
+            android:textColor="@color/text_b"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            tools:ignore="HardcodedText,NestedWeights" />
+        <Button
+            android:layout_marginRight="12dp"
+            android:background="@mipmap/get_bg"
+            android:layout_width="30dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center"
+            tools:ignore="RtlHardcoded" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:background="@mipmap/section_b_bg"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        tools:ignore="InefficientWeight,RtlHardcoded"
+        android:layout_weight="0.03">
+
+        <TextView
+            android:text="@string/help_1"
+            android:textSize="16sp"
+            android:layout_marginLeft="12dp"
+            android:textColor="@color/text_b"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            tools:ignore="HardcodedText,NestedWeights" />
+        <Button
+            android:layout_marginRight="12dp"
+            android:background="@mipmap/get_bg"
+            android:layout_width="30dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center"
+            tools:ignore="RtlHardcoded" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:background="@mipmap/section_b_bg"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        tools:ignore="InefficientWeight,RtlHardcoded"
+        android:layout_weight="0.03">
+
+        <TextView
+            android:text="@string/help_1"
+            android:textSize="16sp"
+            android:layout_marginLeft="12dp"
+            android:textColor="@color/text_b"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            tools:ignore="HardcodedText,NestedWeights" />
+        <Button
+            android:layout_marginRight="12dp"
+            android:background="@mipmap/get_bg"
+            android:layout_width="30dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center"
+            tools:ignore="RtlHardcoded" />
+
+    </LinearLayout>
+</LinearLayout>

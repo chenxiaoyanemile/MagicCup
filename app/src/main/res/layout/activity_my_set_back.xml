@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_my_set_back"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@mipmap/bg_select"
+    tools:context="com.example.sweetgirl.magiccup1.activity.MySetBackActivity">
+
+    <include layout="@layout/my_set_back_toolbar"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="12dp"
+        android:background="@drawable/edit_view_shape">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="192.5dp"
+        android:inputType="textPersonName"
+        android:hint="@string/problem"
+        android:gravity="left"
+        android:textSize="14sp"
+        android:textColor="@color/text_b"
+        android:textColorHint="@color/text_p"
+        android:ems="10"
+        android:id="@+id/back_et_content"
+        tools:ignore="RtlHardcoded" />
+
+    <TextView
+        android:background="@color/text_p"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:orientation="vertical">
+    <TextView
+        android:background="@mipmap/add_picture_bg"
+        android:layout_marginTop="14dp"
+        android:layout_marginLeft="12dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/textView5"
+        tools:ignore="RtlHardcoded" />
+        </LinearLayout>
+
+        </LinearLayout>
+
+    <EditText
+        android:layout_marginTop="12dp"
+        android:background="@drawable/edit_view_shape"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="@string/email"
+        android:textSize="14sp"
+        android:gravity="left"
+        android:textColor="@color/text_p"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:ems="10"
+        android:id="@+id/editText2"
+        tools:ignore="RtlHardcoded" />
+
+    <Button
+        android:background="@mipmap/bg_sb"
+        android:layout_marginTop="66dp"
+        android:layout_gravity="center"
+        android:layout_width="204dp"
+        android:layout_height="70dp"
+        android:id="@+id/back_btn_commit" />
+
+
+</LinearLayout>

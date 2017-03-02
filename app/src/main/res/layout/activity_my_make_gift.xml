@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_my_make_gift"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/bg_select"
+    tools:context="com.example.sweetgirl.magiccup1.activity.MyMakeGiftActivity">
+
+    <include layout="@layout/my_make_gift_toolbar"
+        android:id="@+id/include" />
+
+    <LinearLayout
+        android:background="@mipmap/line_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="120dp"
+        android:orientation="vertical">
+
+    <Button
+        android:text="@string/scene1"
+        android:textSize="20sp"
+        android:textColor="@color/text_g"
+        android:background="@mipmap/btn_select"
+        android:layout_width="204dp"
+        android:layout_height="70dp"
+        android:layout_below="@+id/include"
+        android:layout_gravity="center"
+        android:id="@+id/btn_gift_story"
+        tools:ignore="ButtonStyle,ObsoleteLayoutParam" />
+
+    <Button
+        android:text="@string/scene2"
+        android:textSize="20sp"
+        android:textColor="@color/text_g"
+        android:background="@mipmap/btn_select"
+        android:layout_width="204dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="44dp"
+        android:id="@+id/btn_gift_scene"
+        tools:ignore="ButtonStyle,ObsoleteLayoutParam" />
+
+    <Button
+        android:text="@string/scene3"
+        android:textSize="20sp"
+        android:textColor="@color/text_g"
+        android:background="@mipmap/btn_select"
+        android:layout_width="204dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="44dp"
+        android:id="@+id/btn_gift_letter"
+        tools:ignore="ButtonStyle,ObsoleteLayoutParam" />
+
+    </LinearLayout>
+
+    <Button
+        android:background="@mipmap/finish_im"
+        android:layout_width="204dp"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="28dp"
+        android:id="@+id/btn_gift_preview" />
+
+</RelativeLayout>

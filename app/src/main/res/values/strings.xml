@@ -1,0 +1,68 @@
+<resources>
+    <string name="app_name">MagicCup_v1.0</string>
+    <string name="version">V1.0</string>
+    <string name="public_number">公众号</string>
+    <string name="app_number">magic_cup2016</string>
+    <string name="product">产品特色</string>
+    <string name="content">在传统星座杯的基础上，可通过app制作独特的有ar效果的贺卡等，增加了礼物的独特性和带给爱的人一份惊喜。</string>
+
+    <string name="select">选择星座</string>
+    <string name="constellation">请选择双方星座及性别</string>
+    <string name="me">我的信息</string>
+    <string name="him">Ta的信息</string>
+
+    <!-- 个人中心 -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="myName">小精灵</string>
+    <string name="myRecord">我的记录</string>
+    <string name="makeARGift">制作AR礼物</string>
+    <string name="doCard">定制贺卡</string>
+    <string name="help">帮助</string>
+    <string name="set">设置</string>
+
+    <string name="my_Record">最近的一次记录</string>
+    <string name="delect">删除</string>
+
+    <string name="scene1">1.选择故事</string>
+    <string name="scene1_toolbar">选择故事</string>
+
+    <string name="scene2">2.选择场景</string>
+    <string name="scene2_toolbar">选择场景</string>
+
+    <string name="scene3">3.选择特效和信</string>
+    <string name="scene3_toolbar">选择特效和信</string>
+
+    <string name="preview">预览</string>
+    <string name="commit">提交</string>
+
+    <string name="background">背景</string>
+    <string name="weather">天气</string>
+    <string name="scene">情景</string>
+    <string name="click">点击输入你的表白语</string>
+
+    <string name="clean">清除缓存</string>
+    <string name="back">用户反馈</string>
+    <string name="about">关于magic cup</string>
+
+    <string name="problem">请输入您遇到的问题或建议 （必填) </string>
+    <string name="email">请留下您的邮箱或qq,便于我们联系您 （选填）</string>
+
+    <string name="help_1">1.如何制作礼物</string>
+    <string name="help_1_answer">关于magic cup</string>
+
+    <!--星座-->
+    <string name="Aquarius"> 水瓶座</string>
+    <string name="Pisces"> 双鱼座</string>
+    <string name="Aries"> 白羊座</string>
+    <string name="Taurus"> 金牛座</string>
+    <string name="Gemini"> 双子座</string>
+    <string name="Cancer"> 巨蟹座</string>
+    <string name="Leo"> 狮子座</string>
+    <string name="Virgo"> 处女座</string>
+    <string name="Libra"> 天平座</string>
+    <string name="Scorpio"> 天蝎座</string>
+    <string name="Sagittarius"> 射手座</string>
+    <string name="Capricorn"> 摩羯座</string>
+
+
+</resources>

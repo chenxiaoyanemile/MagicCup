@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_select"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/bg_select"
+    android:orientation="vertical"
+    >
+
+        <TextView
+            android:text="@string/select"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_width="407dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_weight="1"
+            tools:ignore="InefficientWeight,ObsoleteLayoutParam" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+            <TextView
+                android:text="@string/constellation"
+                android:textSize="16sp"
+                android:layout_width="407dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                tools:ignore="ObsoleteLayoutParam" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="0.49">
+
+            <Button
+                android:layout_width="72dp"
+                android:layout_height="18dp"
+                android:text="@string/me"
+                android:textSize="14sp"
+                android:textColor="@color/text_b"
+                android:background="@color/tips"
+                 />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+            <Button
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:layout_marginLeft="100dp"
+                android:background="@mipmap/bg_girl_n"
+                tools:ignore="ButtonStyle,RtlHardcoded"
+                android:id="@+id/btn_select_my_girl" />
+            <Button
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:layout_marginLeft="100dp"
+                android:background="@mipmap/bg_boy_h"
+                tools:ignore="ButtonStyle,RtlHardcoded"
+                android:id="@+id/btn_select_my_boy" />
+        </LinearLayout>
+
+
+        <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1.5">
+
+                <LinearLayout
+                    android:id="@+id/id_gallery0"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    tools:ignore="ScrollViewSize">
+
+                    <TextView
+                        android:text="@string/Aquarius"
+                        android:textSize="20sp"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:id="@+id/view_select_Aquarius" />
+                    <TextView
+                        android:text="@string/Pisces"
+                        android:textSize="24sp"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:id="@+id/view_select_Pisces" />
+                    <TextView
+                        android:text="@string/Aries"
+                        android:textSize="20sp"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:id="@+id/view_select_Aries" />
+                    <TextView
+                        android:text="@string/Taurus"
+                        android:textSize="20sp"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:id="@+id/view_select_Taurus" />
+                    <TextView
+                        android:text="@string/Gemini"
+                        android:textSize="20sp"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:id="@+id/view_select_Gemini" />
+                    <TextView
+                        android:text="@string/Cancer"
+                        android:textSize="20sp"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:id="@+id/view_select_Cancer" />
+                    <TextView
+                        android:text="@string/Leo"
+                        android:textSize="20sp"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:id="@+id/view_select_Leo" />
+                    <TextView
+                        android:text="@string/Virgo"
+                        android:textSize="20sp"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:id="@+id/view_select_Virgo" />
+                    <TextView
+                        android:text="@string/Libra"
+                        android:textSize="20sp"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:id="@+id/view_select_Libra" />
+                    <TextView
+                        android:text="@string/Scorpio"
+                        android:textSize="20sp"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:id="@+id/view_select_Scorpio" />
+                    <TextView
+                        android:text="@string/Sagittarius"
+                        android:textSize="20sp"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:id="@+id/view_select_Sagittarius" />
+                    <TextView
+                        android:text="@string/Capricorn"
+                        android:textSize="20sp"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:id="@+id/view_select_Capricorn" />
+                </LinearLayout>
+
+        </HorizontalScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="0.50">
+
+            <Button
+                android:layout_width="72dp"
+                android:layout_height="18dp"
+                android:text="@string/him"
+                android:textSize="14sp"
+                android:textColor="@color/text_b"
+                android:background="@color/tips"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+            <Button
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:layout_marginLeft="100dp"
+                android:background="@mipmap/bg_girl_h"
+                tools:ignore="ButtonStyle,RtlHardcoded"
+                android:id="@+id/btn_select_he_girl" />
+            <Button
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:layout_marginLeft="100dp"
+                android:background="@mipmap/bg_boy_n"
+                tools:ignore="ButtonStyle,RtlHardcoded"
+                android:id="@+id/btn_select_he_boy" />
+        </LinearLayout>
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1.5">
+
+        <LinearLayout
+            android:id="@+id/id_gallery1"
+            android:layout_gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:ignore="ScrollViewSize">
+            <TextView
+                android:text="@string/Aquarius"
+                android:textSize="20sp"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:id="@+id/view_select_Aquarius2" />
+            <TextView
+                android:text="@string/Pisces"
+                android:textSize="20sp"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:id="@+id/view_select_Pisces2" />
+            <TextView
+                android:text="@string/Aries"
+                android:textSize="20sp"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:id="@+id/view_select_Aries2" />
+            <TextView
+                android:text="@string/Taurus"
+                android:textSize="20sp"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:id="@+id/view_select_Taurus2" />
+            <TextView
+                android:text="@string/Gemini"
+                android:textSize="24sp"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:id="@+id/view_select_Gemini2" />
+            <TextView
+                android:text="@string/Cancer"
+                android:textSize="20sp"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:id="@+id/view_select_Cancer2" />
+            <TextView
+                android:text="@string/Leo"
+                android:textSize="20sp"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:id="@+id/view_select_Leo2" />
+            <TextView
+                android:text="@string/Virgo"
+                android:textSize="20sp"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:id="@+id/view_select_Virgo2" />
+            <TextView
+                android:text="@string/Libra"
+                android:textSize="20sp"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:id="@+id/view_select_Libra2" />
+            <TextView
+                android:text="@string/Scorpio"
+                android:textSize="20sp"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:id="@+id/view_select_Scorpio2" />
+            <TextView
+                android:text="@string/Sagittarius"
+                android:textSize="20sp"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:id="@+id/view_select_Sagittarius2" />
+            <TextView
+                android:text="@string/Capricorn"
+                android:textSize="20sp"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:id="@+id/view_select_Capricorn2" />
+        </LinearLayout>
+
+    </HorizontalScrollView>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1.5"
+            tools:ignore="UselessLeaf">
+        </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1.00"
+        >
+        <Button
+            android:layout_width="204dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="100dp"
+            android:background="@mipmap/bg_btn_finish"
+            android:id="@+id/btn_select_finish"
+            tools:ignore="RtlHardcoded" />
+        <TextView
+            android:id="@+id/tv_size"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            android:textSize="9sp"
+            tools:ignore="SmallSp" />
+        <TextView
+            android:id="@+id/tv_size2"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            android:textSize="6sp"
+            tools:ignore="SmallSp" />
+    </LinearLayout>
+
+</LinearLayout>
