@@ -2,46 +2,69 @@ package com.example.sweetgirl.magiccup1.model;
 
 
 /**
- *"scanNumber": "1",
- "message": "success",
- "user": {
- "id": "082c9098-0326-4f18-8f5d-5e0494d9c6ab",
- "serial": "1478571500302eSxpLEBIR9k3HogJQWLI6znTS",
- "createTime": "2016-11-27 16:37:27",
- "updateTime": "2016-11-27 16:37:27",
- "user_id": "f56c827f-027f-49e0-8b35-be3860915537",
- "sex": null,
- "constellation": null
+ *{
+ "msg": "扫描成功",
+ "code": 200,
+    "data": {
+        "scanNumber": "1",
+         "user": {
+         "id": "d0e38218-f5a8-11e6-8d11-a4db303d2fd7",
+         "serial": "1487401609152D0uueoIg9b47rqSSJ53bdNu60",
+         "createTime": "2017-02-18 15:07:56",
+         "updateTime": null,
+         "user_id": "ad5a54b1-116d-4f80-93f4-b8dd8fcb7e9a",
+         "sex": null,
+         "constellation": null
+                }
+         },
+ "success": true,
+ "error": null
  }
  */
 
 public class ScanNumber {
-    private String scanNumber;
-    private String message;
-    private UserBean user;
+    private String msg;
+    private int code;
+    private DataBean data;
+    private Boolean success;
+    private String error;
 
-    public String getMessage() {
-        return message;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
-    public String getScanNumber() {
-        return scanNumber;
+    public void setCode(int code) {
+        this.code = code;
     }
 
-    public void setScanNumber(String scanNumber) {
-        this.scanNumber = scanNumber;
+
+    public DataBean getData() {
+        return data;
     }
 
-    public UserBean getUser() {
-        return user;
+    public void setData(DataBean data) {
+        this.data = data;
     }
 
-    public void setUser(UserBean user) {
-        this.user = user;
+
+    public Boolean getSuccess() {
+        return success;
+    }
+
+    public void setSuccess(Boolean success) {
+        this.success = success;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
     }
 }
 

@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MagicCup1.iml" filepath="$PROJECT_DIR$/MagicCup1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MagicCupV0.00.03033/MagicCupV0.00.03033.iml" filepath="$PROJECT_DIR$/MagicCupV0.00.03033/MagicCupV0.00.03033.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

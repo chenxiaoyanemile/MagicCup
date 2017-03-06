@@ -1,10 +1,10 @@
 package com.example.sweetgirl.magiccup1.model;
 
 /**
- * 第一幕
+ * Created by sweetgirl on 2017/3/3.
  */
 
-class FirstScene {
+public class FirstScene {
     private String sexman;
     private String sexwoman;
     public String getSexman(){

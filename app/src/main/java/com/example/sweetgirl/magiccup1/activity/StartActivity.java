@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.example.sweetgirl.magiccup1.R;
 import com.example.sweetgirl.magiccup1.app.MyApplication;
+import com.example.sweetgirl.magiccup1.model.DataBean;
 import com.example.sweetgirl.magiccup1.model.Relation;
 import com.example.sweetgirl.magiccup1.model.ScanNumber;
 import com.example.sweetgirl.magiccup1.model.Scene1;
@@ -25,6 +26,7 @@ import com.example.sweetgirl.magiccup1.model.Scene31;
 import com.example.sweetgirl.magiccup1.model.Scene32;
 import com.example.sweetgirl.magiccup1.model.Scene33;
 import com.example.sweetgirl.magiccup1.model.Scene4;
+import com.example.sweetgirl.magiccup1.model.ShowAllScene;
 import com.example.sweetgirl.magiccup1.model.ShowScene;
 import com.example.sweetgirl.magiccup1.model.UserBean;
 import com.example.sweetgirl.magiccup1.util.FileDownloadThread;
@@ -55,15 +57,17 @@ public class StartActivity extends AppCompatActivity {
     private static final String TAG = LogUtil.makeLogTag(StartActivity.class);
 
     private SharedPreferences preferences;
-    private String res;
+    private String res;    //返回的json数据转成String
 
-    private String result;
+    private String result;   //扫描二维码结果
 
     int REQUEST_CODE;
 
-    private String message;
+    private Boolean success;   //第一次扫描后的返回信息
 
+    private String url="http://119.29.222.54:8888/api/user/"+result+"?state=true";   //扫描二维码
     private String user_id;         //用户id
+    private String path="http://139.199.190.245:8010/api/between/"+user_id;         //关联信息
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +88,11 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-            if (preferences.getBoolean("firstStart", true)) {
+                Intent intent = new Intent(StartActivity.this, MainPageActivity.class);
+                startActivity(intent);
+                finish();
+
+          /*  if (preferences.getBoolean("firstStart", true)) {
                     L.i(TAG, "扫码");
                     Intent intent1 = new Intent(StartActivity.this, CaptureActivity.class);
                     startActivityForResult(intent1, REQUEST_CODE);
@@ -93,7 +101,7 @@ public class StartActivity extends AppCompatActivity {
                     Intent intent = new Intent(StartActivity.this, MainPageActivity.class);
                     startActivity(intent);
                     finish();
-                }
+                }*/
 
             }
         });
@@ -135,9 +143,9 @@ public class StartActivity extends AppCompatActivity {
     private void enqueue(){
         //[1]拿到OkHttpClient
         OkHttpClient client = new OkHttpClient();
-        //[2]构造Request   http://139.199.190.245:8010/api/user
+        //[2]构造Request
         Request request = new Request.Builder()
-                .url("http://119.29.222.54:8010/api/user/"+result+"/true")
+                .url(url)
                 .build();
         //[3]将Request封装为call
         Call call=client.newCall(request);
@@ -161,15 +169,15 @@ public class StartActivity extends AppCompatActivity {
         try{
             //json数据解析成一个对象
             ScanNumber scanNumber=JSON.parseObject(jsonData,ScanNumber.class);
-            message = scanNumber.getMessage();
-            L.i("message"," "+scanNumber.getMessage());
-            if (message.equals(null)){
+            success = scanNumber.getSuccess();
+            L.i("message"," "+scanNumber.getSuccess());
+            if (success){
                 Looper.prepare();
                 Toast.makeText(getApplicationContext(), "你在没有网络的异次元空间。。。", Toast.LENGTH_SHORT).show();
                 Looper.loop();
             }
             else {
-                judgeResult(message);
+                //judgeResult(message);
             }
 
         }catch(Exception e){
@@ -197,7 +205,7 @@ public class StartActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     try {
-                        parserJson(res);
+                        //parserJson(res);
                         saveData(user_id);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -240,8 +248,7 @@ public class StartActivity extends AppCompatActivity {
     }
     private void parserJson(String jsonData){
         try{
-            UserBean userBean=JSON.parseObject(jsonData,ScanNumber.class).getUser();
-            user_id=userBean.getUser_id();
+            DataBean data=JSON.parseObject(jsonData,ScanNumber.class).getData();
 
             relationship(); //获取关联信息
 
@@ -287,8 +294,9 @@ public class StartActivity extends AppCompatActivity {
         //[1]拿到OkHttpClient
         OkHttpClient client = new OkHttpClient();
         //[2]构造Request
+
         Request request = new Request.Builder()
-                .url("http://139.199.190.245:8010/api/between/"+user_id)
+                .url(path)
                 .build();
         //[3]将Request封装为call
         Call call=client.newCall(request);
@@ -303,7 +311,7 @@ public class StartActivity extends AppCompatActivity {
             public void onResponse(Response response) throws IOException {
                 res=response.body().string();
                 L.i(TAG,"onResponse"+res);
-                ParseJson(res);
+               // ParseJson(res);
             }
         });
     }
@@ -312,28 +320,31 @@ public class StartActivity extends AppCompatActivity {
         try{
             //json数据解析成一个对象
             ShowScene showScene=JSON.parseObject(jsonData,Relation.class).getShowScene();
-            String text=showScene.getText();
-            Scene1 scene1=JSON.parseObject(jsonData,ShowScene.class).getScene1();
+            //String text=showScene.getText();
+            ShowAllScene allScene=JSON.parseObject(jsonData,ShowScene.class).getData();
+
+
+            Scene1 scene1=JSON.parseObject(jsonData,ShowAllScene.class).getDbScene1();
             String resource1=scene1.getResource();
             doDownload(resource1,"scene1");
 
-            Scene2 scene2=JSON.parseObject(jsonData,ShowScene.class).getScene2();
+            Scene2 scene2=JSON.parseObject(jsonData,ShowAllScene.class).getDbScene2();
             String resource2=scene2.getResource();
             doDownload(resource2,"scene2");
 
-            Scene31 scene31=JSON.parseObject(jsonData,ShowScene.class).getScene31();
+            Scene31 scene31=JSON.parseObject(jsonData,ShowAllScene.class).getDbScene31();
             String resource31=scene31.getResource();
             doDownload(resource31,"scene31");
 
-            Scene32 scene32=JSON.parseObject(jsonData,ShowScene.class).getScene32();
+            Scene32 scene32=JSON.parseObject(jsonData,ShowAllScene.class).getDbScene32();
             String resource32=scene32.getResource();
             doDownload(resource32,"scene32");
 
-            Scene33 scene33=JSON.parseObject(jsonData,ShowScene.class).getScene33();
+            Scene33 scene33=JSON.parseObject(jsonData,ShowAllScene.class).getDbScene33();
             String resource33=scene33.getResource();
             doDownload(resource33,"scene33");
 
-            Scene4 scene4=JSON.parseObject(jsonData,ShowScene.class).getScene4();
+            Scene4 scene4=JSON.parseObject(jsonData,ShowAllScene.class).getDbScene4();
             String resource4=scene4.getResource();
             doDownload(resource4,"scene4");
         }catch(Exception e){
@@ -353,8 +364,8 @@ public class StartActivity extends AppCompatActivity {
             file.mkdir();
         }
         // 简单起见，我先把URL和文件名称写死，其实这些都可以通过HttpHeader获取到
-        //String downloadUrl = "http://oexlqeny2.bkt.clouddn.com/scene1";
-        //String fileName = "scene1";
+         downloadUrl = "http://oexlqeny2.bkt.clouddn.com/scene0.zip";
+         fileName = "scene1";
         int threadNum = 5;
         String filepath = path + fileName;
         L.d(TAG, "download file  path:" + filepath);
@@ -456,5 +467,8 @@ public class StartActivity extends AppCompatActivity {
             }
         }
     }
+
+
+
 
 }

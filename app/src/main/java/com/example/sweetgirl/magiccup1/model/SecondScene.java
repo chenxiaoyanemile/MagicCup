@@ -1,10 +1,10 @@
 package com.example.sweetgirl.magiccup1.model;
 
 /**
- * 第二幕
+ *  2017/3/3.
  */
 
-class SecondScene {
+public class SecondScene {
     private String action;
     private String background;
 

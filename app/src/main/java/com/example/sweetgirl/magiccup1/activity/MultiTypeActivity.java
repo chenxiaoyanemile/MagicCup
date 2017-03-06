@@ -32,11 +32,13 @@ import java.util.List;
 * 选择故事（新版）第一幕
 * */
 
-public class MultiTypeActivity extends AppCompatActivity  {
+public class MultiTypeActivity extends AppCompatActivity {
     private static final String TAG = LogUtil.makeLogTag(MultiTypeActivity.class);
 
     private RefreshRecyclerView mRecyclerView;
     private MultiTypeAdapter mAdapter;
+
+
     private int mPage = 0;
 
     List<TextImage> list=new ArrayList<TextImage>();
@@ -52,10 +54,11 @@ public class MultiTypeActivity extends AppCompatActivity  {
         mRecyclerView.addItemDecoration(new SpaceItemDecoration(12,8,12,30));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener(new MultiTypeAdapter.OnRecyclerViewItemClickListener(){
+        mAdapter.setOnItemClickListener(new MultiTypeAdapter.OnRecyclerViewItemClickListener() {
             @Override
-            public void onItemClick(View view , String data){
-                Toast.makeText(getApplicationContext(), data, Toast.LENGTH_SHORT).show();
+            public void onItemClick(View view, int position) {
+                L.i(TAG,"点击事件");
+                Toast.makeText(MultiTypeActivity.this, "你选择了"+position, Toast.LENGTH_SHORT).show();
             }
         });
         mRecyclerView.setRefreshAction(new Action() {
@@ -78,9 +81,6 @@ public class MultiTypeActivity extends AppCompatActivity  {
             }
         });
     }
-
-
-
     public void getData(final boolean isRefresh) {
         if (isRefresh) {
             mPage = 0;

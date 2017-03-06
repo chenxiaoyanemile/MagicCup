@@ -1,83 +1,122 @@
 package com.example.sweetgirl.magiccup1.model;
 
 /**
- * "showScene": {
- "user_id": "610aac92-8a65-49b3-a0a2-a607b6bb80ac",
- "text": "我不喜欢你",
+ * {
+ "msg": "查询成功",
+ "code": 200,
+ "data": {
+     "user_id": "50fd89bd-bf39-46b5-8bfd-ff2ba4174f7d",
+     "text": "我不喜欢你",
+     "dbScene1": {
+            "id": "643abd25-ffec-11e6-9354-a4db303d2fd7",
+            "name": "我是真的你",
+            "image": "http://oexlqeny2.bkt.clouddn.com/cup/cupar1.jpg",
+            "depiction": "说这么多都是爱你哟",
+            "resource": "http://oexlqeny2.bkt.clouddn.com/scene0.zip",
+            "constellation": "12",
+            "belong": "1",
+             "time": "2017-03-03 16:35:45"
+                },
+     "dbScene2": {
+             "id": "643abd25-ffec-11e6-9354-a4db303d2fd7",
+            "name": "我是真的你",
+             "image": "http://oexlqeny2.bkt.clouddn.com/cup/cupar1.jpg",
+            "depiction": "说这么多都是爱你哟",
+             "resource": "http://oexlqeny2.bkt.clouddn.com/scene0.zip",
+             "constellation": "12",
+             "belong": "1",
+            "time": "2017-03-03 16:35:45"
+                },
+ "dbScene31": {
+ "id": "643abd25-ffec-11e6-9354-a4db303d2fd7",
+ "name": "我是真的你",
+ "image": "http://oexlqeny2.bkt.clouddn.com/cup/cupar1.jpg",
+ "depiction": "说这么多都是爱你哟",
+ "resource": "http://oexlqeny2.bkt.clouddn.com/scene0.zip",
+ "constellation": "12",
+ "belong": "1",
+ "time": "2017-03-03 16:35:45"
+ },
+ "dbScene32": {
+ "id": "643abd25-ffec-11e6-9354-a4db303d2fd7",
+ "name": "我是真的你",
+ "image": "http://oexlqeny2.bkt.clouddn.com/cup/cupar1.jpg",
+ "depiction": "说这么多都是爱你哟",
+ "resource": "http://oexlqeny2.bkt.clouddn.com/scene0.zip",
+ "constellation": "12",
+ "belong": "1",
+ "time": "2017-03-03 16:35:45"
+ },
+ "dbScene33": {
+ "id": "643abd25-ffec-11e6-9354-a4db303d2fd7",
+ "name": "我是真的你",
+ "image": "http://oexlqeny2.bkt.clouddn.com/cup/cupar1.jpg",
+ "depiction": "说这么多都是爱你哟",
+ "resource": "http://oexlqeny2.bkt.clouddn.com/scene0.zip",
+ "constellation": "12",
+ "belong": "1",
+ "time": "2017-03-03 16:35:45"
+ },
+ "dbScene4": {
+ "id": "643abd25-ffec-11e6-9354-a4db303d2fd7",
+ "name": "我是真的你",
+ "image": "http://oexlqeny2.bkt.clouddn.com/cup/cupar1.jpg",
+ "depiction": "说这么多都是爱你哟",
+ "resource": "http://oexlqeny2.bkt.clouddn.com/scene0.zip",
+ "constellation": "12",
+ "belong": "1",
+ "time": "2017-03-03 16:35:45"
+ }
+ },
+ "success": true,
+ "error": null
  }
  */
 
 public class ShowScene {
-    private String user_id;
-    private String text;
-    private Scene1 scene1;
-    private Scene2 scene2;
-    private Scene31 scene31;
-    private Scene32 scene32;
-    private Scene33 scene33;
-    private Scene4 scene4;
+    private String msg;
+    private int code;
+    private ShowAllScene data;
+    private Boolean success;
+    private String error;
 
-    public String getUser_id() {
-        return user_id;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
-    public String getText() {
-        return text;
+    public int getCode() {
+        return code;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setCode(int code) {
+        this.code = code;
     }
 
-    public Scene1 getScene1() {
-        return scene1;
+    public ShowAllScene getData() {
+        return data;
     }
 
-    public void setScene1(Scene1 scene1) {
-        this.scene1 = scene1;
+    public void setData(ShowAllScene data) {
+        this.data = data;
     }
 
-    public Scene2 getScene2() {
-        return scene2;
+    public Boolean getSuccess() {
+        return success;
     }
 
-    public void setScene2(Scene2 scene2) {
-        this.scene2 = scene2;
+    public void setSuccess(Boolean success) {
+        this.success = success;
     }
 
-    public Scene31 getScene31() {
-        return scene31;
+    public String getError() {
+        return error;
     }
 
-    public void setScene31(Scene31 scene31) {
-        this.scene31 = scene31;
-    }
-
-    public Scene32 getScene32() {
-        return scene32;
-    }
-
-    public void setScene32(Scene32 scene32) {
-        this.scene32 = scene32;
-    }
-
-    public Scene33 getScene33() {
-        return scene33;
-    }
-
-    public void setScene33(Scene33 scene33) {
-        this.scene33 = scene33;
-    }
-
-    public Scene4 getScene4() {
-        return scene4;
-    }
-
-    public void setScene4(Scene4 scene4) {
-        this.scene4 = scene4;
+    public void setError(String error) {
+        this.error = error;
     }
 }

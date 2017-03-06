@@ -1,14 +1,14 @@
 package com.example.sweetgirl.magiccup1.model;
 
 /**
- * "user": {
- "id": "082c9098-0326-4f18-8f5d-5e0494d9c6ab",
- "serial": "1478571500302eSxpLEBIR9k3HogJQWLI6znTS",
- "createTime": "2016-11-27 16:37:27",
- "updateTime": "2016-11-27 16:37:27",
- "user_id": "f56c827f-027f-49e0-8b35-be3860915537",
- "sex": null,
- "constellation": null
+ *   "user": {
+        "id": "d0e38218-f5a8-11e6-8d11-a4db303d2fd7",
+         "serial": "1487401609152D0uueoIg9b47rqSSJ53bdNu60",
+         "createTime": "2017-02-18 15:07:56",
+         "updateTime": null,
+         "user_id": "ad5a54b1-116d-4f80-93f4-b8dd8fcb7e9a",
+         "sex": null,
+         "constellation": null
  }
  */
 

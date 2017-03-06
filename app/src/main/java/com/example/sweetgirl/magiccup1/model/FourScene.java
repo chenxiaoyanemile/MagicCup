@@ -1,10 +1,10 @@
 package com.example.sweetgirl.magiccup1.model;
 
 /**
- * 第四幕
+ * Created by sweetgirl on 2017/3/3.
  */
 
-class FourScene {
+public class FourScene {
     private String injection;
     private String text;
 

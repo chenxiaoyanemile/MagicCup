@@ -11,8 +11,7 @@ package com.example.sweetgirl.magiccup1.model;
  * "constellation":"13",
  * "belong":"2",
  * "time":"2016-12-16 15:31:29"}
- * ]}
- */
+ * ]} */
 
 
 public class Scene {

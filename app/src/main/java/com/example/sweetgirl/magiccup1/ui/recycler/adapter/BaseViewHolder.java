@@ -41,6 +41,11 @@ public class BaseViewHolder<T> extends RecyclerView.ViewHolder{
 
     public void onItemViewClick(T object) {
 
+
+    }
+
+    public View getItemView(){
+        return itemView;
     }
 
 }

@@ -11,7 +11,7 @@ public class TallScene {
     private FourScene fourScene;
 
     public TallScene(){
-        this.firstScene = new FirstScene();
+        this.firstScene=new FirstScene();
         this.secondScene = new SecondScene();
         this.thirdScene = new ThirdScene();
         this.fourScene = new FourScene();

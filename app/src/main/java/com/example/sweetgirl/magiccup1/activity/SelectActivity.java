@@ -13,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sweetgirl.magiccup1.R;
+import com.example.sweetgirl.magiccup1.model.TallScene;
+import com.example.sweetgirl.magiccup1.util.CreateJson;
 import com.example.sweetgirl.magiccup1.util.L;
 import com.example.sweetgirl.magiccup1.util.LogUtil;
 import com.squareup.okhttp.Call;
@@ -73,6 +75,13 @@ public class SelectActivity extends AppCompatActivity implements View.OnClickLis
         //initData();
         initView();
         //scrollViewInit();
+
+        //
+        TallScene scene = new TallScene();
+        scene.getFirstScene().setSexwoman(sex2);
+        scene.getFirstScene().setSexman(sex1);
+
+        CreateJson.createJson(scene);
     }
     //[1]设置默认值
     public void initData(){
@@ -713,5 +722,5 @@ public class SelectActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
     }
-    //下载星座和性别的ar文件
+
 }

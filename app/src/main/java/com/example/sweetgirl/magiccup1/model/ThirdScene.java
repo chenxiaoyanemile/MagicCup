@@ -1,10 +1,10 @@
 package com.example.sweetgirl.magiccup1.model;
 
 /**
- * 第三幕
+ * Created by sweetgirl on 2017/3/3.
  */
 
-class ThirdScene {
+public class ThirdScene {
     private String background;
     private String action;
     private String time;
