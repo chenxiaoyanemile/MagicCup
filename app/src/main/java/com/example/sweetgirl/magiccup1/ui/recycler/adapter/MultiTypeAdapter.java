@@ -1,13 +1,10 @@
 package com.example.sweetgirl.magiccup1.ui.recycler.adapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.sweetgirl.magiccup1.R;
 import com.example.sweetgirl.magiccup1.util.L;
 
 import java.lang.reflect.Constructor;
@@ -21,25 +18,16 @@ import java.util.Map;
  * 所有的item都对应一个ViewHolder
  */
 
-public class MultiTypeAdapter extends RecyclerAdapter implements View.OnClickListener {
+public class MultiTypeAdapter extends RecyclerAdapter{
 
     private final String TAG = "MultiTypeAdapter";
     private List<Object> mViewsData;
     private Map<Integer, Integer> mPositionViewType;  //position --> ViewType
     private ViewHolderManager mViewHolderManager;
-    private Activity aty;
-
-    private OnRecyclerViewItemClickListener mOnItemClickListener = null;
-
-    //define interface
-    public static interface OnRecyclerViewItemClickListener {
-        void onItemClick(View view , int position);
-    }
 
 
     public MultiTypeAdapter(Context context) {
         super(context);
-        aty= (Activity) context;
         mViewsData = new ArrayList<>();
         mPositionViewType = new HashMap<>();
         mViewHolderManager = new ViewHolderManager();
@@ -102,15 +90,12 @@ public class MultiTypeAdapter extends RecyclerAdapter implements View.OnClickLis
 
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
         log("onCreateViewHolder -- viewType : " + viewType);
-        View view = aty.getLayoutInflater().from(parent.getContext()).inflate(R.layout.scene1_list_item, parent, false);
-        BaseViewHolder vh = new BaseViewHolder(view);
-        //将创建的View注册点击事件
-        view.setOnClickListener(this);
 
         if (viewType == STATUS_TYPE) {
 
-            return vh;
+            return new BaseViewHolder(mStatusView);
         }
         Class clazzViewHolder = mViewHolderManager.getViewHolder(viewType);
         try {
@@ -123,11 +108,9 @@ public class MultiTypeAdapter extends RecyclerAdapter implements View.OnClickLis
                 constructor = clazzViewHolder.getDeclaredConstructor();
                 holder = (BaseViewHolder) constructor.newInstance();
             }
-            holder.getItemView().setOnClickListener(this);
             holder.onItemViewClick(mViewsData);
             L.i(TAG,"执行try");
-
-            return vh;
+            return holder;
         } catch (Exception e) {
             e.printStackTrace();
             Log.i(TAG, "onCreateBaseViewHolder : " + e.getMessage());
@@ -135,17 +118,6 @@ public class MultiTypeAdapter extends RecyclerAdapter implements View.OnClickLis
 
         return null;
 
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (mOnItemClickListener != null) {
-            //注意这里使用getTag方法获取数据
-            mOnItemClickListener.onItemClick(v,(int)v.getTag());
-        }
-    }
-    public void setOnItemClickListener(OnRecyclerViewItemClickListener listener) {
-        this.mOnItemClickListener = listener;
     }
 
     @Override
@@ -169,6 +141,12 @@ public class MultiTypeAdapter extends RecyclerAdapter implements View.OnClickLis
             holder.itemView.setTag(mViewsData.get(position));
         }
 
+    }
+
+    private OnItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+        this.onItemClickListener=onItemClickListener;
     }
 
 }

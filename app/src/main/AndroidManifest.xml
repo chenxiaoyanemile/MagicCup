@@ -57,8 +57,9 @@
         <activity android:name=".activity.MySetActivity" />
         <activity android:name=".activity.MySetAboutActivity" />
         <activity android:name=".activity.MySetBackActivity" />
-        <activity android:name=".activity.MultiTypeActivity"></activity>
-        <activity android:name=".activity.ShowARActivity"></activity>
+        <activity android:name=".activity.MultiTypeActivity" />
+        <activity android:name=".activity.ShowARActivity" />
+        <activity android:name=".view.recycleView.RecyclerViewActivity"></activity>
     </application>
 
 </manifest>

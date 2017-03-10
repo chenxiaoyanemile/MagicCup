@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.sweetgirl.magiccup1.R;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -51,6 +52,8 @@ public abstract class RecyclerAdapter<T> extends RecyclerView.Adapter<BaseViewHo
 
     private Context mContext;
 
+    private OnItemClickListener onItemClickListener;
+
     public void colseLog() {
         allowLog = false;
     }
@@ -82,15 +85,21 @@ public abstract class RecyclerAdapter<T> extends RecyclerView.Adapter<BaseViewHo
 
     @Override
     public BaseViewHolder<T> onCreateViewHolder(ViewGroup parent, int viewType) {
-        log("onCreateViewHolder -- viewType : " + viewType);
+
+       // log("onCreateViewHolder -- viewType : " + viewType);
         if (viewType == HEADER_TYPE) {
             return new BaseViewHolder(headerView);
         } else if (viewType == FOOTER_TYPE) {
             return new BaseViewHolder(footerView);
         } else if (viewType == STATUS_TYPE) {
-            return new BaseViewHolder(mStatusView);
+            BaseViewHolder itemView=new BaseViewHolder(mStatusView);
+            return itemView;
         } else
             return onCreateBaseViewHolder(parent, viewType);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+        this.onItemClickListener=onItemClickListener;
     }
 
     public abstract BaseViewHolder<T> onCreateBaseViewHolder(ViewGroup parent, int viewType);

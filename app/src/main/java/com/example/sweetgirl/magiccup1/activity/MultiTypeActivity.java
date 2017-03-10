@@ -14,6 +14,7 @@ import com.example.sweetgirl.magiccup1.ui.recycler.RefreshRecyclerView;
 import com.example.sweetgirl.magiccup1.ui.recycler.SpaceItemDecoration;
 import com.example.sweetgirl.magiccup1.ui.recycler.adapter.Action;
 import com.example.sweetgirl.magiccup1.ui.recycler.adapter.MultiTypeAdapter;
+import com.example.sweetgirl.magiccup1.ui.recycler.adapter.OnItemClickListener;
 import com.example.sweetgirl.magiccup1.util.L;
 import com.example.sweetgirl.magiccup1.util.LogUtil;
 import com.squareup.okhttp.Call;
@@ -54,16 +55,18 @@ public class MultiTypeActivity extends AppCompatActivity {
         mRecyclerView.addItemDecoration(new SpaceItemDecoration(12,8,12,30));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener(new MultiTypeAdapter.OnRecyclerViewItemClickListener() {
+        L.i(TAG,"设置适配器");
+        mAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
+            public void OnItemClick(View view) {
                 L.i(TAG,"点击事件");
-                Toast.makeText(MultiTypeActivity.this, "你选择了"+position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MultiTypeActivity.this,"你选择了",Toast.LENGTH_SHORT).show();
             }
         });
         mRecyclerView.setRefreshAction(new Action() {
             @Override
             public void onAction() {
+                L.i(TAG,"获取数据");
                 getData(true);
             }
         });

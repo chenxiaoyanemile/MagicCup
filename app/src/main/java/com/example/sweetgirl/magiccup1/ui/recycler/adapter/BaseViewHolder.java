@@ -6,12 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+
 /**
  * recycleView
  */
 public class BaseViewHolder<T> extends RecyclerView.ViewHolder{
 
     private final String TAG = "RecyclerView_BaseViewHolder";
+
 
     public BaseViewHolder(View itemView) {
         super(itemView);
@@ -34,18 +36,24 @@ public class BaseViewHolder<T> extends RecyclerView.ViewHolder{
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemViewClick(object);
+                if (onItemClickListener!=null){
+                    onItemClickListener.OnItemClick(v);
+                }
             }
         });
     }
 
     public void onItemViewClick(T object) {
 
-
     }
+    public interface OnItemClickListener {
+        public void OnItemClick(View view);
+    }
+    private OnItemClickListener onItemClickListener;
 
-    public View getItemView(){
-        return itemView;
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+        this.onItemClickListener=onItemClickListener;
     }
 
 }
+

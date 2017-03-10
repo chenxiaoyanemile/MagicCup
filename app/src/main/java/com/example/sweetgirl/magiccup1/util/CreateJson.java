@@ -5,7 +5,7 @@ import com.example.sweetgirl.magiccup1.model.TallScene;
 import org.json.JSONObject;
 
 /**
- * Created by sweetgirl on 2016/12/14.
+ *  2016/12/14.
  */
 
 public class CreateJson {

@@ -10,6 +10,8 @@ import android.widget.Toast;
 import com.example.sweetgirl.magiccup1.R;
 import com.example.sweetgirl.magiccup1.util.L;
 import com.example.sweetgirl.magiccup1.util.LogUtil;
+import com.example.sweetgirl.magiccup1.view.recycleView.RecyclerViewActivity;
+
 
 public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClickListener{
     private static final String LOGTAG = LogUtil.makeLogTag(MyMakeGiftActivity.class);
@@ -52,7 +54,7 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View view){
         switch (view.getId()){
             case R.id.btn_gift_story:
-                Intent intent1=new Intent(MyMakeGiftActivity.this,MultiTypeActivity.class);
+                Intent intent1=new Intent(MyMakeGiftActivity.this,RecyclerViewActivity.class);
                 startActivity(intent1);
                 L.i(LOGTAG,"选择故事");
                 break;

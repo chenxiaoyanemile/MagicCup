@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_my_gift_scene1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/bg_my"
+    android:orientation="vertical"
+    tools:context="com.example.sweetgirl.magiccup1.outdated.MyGiftScene1Activity">
+
+    <include layout="@layout/my_gift_scene1_toolbar"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="3dp"/>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/layout_swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/new_recyclerView"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+</LinearLayout>
