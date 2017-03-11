@@ -64,5 +64,15 @@
     <string name="Sagittarius"> 射手座</string>
     <string name="Capricorn"> 摩羯座</string>
 
+    <!-- 对话框所需要的字符串资源-->
+    <string name="dialog_message">提交成功</string>
+    <string name="postive_button">确定</string>
+    <string name="negative_button">取消</string>
+
+    <!-- 对话框提示信息字符串资源-->
+    <string name="toast_postive">你点击了确定按钮</string>
+    <string name="toast_negative">你点击了取消按钮</string>
+    <string name="simple_dialog">提示</string>
+
 
 </resources>

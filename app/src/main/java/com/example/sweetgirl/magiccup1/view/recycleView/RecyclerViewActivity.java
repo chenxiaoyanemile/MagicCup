@@ -1,11 +1,14 @@
 package com.example.sweetgirl.magiccup1.view.recycleView;
 
+import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.sweetgirl.magiccup1.Bean.TextImage;
@@ -29,18 +32,17 @@ public class RecyclerViewActivity extends AppCompatActivity {
 
     private static final String TAG = LogUtil.makeLogTag(RecyclerViewActivity.class);
 
+    private ImageView set_toolbar_back;
+
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mRefreshLayout;
     private LinearLayoutManager mLinearLayoutManager;
     private MyRecycleViewAdapter mmAdapter;
 
 
-    private int mPage = 0;
-
-    private ArrayList<String> datas;
-
-    private String name;
     private TextImage textImage;
+
+    private String mName;
 
     ArrayList<TextImage> list=new ArrayList<>();
 
@@ -62,8 +64,9 @@ public class RecyclerViewActivity extends AppCompatActivity {
         mmAdapter.setTextImages(list);
         mmAdapter.setOnItemClickListener(new MyRecycleViewAdapter.OnItemClickListener() {
             @Override
-            public void OnItemClick(View view) {
-                Toast.makeText(RecyclerViewActivity.this,"你选择了"+textImage.name,Toast.LENGTH_SHORT).show();
+            public void OnItemClick(View view,int position) {
+                mName=list.get(position).getName();
+                Toast.makeText(RecyclerViewActivity.this,"你选择了"+mName,Toast.LENGTH_SHORT).show();
             }
         });
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
@@ -94,6 +97,17 @@ public class RecyclerViewActivity extends AppCompatActivity {
     }
 
     public void initView(){
+        //toolbar上的back键
+        set_toolbar_back=(ImageView)findViewById(R.id.set_toolbar_back);
+        set_toolbar_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = RecyclerViewActivity.this.getIntent();
+                intent.putExtra("data1", "1、"+mName);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
         mRecyclerView=(RecyclerView) findViewById(R.id.new_recyclerView);
         mRefreshLayout=(SwipeRefreshLayout)findViewById(R.id.layout_swipe_refresh);
     }
@@ -150,7 +164,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
             org.json.JSONArray array = jsonObject.getJSONArray("data");
             for (int i = 0; i < array.length(); i++) {
                 org.json.JSONObject object = array.getJSONObject(i);
-                name=object.getString("name");
+                String name=object.getString("name");
                 String image=object.getString("image");
                 String dep=object.getString("depiction");
                 L.i(TAG,"小燕子"+name);
@@ -163,5 +177,22 @@ public class RecyclerViewActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return list;
+    }
+
+    //手机系统返回键
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        L.i(TAG, "back键 ");
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+            Intent intent = RecyclerViewActivity.this.getIntent();
+            intent.putExtra("data1","1、"+mName);
+            setResult(RESULT_OK, intent);
+            this.finish();
+            return true;
+        }
+        else {
+            return super.onKeyDown(keyCode, event);
+        }
     }
 }

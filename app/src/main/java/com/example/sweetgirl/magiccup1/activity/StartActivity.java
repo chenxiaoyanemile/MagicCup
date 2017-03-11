@@ -88,11 +88,8 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(StartActivity.this, MainPageActivity.class);
-                startActivity(intent);
-                finish();
 
-          /*  if (preferences.getBoolean("firstStart", true)) {
+          if (preferences.getBoolean("firstStart", true)) {
                     L.i(TAG, "扫码");
                     Intent intent1 = new Intent(StartActivity.this, CaptureActivity.class);
                     startActivityForResult(intent1, REQUEST_CODE);
@@ -101,7 +98,7 @@ public class StartActivity extends AppCompatActivity {
                     Intent intent = new Intent(StartActivity.this, MainPageActivity.class);
                     startActivity(intent);
                     finish();
-                }*/
+                }
 
             }
         });

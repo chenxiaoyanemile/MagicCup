@@ -14,7 +14,7 @@
         tools:ignore="UseCompoundDrawables">
 
         <ImageView
-            android:id="@+id/set_toolbar_back"
+            android:id="@+id/set_scene_toolbar_back"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:paddingLeft="10dp"

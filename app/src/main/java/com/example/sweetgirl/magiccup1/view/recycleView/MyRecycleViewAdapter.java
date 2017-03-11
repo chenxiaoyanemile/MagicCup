@@ -74,6 +74,9 @@ public class MyRecycleViewAdapter extends RecyclerView.Adapter<MyRecycleViewAdap
         TextImage currentTextImage=textImages.get(position);
         holder.mText.setText(currentTextImage.getName());
         holder.mDep.setText(currentTextImage.getDep());
+
+        holder.itemView.setTag(position);
+
         String url=currentTextImage.getImage();
         loadImages(url,holder);
 
@@ -121,7 +124,7 @@ public class MyRecycleViewAdapter extends RecyclerView.Adapter<MyRecycleViewAdap
                 @Override
                 public void onClick(View v) {
                     if (onItemClickListener!=null){
-                        onItemClickListener.OnItemClick(v);
+                        onItemClickListener.OnItemClick(v,(int)v.getTag());
                     }
                 }
             });
@@ -129,7 +132,7 @@ public class MyRecycleViewAdapter extends RecyclerView.Adapter<MyRecycleViewAdap
     }
 
     public interface OnItemClickListener{
-        public void OnItemClick(View view);
+        public void OnItemClick(View view,int position);
     }
 
     private OnItemClickListener onItemClickListener;

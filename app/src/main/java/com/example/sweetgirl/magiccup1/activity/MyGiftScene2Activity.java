@@ -1,12 +1,15 @@
 package com.example.sweetgirl.magiccup1.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.sweetgirl.magiccup1.R;
@@ -14,11 +17,15 @@ import com.example.sweetgirl.magiccup1.fragment.BackgroundFragment;
 import com.example.sweetgirl.magiccup1.fragment.SceneFragment;
 import com.example.sweetgirl.magiccup1.fragment.WeatherFragment;
 
+import com.example.sweetgirl.magiccup1.util.L;
 import com.example.sweetgirl.magiccup1.util.LogUtil;
+
 
 
 public class MyGiftScene2Activity extends AppCompatActivity implements View.OnClickListener{
     private static final String TAG = LogUtil.makeLogTag(MyGiftScene2Activity.class);
+
+    private ImageView set_scene_toolbar_back;
 
     private TextView scene2_tv_weather;
     private TextView scene2_tv_background;
@@ -37,6 +44,8 @@ public class MyGiftScene2Activity extends AppCompatActivity implements View.OnCl
 
     private void initView(){
 
+        set_scene_toolbar_back=(ImageView)findViewById(R.id.set_scene_toolbar_back);
+
         scene2_tv_weather=(TextView)findViewById(R.id.scene2_tv_weather);
         scene2_tv_background=(TextView)findViewById(R.id.scene2_tv_background);
         scene2_tv_scene=(TextView)findViewById(R.id.scene2_tv_scene);
@@ -51,6 +60,11 @@ public class MyGiftScene2Activity extends AppCompatActivity implements View.OnCl
     @Override
     public void onClick(View view){
         switch (view.getId()){
+            case R.id.set_scene_toolbar_back:
+                Intent intent = MyGiftScene2Activity.this.getIntent();
+                intent.putExtra("data2", "2、天气");
+                setResult(RESULT_OK, intent);
+                break;
             case R.id.scene2_tv_weather:
                 clickWeather();
                 scene2_tv_weather.setTextColor(Color.rgb(255, 255, 255));
@@ -117,6 +131,22 @@ public class MyGiftScene2Activity extends AppCompatActivity implements View.OnCl
             transaction.hide(contentFragment).show(fragment).commit();
         }
         contentFragment = fragment;
+    }
+    //手机系统返回键
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        L.i(TAG, "back键 ");
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+            Intent intent = MyGiftScene2Activity.this.getIntent();
+            intent.putExtra("data2", "2、天气");
+            setResult(RESULT_OK, intent);
+            this.finish();
+            return true;
+        }
+        else {
+            return super.onKeyDown(keyCode, event);
+        }
     }
 
 }
