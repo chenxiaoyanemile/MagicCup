@@ -32,15 +32,11 @@ public class RecyclerViewActivity extends AppCompatActivity {
 
     private static final String TAG = LogUtil.makeLogTag(RecyclerViewActivity.class);
 
-    private ImageView set_toolbar_back;
 
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mRefreshLayout;
-    private LinearLayoutManager mLinearLayoutManager;
     private MyRecycleViewAdapter mmAdapter;
 
-
-    private TextImage textImage;
 
     private String mName;
 
@@ -54,7 +50,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
         initView();
         initData();
 
-        mLinearLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(this);
 
         mmAdapter=new MyRecycleViewAdapter(RecyclerViewActivity.this);
 
@@ -98,7 +94,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
 
     public void initView(){
         //toolbar上的back键
-        set_toolbar_back=(ImageView)findViewById(R.id.set_toolbar_back);
+        ImageView set_toolbar_back=(ImageView)findViewById(R.id.set_toolbar_back);
         set_toolbar_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -170,7 +166,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
                 L.i(TAG,"小燕子"+name);
                 L.i(TAG,"小燕子"+image);
                 L.i(TAG,"小燕子"+dep);
-                textImage=new TextImage(image,name,dep);
+                TextImage textImage=new TextImage(image,name,dep);
                 list.add(textImage);
             }
         } catch (Exception e) {

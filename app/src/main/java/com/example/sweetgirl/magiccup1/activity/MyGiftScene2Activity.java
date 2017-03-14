@@ -13,9 +13,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.sweetgirl.magiccup1.R;
-import com.example.sweetgirl.magiccup1.fragment.BackgroundFragment;
-import com.example.sweetgirl.magiccup1.fragment.SceneFragment;
-import com.example.sweetgirl.magiccup1.fragment.WeatherFragment;
+import com.example.sweetgirl.magiccup1.fragment.SceneTwoBackgroundFragment;
+import com.example.sweetgirl.magiccup1.fragment.SceneTwoSceneFragment;
+import com.example.sweetgirl.magiccup1.fragment.SceneTwoWeatherFragment;
+
 
 import com.example.sweetgirl.magiccup1.util.L;
 import com.example.sweetgirl.magiccup1.util.LogUtil;
@@ -32,7 +33,7 @@ public class MyGiftScene2Activity extends AppCompatActivity implements View.OnCl
     private TextView scene2_tv_scene;
 
 
-    private Fragment weatherFragment,backgroundFragment,sceneFragment,contentFragment;
+    private Fragment sceneTwoWeatherFragment,backgroundFragment,sceneFragment,contentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,15 @@ public class MyGiftScene2Activity extends AppCompatActivity implements View.OnCl
     private void initView(){
 
         set_scene_toolbar_back=(ImageView)findViewById(R.id.set_scene_toolbar_back);
+        set_scene_toolbar_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = MyGiftScene2Activity.this.getIntent();
+                intent.putExtra("data2", "2、天气");
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
 
         scene2_tv_weather=(TextView)findViewById(R.id.scene2_tv_weather);
         scene2_tv_background=(TextView)findViewById(R.id.scene2_tv_background);
@@ -89,32 +99,32 @@ public class MyGiftScene2Activity extends AppCompatActivity implements View.OnCl
 
     //[2]初始化底部按钮
     public void initTab(){
-        if(weatherFragment==null){
-            weatherFragment=new WeatherFragment();
+        if(sceneTwoWeatherFragment==null){
+            sceneTwoWeatherFragment=new SceneTwoWeatherFragment();
         }
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.dep_fragment,weatherFragment).commit();
-        contentFragment=weatherFragment;
+                .add(R.id.dep_fragment,sceneTwoWeatherFragment).commit();
+        contentFragment=sceneTwoWeatherFragment;
     }
     //[3]响应点击事件
     @SuppressLint("CommitTransaction")
     public void clickWeather(){
-        if(weatherFragment==null){
-            weatherFragment=new WeatherFragment();
+        if(sceneTwoWeatherFragment==null){
+            sceneTwoWeatherFragment=new SceneTwoWeatherFragment();
         }
-        addOrShowFragment(getSupportFragmentManager().beginTransaction(),weatherFragment);
+        addOrShowFragment(getSupportFragmentManager().beginTransaction(),sceneTwoWeatherFragment);
     }
     @SuppressLint("CommitTransaction")
     public void clickBackground(){
         if(backgroundFragment==null){
-            backgroundFragment=new BackgroundFragment();
+            backgroundFragment=new SceneTwoBackgroundFragment();
         }
         addOrShowFragment(getSupportFragmentManager().beginTransaction(),backgroundFragment);
     }
     @SuppressLint("CommitTransaction")
     public void clickScene(){
         if(sceneFragment==null){
-            sceneFragment=new SceneFragment();
+            sceneFragment=new SceneTwoSceneFragment();
         }
         addOrShowFragment(getSupportFragmentManager().beginTransaction(),sceneFragment);
     }

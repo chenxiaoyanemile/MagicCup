@@ -47,6 +47,7 @@ public class MyGiftScene3Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 letter=scene3_et_letter.getText().toString().trim();
+
                 Toast.makeText(getApplicationContext(), "提交成功", Toast.LENGTH_SHORT).show();
             }
         });
