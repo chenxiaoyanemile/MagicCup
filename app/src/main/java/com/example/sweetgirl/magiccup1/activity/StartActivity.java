@@ -88,7 +88,6 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
           if (preferences.getBoolean("firstStart", true)) {
                     L.i(TAG, "扫码");
                     Intent intent1 = new Intent(StartActivity.this, CaptureActivity.class);

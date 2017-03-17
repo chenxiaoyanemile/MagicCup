@@ -22,13 +22,12 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="600dp"
+        android:layout_height="80dp"
         android:background="@color/text_b"
-        tools:ignore="DisableBaselineAlignment,UselessLeaf,UselessParent">
+        tools:ignore="DisableBaselineAlignment,UselessLeaf,UselessParent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
 
         <LinearLayout

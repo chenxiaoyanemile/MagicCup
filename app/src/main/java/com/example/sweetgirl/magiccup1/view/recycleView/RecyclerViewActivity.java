@@ -87,7 +87,6 @@ public class RecyclerViewActivity extends AppCompatActivity {
     //每次上拉加载的时候，给RecyclerView的后面添加了10条数据数据
     private void loadMoreData(){
         for (int i =0; i < 10; i++){
-           // mData.add("嘿，我是“上拉加载”生出来的"+i);
             mmAdapter.notifyDataSetChanged();
         }
     }

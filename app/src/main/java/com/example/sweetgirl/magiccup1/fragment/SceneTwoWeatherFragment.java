@@ -49,8 +49,9 @@ public class SceneTwoWeatherFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view= inflater.inflate(R.layout.fragment_scene_two_weather, container, false);
-        initView(view);
+
         initData();
+        initView(view);
 
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
         sceneTwoRecyclerViewAdapter=new SceneTwoRecyclerViewAdapter(getActivity());
