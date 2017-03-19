@@ -28,7 +28,6 @@ import com.example.sweetgirl.magiccup1.model.Scene33;
 import com.example.sweetgirl.magiccup1.model.Scene4;
 import com.example.sweetgirl.magiccup1.model.ShowAllScene;
 import com.example.sweetgirl.magiccup1.model.ShowScene;
-import com.example.sweetgirl.magiccup1.model.UserBean;
 import com.example.sweetgirl.magiccup1.util.FileDownloadThread;
 import com.example.sweetgirl.magiccup1.util.L;
 import com.example.sweetgirl.magiccup1.util.LogUtil;
@@ -64,7 +63,7 @@ public class StartActivity extends AppCompatActivity {
     int REQUEST_CODE;
 
     private Boolean success;   //第一次扫描后的返回信息
-
+//1488436357855N0E0Y5DLzlohdUJbtUOLzCDVX http://119.29.222.54:8888/api/user/1488436357855N0E0Y5DLzlohdUJbtUOLzCDVX?state=true
     private String url="http://119.29.222.54:8888/api/user/"+result+"?state=true";   //扫描二维码
     private String user_id;         //用户id
     private String path="http://139.199.190.245:8010/api/between/"+user_id;         //关联信息

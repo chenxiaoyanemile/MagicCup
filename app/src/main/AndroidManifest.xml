@@ -45,7 +45,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".outdated.MainActivity" />
         <activity android:name=".activity.SelectActivity" />
         <activity android:name=".activity.MainPageActivity" />
         <activity android:name=".activity.MyRecordActivity" />
