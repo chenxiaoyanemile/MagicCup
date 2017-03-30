@@ -122,7 +122,7 @@ public class SceneTwoBackgroundFragment extends Fragment {
     private void enqueue(){
         //[1]拿到OkHttpClient
         OkHttpClient client = new OkHttpClient();
-        //[2]构造Request   "http://119.29.222.54:8010/api/scene/1
+        //[2]构造Request   "http://139.199.190.245:8010/api/scene/1
         Request request = new Request.Builder()
                 .url("http://139.199.190.245:8010/api/scene/32")
                 .build();

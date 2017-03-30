@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sweetgirl.magiccup1.R;
@@ -30,6 +32,10 @@ public class ARFragment extends Fragment {
 
     private Button ar_btn_scan;
 
+    private ProgressBar pb_show_download;
+    /** 显示下载进度TextView */
+    private TextView tv_download_msg;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,11 +49,14 @@ public class ARFragment extends Fragment {
 
     public void init(View view){
         ar_btn_scan=(Button)view.findViewById(R.id.ar_btn_scan);
+        pb_show_download=(ProgressBar)view.findViewById(R.id.pb_show_download);
+        tv_download_msg=(TextView)view.findViewById(R.id.tv_download_msg);
+
+
         ar_btn_scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Do();
-                Toast.makeText(getActivity(), "加载中...", Toast.LENGTH_SHORT).show();
+                //Do();
                 Intent intent=new Intent(getActivity(), ShowARActivity.class);
                 startActivity(intent);
             }
@@ -69,6 +78,21 @@ public class ARFragment extends Fragment {
         final String downloadUrl4 = "http://ojphnknti.bkt.clouddn.com/scene31/BGYinXing.assetbundle";
         final String fileName4="BGYinXing.assetbundle";
 
+        final String downloadUrl5 = "http://ojphnknti.bkt.clouddn.com/scene33/TMAfternoon.assetbundle";
+        final String fileName5="TMAfternoon.assetbundle";
+
+        final String downloadUrl6 = "http://ojphnknti.bkt.clouddn.com/scene4/huapen.assetbundle";
+        final String fileName6="huapen.assetbundle";
+
+        final String downloadUrl7 = "http://ojphnknti.bkt.clouddn.com/scene1/DYM.assetbundle";
+        final String fileName7="DYM.assetbundle";
+
+        final String downloadUrl8 = "http://ojphnknti.bkt.clouddn.com/scene4/disimu.assetbundle";
+        final String fileName8="disimu.assetbundle";
+
+        final String downloadUrl9 = "http://ojphnknti.bkt.clouddn.com/scene31/Cloud.assetbundle";
+        final String fileName9="Cloud.assetbundle";
+
 
         new Thread(new Runnable() {
             @Override
@@ -84,6 +108,17 @@ public class ARFragment extends Fragment {
                     doDownload(downloadUrl4,fileName4);
                     L.i(TAG,"第四个下载完成");
 
+                    doDownload(downloadUrl5,fileName5);
+                    L.i(TAG,"第五个下载完成");
+                    doDownload(downloadUrl6,fileName6);
+                    L.i(TAG,"第六个下载完成");
+                    doDownload(downloadUrl7,fileName7);
+                    L.i(TAG,"第七个下载完成");
+                    doDownload(downloadUrl8,fileName8);
+                    L.i(TAG,"第八个下载完成");
+                    doDownload(downloadUrl9,fileName9);
+                    L.i(TAG,"第九个下载完成");
+
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -93,7 +128,7 @@ public class ARFragment extends Fragment {
     }
 
     //[3]将扫描结果提交到服务器
-    private  void Do(){
+   /* private  void Do(){
 
 
         final String downloadUrl5 = "http://ojphnknti.bkt.clouddn.com/scene33/TMAfternoon.assetbundle";
@@ -132,7 +167,7 @@ public class ARFragment extends Fragment {
                 }
             }
         }).start();
-    }
+    }*/
 
 
     //下载文件
@@ -167,21 +202,30 @@ public class ARFragment extends Fragment {
         @Override
         public void handleMessage(Message msg) {
             //[获取下载文件大小]
-            int progress=msg.getData().getInt("size");
-            int temp=100;
-            if (progress==100){
-                //Toast.makeText(getApplicationContext(),"加载完成！",Toast.LENGTH_SHORT).show();
+            //int progress=msg.getData().getInt("size");
+            //int temp=100;
+           /* if (progress==100){
+                Toast.makeText(getActivity(),"加载完成！",Toast.LENGTH_SHORT).show();
             }
 
-            //mProgressbar.setProgress(msg.getData().getInt("size"));
+            pb_show_download.setProgress(msg.getData().getInt("size"));*/
 
-            //float temp = (float) mProgressbar.getProgress()
-            //  (float) mProgressbar.getMax();
+            /*float temp1 = (float) pb_show_download.getProgress()
+            (float) pb_show_download.getMax();*/
 
-           /* int progress = 100;
+           /*int progress = 100;
             if (progress == 100) {
                 Toast.makeText(getApplicationContext(), "加载完成！", Toast.LENGTH_LONG).show();
             }*/
+            pb_show_download.setProgress(msg.getData().getInt("size"));
+
+            float temp = (float) pb_show_download.getProgress() / (float) pb_show_download.getMax();
+
+            int progress = (int) (temp * 100);
+            if (progress == 100) {
+                Toast.makeText(getActivity(), "下载完成！", Toast.LENGTH_LONG).show();
+            }
+            tv_download_msg.setText("下载进度:" + progress + " %");
 
         }
     };

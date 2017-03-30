@@ -1,13 +1,24 @@
 package com.example.sweetgirl.magiccup1.activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.ContentProviderOperation;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.OperationApplicationException;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.RemoteException;
+import android.provider.ContactsContract;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +26,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.example.sweetgirl.magiccup1.Bean.ScanCodeResult;
 import com.example.sweetgirl.magiccup1.R;
 import com.example.sweetgirl.magiccup1.app.MyApplication;
 import com.example.sweetgirl.magiccup1.model.DataBean;
@@ -45,14 +57,24 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-/*
+/*http://139.199.190.245:8010/api/users/2
 * 1.扫描二维码
 * 2.获取用户id
 * 3.获取关联信息
 * */
 
 public class StartActivity extends AppCompatActivity {
+
+
+    final private int MY_PERMISSIONS_REQUEST_READ_CONTACTS=124;
+    final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
+
+
     private static final String TAG = LogUtil.makeLogTag(StartActivity.class);
 
     private SharedPreferences preferences;
@@ -62,9 +84,9 @@ public class StartActivity extends AppCompatActivity {
 
     int REQUEST_CODE;
 
-    private Boolean success;   //第一次扫描后的返回信息
-//1488436357855N0E0Y5DLzlohdUJbtUOLzCDVX http://119.29.222.54:8888/api/user/1488436357855N0E0Y5DLzlohdUJbtUOLzCDVX?state=true
-    private String url="http://119.29.222.54:8888/api/user/"+result+"?state=true";   //扫描二维码
+    private String message;   //第一次扫描后的返回信息
+    //private String url="http://139.199.190.245:8010/api/user/"+result+"/true";   //扫描二维码
+    private String url;
     private String user_id;         //用户id
     private String path="http://139.199.190.245:8010/api/between/"+user_id;         //关联信息
 
@@ -77,6 +99,133 @@ public class StartActivity extends AppCompatActivity {
         preferences = getSharedPreferences("count", Context.MODE_PRIVATE);
 
         init();
+        L.d(TAG,"界面");
+       insertDummyContactWrapper();
+        L.d(TAG,"请求权限");
+    }
+
+
+    //授权方法
+    private static final String TAGLOG = "Contacts";
+    private void insertDummyContact() {
+        // Two operations are needed to insert a new contact.
+        ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>(2);
+
+        // First, set up a new raw contact.
+        ContentProviderOperation.Builder op =
+                ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
+                        .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
+                        .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null);
+        operations.add(op.build());
+
+        // Next, set the name for the contact.
+        op = ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                .withValue(ContactsContract.Data.MIMETYPE,
+                        ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+                .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME,
+                        "__DUMMY CONTACT from runtime permissions sample");
+        operations.add(op.build());
+
+        // Apply the operations.
+        ContentResolver resolver = getContentResolver();
+        try {
+            resolver.applyBatch(ContactsContract.AUTHORITY, operations);
+        } catch (RemoteException e) {
+            L.d(TAGLOG, "Could not add a new contact: " + e.getMessage());
+        } catch (OperationApplicationException e) {
+            L.d(TAGLOG, "Could not add a new contact: " + e.getMessage());
+        }
+    }
+
+   final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
+
+    private void insertDummyContactWrapper() {
+        List<String> permissionsNeeded = new ArrayList<String>();
+
+        final List<String> permissionsList = new ArrayList<String>();
+        if (!addPermission(permissionsList, Manifest.permission.CAMERA))
+            permissionsNeeded.add("Camera");
+        if (!addPermission(permissionsList, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+            permissionsNeeded.add("Storage");
+        if (!addPermission(permissionsList, Manifest.permission.WRITE_CONTACTS))
+            permissionsNeeded.add("Write Contacts");
+
+        if (permissionsList.size() > 0) {
+            if (permissionsNeeded.size() > 0) {
+                // Need Rationale
+                String message = "You need to grant access to " + permissionsNeeded.get(0);
+                for (int i = 1; i < permissionsNeeded.size(); i++)
+                    message = message + ", " + permissionsNeeded.get(i);
+                showMessageOKCancel(message,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ActivityCompat.requestPermissions(StartActivity.this,permissionsList.toArray(new String[permissionsList.size()]),
+                                        REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
+                            }
+                        });
+                return;
+            }
+            ActivityCompat.requestPermissions(StartActivity.this,permissionsList.toArray(new String[permissionsList.size()]),
+                    REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
+            return;
+        }
+
+        insertDummyContact();
+    }
+    //添加权限
+    private boolean addPermission(List<String> permissionsList, String permission) {
+        int hasWriteContactsPermission = ContextCompat.checkSelfPermission(StartActivity.this,
+                Manifest.permission.CAMERA);
+        if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED) {
+            permissionsList.add(permission);
+            // Check for Rationale Option
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(StartActivity.this,permission))
+                return false;
+        }
+        return true;
+    }
+
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(StartActivity.this)
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
+    }
+    //请求权限的结果处理
+    @Override
+    public void onRequestPermissionsResult(int requestCode,String permissions[],int[]grantResults){
+        switch(requestCode){
+            case MY_PERMISSIONS_REQUEST_READ_CONTACTS:
+            {
+
+                Map<String, Integer> perms = new HashMap<String, Integer>();
+                // Initial
+                perms.put(Manifest.permission.CAMERA, PackageManager.PERMISSION_GRANTED);
+                perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+                perms.put(Manifest.permission.WRITE_CONTACTS, PackageManager.PERMISSION_GRANTED);
+                // Fill with results
+                for (int i = 0; i < permissions.length; i++)
+                    perms.put(permissions[i], grantResults[i]);
+                // Check for ACCESS_FINE_LOCATION
+                if (perms.get(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+                        && perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                        && perms.get(Manifest.permission.WRITE_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+                    // All Permissions Granted
+                    insertDummyContact();
+                } else {
+                    // Permission Denied
+                    Toast.makeText(StartActivity.this, "Some Permission is Denied", Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }
+            break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
     //[1]初始化控件
@@ -87,7 +236,7 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-          if (preferences.getBoolean("firstStart", true)) {
+         if (preferences.getBoolean("firstStart", true)) {
                     L.i(TAG, "扫码");
                     Intent intent1 = new Intent(StartActivity.this, CaptureActivity.class);
                     startActivityForResult(intent1, REQUEST_CODE);
@@ -114,6 +263,7 @@ public class StartActivity extends AppCompatActivity {
                 if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
                     result = bundle.getString(CodeUtils.RESULT_STRING);
                     L.i("扫描结果：", result);
+                    url="http://139.199.190.245:8010/api/user/"+result+"/true";
                     doGet();
                 }
                 else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
@@ -139,6 +289,7 @@ public class StartActivity extends AppCompatActivity {
         //[1]拿到OkHttpClient
         OkHttpClient client = new OkHttpClient();
         //[2]构造Request
+        L.d(TAG,"URL="+url);
         Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -163,16 +314,16 @@ public class StartActivity extends AppCompatActivity {
     private void jsonParser(String jsonData) {
         try{
             //json数据解析成一个对象
-            ScanNumber scanNumber=JSON.parseObject(jsonData,ScanNumber.class);
-            success = scanNumber.getSuccess();
-            L.i("message"," "+scanNumber.getSuccess());
-            if (success){
+            ScanCodeResult scanNumber=JSON.parseObject(jsonData,ScanCodeResult.class);
+            message = scanNumber.getMessage();
+            L.i("message"," "+scanNumber.getMessage());
+            if (message==null){
                 Looper.prepare();
                 Toast.makeText(getApplicationContext(), "你在没有网络的异次元空间。。。", Toast.LENGTH_SHORT).show();
                 Looper.loop();
             }
             else {
-                //judgeResult(message);
+                judgeResult(message);
             }
 
         }catch(Exception e){
@@ -182,25 +333,26 @@ public class StartActivity extends AppCompatActivity {
     }
     //[5]判断返回结果
     private void judgeResult(String message){
+
         if (message.equals("serial not found")){
-            Looper.prepare();
+            /*Looper.prepare();
             Toast.makeText(getApplicationContext(), "这不是杯子的二维码o", Toast.LENGTH_SHORT).show();
             Looper.loop();
-            L.i(TAG,message);
-            /*StartActivity.this.runOnUiThread(new Runnable() {
+            L.i(TAG,message);*/
+            StartActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     Toast.makeText(getApplicationContext(), "这不是杯子的二维码o", Toast.LENGTH_SHORT).show();
                 }
-            });*/
+            });
         }
-        if (message.equals("success")){
+        else if (message.equals("success")){
             L.i(TAG,message);
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        //parserJson(res);
+                        parserJson(res);
                         saveData(user_id);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -222,7 +374,7 @@ public class StartActivity extends AppCompatActivity {
 
             L.i(TAG, "选择星座");
         }
-        if (message.equals("Not First")){
+        else if (message.equals("Not First")){
             L.i(TAG,message);
             //[1]查看当前线程
             Thread currentThread = Thread.

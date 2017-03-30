@@ -20,6 +20,16 @@ package com.example.sweetgirl.magiccup1.model;
  "success": true,
  "error": null
  }
+ {"scanNumber":"1","
+ message":"success",
+ "user":{
+ "id":"2140ce69-a5e6-402c-b4d7-11a29c0becc2",
+ "serial":"1486519379841niI34iXeTr4xhNlAH4K2hrKMt",
+ "createTime":"2017-03-29 21:07:51","
+ updateTime":"2017-03-29 21:07:51","
+ user_id":"3b8f35b9-4d84-4a2c-a30d-de8678b73b28","
+ sex":null,"
+ constellation":null}}
  */
 
 public class ScanNumber {
