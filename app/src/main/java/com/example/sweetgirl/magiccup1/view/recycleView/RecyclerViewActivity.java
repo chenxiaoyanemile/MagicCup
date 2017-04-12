@@ -39,6 +39,8 @@ public class RecyclerViewActivity extends AppCompatActivity {
 
 
     private String mName;
+    private String mId;
+    private String mResource;
 
     ArrayList<TextImage> list=new ArrayList<>();
 
@@ -62,6 +64,9 @@ public class RecyclerViewActivity extends AppCompatActivity {
             @Override
             public void OnItemClick(View view,int position) {
                 mName=list.get(position).getName();
+                mId=list.get(position).getId();
+                mResource=list.get(position).getResource();
+                L.d(TAG,"选择的场景的ID"+mId);
                 Toast.makeText(RecyclerViewActivity.this,"你选择了"+mName,Toast.LENGTH_SHORT).show();
             }
         });
@@ -99,6 +104,8 @@ public class RecyclerViewActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = RecyclerViewActivity.this.getIntent();
                 intent.putExtra("data1", "1、"+mName);
+                intent.putExtra("dataId",mId);
+                intent.putExtra("dataResource",mResource);
                 setResult(RESULT_OK, intent);
                 finish();
             }
@@ -159,13 +166,15 @@ public class RecyclerViewActivity extends AppCompatActivity {
             org.json.JSONArray array = jsonObject.getJSONArray("data");
             for (int i = 0; i < array.length(); i++) {
                 org.json.JSONObject object = array.getJSONObject(i);
+                String id=object.getString("id");
                 String name=object.getString("name");
                 String image=object.getString("image");
                 String dep=object.getString("depiction");
+                String resource=object.getString("resource");
                 L.i(TAG,"小燕子"+name);
                 L.i(TAG,"小燕子"+image);
                 L.i(TAG,"小燕子"+dep);
-                TextImage textImage=new TextImage(image,name,dep);
+                TextImage textImage=new TextImage(id,image,name,dep,resource);
                 list.add(textImage);
             }
         } catch (Exception e) {
@@ -182,6 +191,8 @@ public class RecyclerViewActivity extends AppCompatActivity {
 
             Intent intent = RecyclerViewActivity.this.getIntent();
             intent.putExtra("data1","1、"+mName);
+            intent.putExtra("dataId",mId);
+            intent.putExtra("dataResource",mResource);
             setResult(RESULT_OK, intent);
             this.finish();
             return true;

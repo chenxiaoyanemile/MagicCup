@@ -162,13 +162,15 @@ public class MultiTypeActivity extends AppCompatActivity {
             org.json.JSONArray array = jsonObject.getJSONArray("data");
             for (int i = 0; i < array.length(); i++) {
                 org.json.JSONObject object = array.getJSONObject(i);
+                String id=object.getString("id");
                 String name=object.getString("name");
                 String image=object.getString("image");
                 String dep=object.getString("depiction");
+                String resource=object.getString("resource");
                 L.i(TAG,"小燕子"+name);
                 L.i(TAG,"小燕子"+image);
                 L.i(TAG,"小燕子"+dep);
-                list.add(new TextImage(image, name, dep));
+                list.add(new TextImage(id,image, name, dep,resource));
             }
         } catch (Exception e) {
             e.printStackTrace();

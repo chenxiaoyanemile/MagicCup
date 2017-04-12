@@ -99,6 +99,12 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
         {
             case MY_REQUEST_CODE1:
                 story=data.getExtras().getString("data1");
+                String id=data.getExtras().getString("dataId");
+                String resource=data.getExtras().getString("dataResource");
+
+                L.d(TAG,"场景id"+id);
+                L.d(TAG,"场景资源"+resource);
+
                 btn_gift_story.setText(story);
                 break;
             case MY_REQUEST_CODE2:
