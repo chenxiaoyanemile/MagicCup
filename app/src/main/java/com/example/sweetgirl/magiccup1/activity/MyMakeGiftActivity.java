@@ -118,7 +118,8 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
                 break;
             case MY_REQUEST_CODE3:
                 letter=data.getExtras().getString("data3");
-                letterContent=data.getExtras().getString("data4");
+
+                letterContent=data.getExtras().getString("data4");  //信的内容
 
                 L.d(TAG,letterContent);
                 btn_gift_letter.setText(letter);
