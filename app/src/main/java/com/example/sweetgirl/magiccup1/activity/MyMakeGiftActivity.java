@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.sweetgirl.magiccup1.R;
+import com.example.sweetgirl.magiccup1.model.TallScene;
+import com.example.sweetgirl.magiccup1.util.CreateJson;
 import com.example.sweetgirl.magiccup1.util.L;
 import com.example.sweetgirl.magiccup1.util.LogUtil;
 import com.example.sweetgirl.magiccup1.view.recycleView.RecyclerViewActivity;
@@ -33,6 +35,7 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
     private String story;
     private String scene;
     private String letter;
+    private String letterContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,21 +101,26 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
         switch (requestCode)
         {
             case MY_REQUEST_CODE1:
-                story=data.getExtras().getString("data1");
+                story=data.getExtras().getString("data1");    //选择的第二幕
                 String id=data.getExtras().getString("dataId");
                 String resource=data.getExtras().getString("dataResource");
 
+                L.d(TAG,"第二幕选择的是"+story);
                 L.d(TAG,"场景id"+id);
                 L.d(TAG,"场景资源"+resource);
 
                 btn_gift_story.setText(story);
                 break;
             case MY_REQUEST_CODE2:
-                scene=data.getExtras().getString("data2");
+                scene=data.getExtras().getString("data2");  //选择的天气、背景、情景
+
                 btn_gift_scene.setText(scene);
                 break;
             case MY_REQUEST_CODE3:
                 letter=data.getExtras().getString("data3");
+                letterContent=data.getExtras().getString("data4");
+
+                L.d(TAG,letterContent);
                 btn_gift_letter.setText(letter);
                 break;
         }
@@ -146,4 +154,23 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
         AlertDialog dialog=builder.create();
         dialog.show();
     }
+
+    private void CreateUnityData(){
+
+        TallScene scene = new TallScene();
+
+        scene.getSecondScene().setAction("secondanimation.assetbundle");   //story
+        scene.getSecondScene().setBackground("");
+
+        scene.getThirdScene().setAction("ACHuge.assetbundle");      //scene
+        scene.getThirdScene().setBackground("BGYinXing.assetbundle");
+        scene.getThirdScene().setText(letterContent);    //信中的内容
+        scene.getThirdScene().setTime("ACHuge.assetbundle");
+
+        scene.getFourScene().setText("自定义文字");   //
+        scene.getFourScene().setInjection("huapen.assetbundle");
+
+        String first= CreateJson.createJson(scene);
+    }
+
 }

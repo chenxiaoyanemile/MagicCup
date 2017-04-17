@@ -1,20 +1,14 @@
 package com.example.sweetgirl.magiccup1.activity;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.OperationApplicationException;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.os.Environment;
-import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
-import android.os.RemoteException;
 import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -40,7 +34,6 @@ import com.example.sweetgirl.magiccup1.model.Scene33;
 import com.example.sweetgirl.magiccup1.model.Scene4;
 import com.example.sweetgirl.magiccup1.model.ShowAllScene;
 import com.example.sweetgirl.magiccup1.model.ShowScene;
-import com.example.sweetgirl.magiccup1.util.FileDownloadThread;
 import com.example.sweetgirl.magiccup1.util.L;
 import com.example.sweetgirl.magiccup1.util.LogUtil;
 import com.squareup.okhttp.Call;
@@ -53,10 +46,7 @@ import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -72,7 +62,7 @@ public class StartActivity extends AppCompatActivity {
 
 
     final private int MY_PERMISSIONS_REQUEST_READ_CONTACTS=124;
-    final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
+    //final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
 
     private static final String TAG = LogUtil.makeLogTag(StartActivity.class);
@@ -87,7 +77,7 @@ public class StartActivity extends AppCompatActivity {
     private String message;   //第一次扫描后的返回信息
     //private String url="http://139.199.190.245:8010/api/user/"+result+"/true";   //扫描二维码
     private String url;
-    private String user_id;         //用户id
+    private String user_id;         //用户id http://139.199.190.245:8010/api/between/0c40b024-c1c1-4d65-85b3-e8b881bca7fa
     private String path="http://139.199.190.245:8010/api/between/"+user_id;         //关联信息
 
     @Override
@@ -131,9 +121,7 @@ public class StartActivity extends AppCompatActivity {
         ContentResolver resolver = getContentResolver();
         try {
             resolver.applyBatch(ContactsContract.AUTHORITY, operations);
-        } catch (RemoteException e) {
-            L.d(TAGLOG, "Could not add a new contact: " + e.getMessage());
-        } catch (OperationApplicationException e) {
+        } catch (Exception e) {
             L.d(TAGLOG, "Could not add a new contact: " + e.getMessage());
         }
     }
@@ -154,7 +142,7 @@ public class StartActivity extends AppCompatActivity {
         if (permissionsList.size() > 0) {
             if (permissionsNeeded.size() > 0) {
                 // Need Rationale
-                String message = "You need to grant access to " + permissionsNeeded.get(0);
+                String message = "请赋予App以下权限 " + permissionsNeeded.get(0);
                 for (int i = 1; i < permissionsNeeded.size(); i++)
                     message = message + ", " + permissionsNeeded.get(i);
                 showMessageOKCancel(message,
@@ -218,7 +206,7 @@ public class StartActivity extends AppCompatActivity {
                     insertDummyContact();
                 } else {
                     // Permission Denied
-                    Toast.makeText(StartActivity.this, "Some Permission is Denied", Toast.LENGTH_SHORT)
+                    Toast.makeText(StartActivity.this, "有一些权限未授权", Toast.LENGTH_SHORT)
                             .show();
                 }
             }
@@ -362,10 +350,9 @@ public class StartActivity extends AppCompatActivity {
             //判断是否已经选择
             if (relationship()){
                 //存在对方赠送的礼物  ar
-                Intent intent = new Intent(StartActivity.this, ShowARActivity.class);
+                Intent intent = new Intent(StartActivity.this, DownloadActivity.class);
                 startActivity(intent);
                 finish();
-
                 L.i(TAG,"查看对方送的礼物");
             }
             Intent intent = new Intent(StartActivity.this, SelectActivity.class);
@@ -458,7 +445,7 @@ public class StartActivity extends AppCompatActivity {
             public void onResponse(Response response) throws IOException {
                 res=response.body().string();
                 L.i(TAG,"onResponse"+res);
-               // ParseJson(res);
+                ParseJson(res);
             }
         });
     }
@@ -473,146 +460,37 @@ public class StartActivity extends AppCompatActivity {
 
             Scene1 scene1=JSON.parseObject(jsonData,ShowAllScene.class).getDbScene1();
             String resource1=scene1.getResource();
-            doDownload(resource1,"scene1");
+            L.d(TAG,resource1);
+            //doDownload(resource1,"scene1");
 
             Scene2 scene2=JSON.parseObject(jsonData,ShowAllScene.class).getDbScene2();
             String resource2=scene2.getResource();
-            doDownload(resource2,"scene2");
+            L.d(TAG,resource2);
+           // doDownload(resource2,"scene2");
 
             Scene31 scene31=JSON.parseObject(jsonData,ShowAllScene.class).getDbScene31();
             String resource31=scene31.getResource();
-            doDownload(resource31,"scene31");
+            L.d(TAG,resource31);
+            //doDownload(resource31,"scene31");
 
             Scene32 scene32=JSON.parseObject(jsonData,ShowAllScene.class).getDbScene32();
             String resource32=scene32.getResource();
-            doDownload(resource32,"scene32");
+            L.d(TAG,resource32);
+           // doDownload(resource32,"scene32");
 
             Scene33 scene33=JSON.parseObject(jsonData,ShowAllScene.class).getDbScene33();
             String resource33=scene33.getResource();
-            doDownload(resource33,"scene33");
+            L.d(TAG,resource33);
+            //doDownload(resource33,"scene33");
 
             Scene4 scene4=JSON.parseObject(jsonData,ShowAllScene.class).getDbScene4();
             String resource4=scene4.getResource();
-            doDownload(resource4,"scene4");
+            L.d(TAG,resource4);
+            //doDownload(resource4,"scene4");
         }catch(Exception e){
             e.printStackTrace();
         }
 
-    }
-    //下载文件
-    private void doDownload(String downloadUrl,String fileName){
-        // 获取SD卡路径
-        String path = Environment.getExternalStorageDirectory()
-                + "/data/";
-        L.d(TAG, "download file  path:" + path);
-        File file = new File(path);
-        // 如果SD卡目录不存在创建
-        if (!file.exists()) {
-            file.mkdir();
-        }
-        // 简单起见，我先把URL和文件名称写死，其实这些都可以通过HttpHeader获取到
-         downloadUrl = "http://oexlqeny2.bkt.clouddn.com/scene0.zip";
-         fileName = "scene1";
-        int threadNum = 5;
-        String filepath = path + fileName;
-        L.d(TAG, "download file  path:" + filepath);
-        downloadTask task = new downloadTask(downloadUrl, threadNum, filepath);
-        task.start();
-    }
-
-    /**
-     * 使用Handler更新UI界面信息
-     */
-    @SuppressLint("HandlerLeak")
-    Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            //[获取下载文件大小]
-            int progress=msg.getData().getInt("size");
-            int temp=100;
-            if (progress==100){
-                Toast.makeText(getApplicationContext(),"加载完成！",Toast.LENGTH_SHORT).show();
-            }
-
-            //mProgressbar.setProgress(msg.getData().getInt("size"));
-
-            //float temp = (float) mProgressbar.getProgress()
-            //  (float) mProgressbar.getMax();
-
-           /* int progress = 100;
-            if (progress == 100) {
-                Toast.makeText(getApplicationContext(), "加载完成！", Toast.LENGTH_LONG).show();
-            }*/
-
-        }
-    };
-    //多线程下载
-    class downloadTask extends Thread {
-        private String downloadUrl;// 下载链接地址
-        private int threadNum;// 开启的线程数
-        private String filePath;// 保存文件路径地址
-        private int blockSize;// 每一个线程的下载量
-
-        public downloadTask(String downloadUrl, int threadNum, String fileptah) {
-            this.downloadUrl = downloadUrl;
-            this.threadNum = threadNum;
-            this.filePath = fileptah;
-        }
-
-        @Override
-        public void run() {
-            FileDownloadThread[] threads = new FileDownloadThread[threadNum];
-            try {
-                URL url = new URL(downloadUrl);
-                L.d(TAG, "download file http path:" + downloadUrl);
-                URLConnection conn = url.openConnection();
-                // 读取下载文件总大小
-                int fileSize = conn.getContentLength();
-                if (fileSize <= 0) {
-                    System.out.println("读取文件失败");
-                    return;
-                }
-
-                // 计算每条线程下载的数据长度
-                blockSize = (fileSize % threadNum) == 0 ? fileSize / threadNum
-                        : fileSize / threadNum + 1;
-
-                L.d(TAG, "fileSize:" + fileSize + "  blockSize:");
-
-                File file = new File(filePath);
-                for (int i = 0; i < threads.length; i++) {
-                    // 启动线程，分别下载每个线程需要下载的部分
-                    threads[i] = new FileDownloadThread(url, file, blockSize,
-                            (i + 1));
-                    threads[i].setName("Thread:" + i);
-                    threads[i].start();
-                }
-
-                boolean isfinished = false;
-                int downloadedAllSize = 0;
-                while (!isfinished) {
-                    isfinished = true;
-                    // 当前所有线程下载总量
-                    downloadedAllSize = 0;
-                    for (int i = 0; i < threads.length; i++) {
-                        downloadedAllSize += threads[i].getDownloadLength();
-                        if (!threads[i].isCompleted()) {
-                            isfinished = false;
-                        }
-                    }
-                    // 通知handler去更新视图组件
-                    Message msg = new Message();
-                    msg.getData().putInt("size", downloadedAllSize);
-                    mHandler.sendMessage(msg);
-                    // Log.d(TAG, "current downloadSize:" + downloadedAllSize);
-                    Thread.sleep(1000);// 休息1秒后再读取下载进度
-                }
-                L.d(TAG, " all of downloadSize:" + downloadedAllSize);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
     }
 
 

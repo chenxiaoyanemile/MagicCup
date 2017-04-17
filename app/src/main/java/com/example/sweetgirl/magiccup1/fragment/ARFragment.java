@@ -2,8 +2,8 @@ package com.example.sweetgirl.magiccup1.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.ProviderInfo;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.sweetgirl.magiccup1.R;
 import com.example.sweetgirl.magiccup1.activity.ShowARActivity;
+import com.example.sweetgirl.magiccup1.activity.StartActivity;
 import com.example.sweetgirl.magiccup1.util.FileDownloadThread;
 import com.example.sweetgirl.magiccup1.util.L;
 import com.example.sweetgirl.magiccup1.util.LogUtil;
@@ -36,6 +37,9 @@ public class ARFragment extends Fragment {
     /** 显示下载进度TextView */
     private TextView tv_download_msg;
 
+    private boolean DownloadComplete;
+
+    private Message msg;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,9 +60,16 @@ public class ARFragment extends Fragment {
         ar_btn_scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Do();
-                Intent intent=new Intent(getActivity(), ShowARActivity.class);
-                startActivity(intent);
+                if (DownloadComplete){
+                    Intent intent=new Intent(getActivity(), ShowARActivity.class);
+                    startActivity(intent);
+
+                }
+                else {
+
+                    Toast.makeText(getActivity(),"资源还未下载完成，请耐心等待。。。",Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -119,6 +130,9 @@ public class ARFragment extends Fragment {
                     doDownload(downloadUrl9,fileName9);
                     L.i(TAG,"第九个下载完成");
 
+                    DownloadComplete=true;
+                    Toast.makeText(getActivity(), "下载完成！", Toast.LENGTH_SHORT).show();
+
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -126,48 +140,6 @@ public class ARFragment extends Fragment {
             }
         }).start();
     }
-
-    //[3]将扫描结果提交到服务器
-   /* private  void Do(){
-
-
-        final String downloadUrl5 = "http://ojphnknti.bkt.clouddn.com/scene33/TMAfternoon.assetbundle";
-        final String fileName5="TMAfternoon.assetbundle";
-
-        final String downloadUrl6 = "http://ojphnknti.bkt.clouddn.com/scene4/huapen.assetbundle";
-        final String fileName6="huapen.assetbundle";
-
-        final String downloadUrl7 = "http://ojphnknti.bkt.clouddn.com/scene1/DYM.assetbundle";
-        final String fileName7="DYM.assetbundle";
-
-        final String downloadUrl8 = "http://ojphnknti.bkt.clouddn.com/scene4/disimu.assetbundle";
-        final String fileName8="disimu.assetbundle";
-
-        final String downloadUrl9 = "http://ojphnknti.bkt.clouddn.com/scene31/Cloud.assetbundle";
-        final String fileName9="Cloud.assetbundle";
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-
-                    doDownload(downloadUrl5,fileName5);
-                    L.i(TAG,"第五个下载完成");
-                    doDownload(downloadUrl6,fileName6);
-                    L.i(TAG,"第六个下载完成");
-                    doDownload(downloadUrl7,fileName7);
-                    L.i(TAG,"第七个下载完成");
-                    doDownload(downloadUrl8,fileName8);
-                    L.i(TAG,"第八个下载完成");
-                    doDownload(downloadUrl9,fileName9);
-                    L.i(TAG,"第九个下载完成");
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }*/
 
 
     //下载文件
@@ -219,13 +191,13 @@ public class ARFragment extends Fragment {
             }*/
             pb_show_download.setProgress(msg.getData().getInt("size"));
 
-            float temp = (float) pb_show_download.getProgress() / (float) pb_show_download.getMax();
+           // float temp = (float) pb_show_download.getProgress() / (float) pb_show_download.getMax();
 
-            int progress = (int) (temp * 100);
-            if (progress == 100) {
-                Toast.makeText(getActivity(), "下载完成！", Toast.LENGTH_LONG).show();
-            }
-            tv_download_msg.setText("下载进度:" + progress + " %");
+            //int progress = (int) (temp * 100);
+           // if (progress == 100) {
+                //Toast.makeText(getActivity(), "下载完成！", Toast.LENGTH_LONG).show();
+           // }
+            //tv_download_msg.setText("下载进度:" + progress + " %");
 
         }
     };

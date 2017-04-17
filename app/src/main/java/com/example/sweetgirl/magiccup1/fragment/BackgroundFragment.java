@@ -145,9 +145,13 @@ public class BackgroundFragment extends Fragment {
                 org.json.JSONObject object = array.getJSONObject(i);
                 String name=object.getString("name");
                 String image=object.getString("image");
-                L.i(TAG,"小燕子"+name);
-                L.i(TAG,"小燕子"+image);
-                mItem.add(new Item(name, image));
+                String id=object.getString("id");
+                String resource=object.getString("resource");
+                L.i(TAG,"背景"+name);
+                L.i(TAG,"背景"+image);
+                L.d(TAG,"背景"+id);
+                L.d(TAG,"背景"+resource);
+                mItem.add(new Item(name, image,id,resource));
             }
         } catch (Exception e) {
             e.printStackTrace();

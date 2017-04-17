@@ -40,6 +40,9 @@ public class SceneTwoBackgroundFragment extends Fragment {
     private SceneTwoRecyclerViewAdapter sceneTwoRecyclerViewAdapter;
 
     private String mName;
+    private String mId;
+    private String mResource;
+
 
     ArrayList<Item> mItem=new ArrayList<>();
 
@@ -64,6 +67,10 @@ public class SceneTwoBackgroundFragment extends Fragment {
             @Override
             public void OnItemClick(View view, int position) {
                 mName=mItem.get(position).getName();
+                mId=mItem.get(position).getId();
+                mResource=mItem.get(position).getResource();
+
+                L.d(TAG,"选择了背景"+mName+mId+mResource);
                 Toast.makeText(getActivity(),"你选择了"+mName,Toast.LENGTH_SHORT).show();
             }
         });
@@ -154,9 +161,13 @@ public class SceneTwoBackgroundFragment extends Fragment {
                 org.json.JSONObject object = array.getJSONObject(i);
                 String name=object.getString("name");
                 String image=object.getString("image");
-                L.i(TAG,"小燕子"+name);
-                L.i(TAG,"小燕子"+image);
-                mItem.add(new Item(name, image));
+                String id=object.getString("id");
+                String resource=object.getString("resource");
+                L.i(TAG,"背景"+name);
+                L.i(TAG,"背景"+image);
+                L.d(TAG,"背景"+id);
+                L.d(TAG,"背景"+resource);
+                mItem.add(new Item(name, image,id,resource));
             }
         } catch (Exception e) {
             e.printStackTrace();

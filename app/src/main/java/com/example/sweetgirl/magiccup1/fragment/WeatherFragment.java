@@ -146,9 +146,14 @@ public class WeatherFragment extends Fragment {
                 org.json.JSONObject object = array.getJSONObject(i);
                 String name=object.getString("name");
                 String image=object.getString("image");
+                String id=object.getString("id");
+                String resource=object.getString("resource");
+
+                L.d(TAG,"背景"+id);
+                L.d(TAG,"背景"+resource);
                 L.i(TAG,"背景"+name);
                 L.i(TAG,"背景"+image);
-                mItem.add(new Item(name, image));
+                mItem.add(new Item(name, image,id,resource));
             }
         } catch (Exception e) {
             e.printStackTrace();

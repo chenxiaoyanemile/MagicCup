@@ -35,6 +35,7 @@ public class MyGiftScene3Activity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = MyGiftScene3Activity.this.getIntent();
                 intent.putExtra("data3", "3、默认效果");
+                intent.putExtra("data4",letter);
                 setResult(RESULT_OK, intent);
                 finish();
             }
@@ -46,8 +47,13 @@ public class MyGiftScene3Activity extends AppCompatActivity {
         scene3_btn_commit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 letter=scene3_et_letter.getText().toString().trim();
 
+                if (letter.equals(null))
+                {
+                    Toast.makeText(getApplicationContext(), "请输入您想要说的话", Toast.LENGTH_SHORT).show();
+                }
                 Toast.makeText(getApplicationContext(), "提交成功", Toast.LENGTH_SHORT).show();
             }
         });
@@ -61,6 +67,7 @@ public class MyGiftScene3Activity extends AppCompatActivity {
 
             Intent intent = MyGiftScene3Activity.this.getIntent();
             intent.putExtra("data3", "3、默认效果");
+            intent.putExtra("data4",letter);
             setResult(RESULT_OK, intent);
             this.finish();
             return true;
