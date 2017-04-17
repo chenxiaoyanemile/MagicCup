@@ -18,6 +18,7 @@ package com.example.sweetgirl.magiccup1.model;
 public class DataBean {
 
     private String scanNumber;
+    private  String message;
     private UserBean user;
 
     public String getScanNumber() {

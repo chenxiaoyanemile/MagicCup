@@ -66,6 +66,7 @@ public class SceneTwoBackgroundFragment extends Fragment {
         sceneTwoRecyclerViewAdapter.setOnItemClickListener(new SceneTwoRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, int position) {
+
                 mName=mItem.get(position).getName();
                 mId=mItem.get(position).getId();
                 mResource=mItem.get(position).getResource();

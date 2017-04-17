@@ -72,16 +72,19 @@ public class SelectActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_select);
         mInflater = LayoutInflater.from(this);
 
-        //initData();
         initView();
+
+        //initData();
+
+
         //scrollViewInit();
 
         //
-        TallScene scene = new TallScene();
+       /* TallScene scene = new TallScene();
         scene.getFirstScene().setSexwoman(sex2);
         scene.getFirstScene().setSexman(sex1);
 
-        CreateJson.createJson(scene);
+        CreateJson.createJson(scene);*/
     }
     //[1]设置默认值
     public void initData(){

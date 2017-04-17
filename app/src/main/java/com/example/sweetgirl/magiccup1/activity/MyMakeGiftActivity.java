@@ -2,6 +2,8 @@ package com.example.sweetgirl.magiccup1.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +17,15 @@ import com.example.sweetgirl.magiccup1.util.CreateJson;
 import com.example.sweetgirl.magiccup1.util.L;
 import com.example.sweetgirl.magiccup1.util.LogUtil;
 import com.example.sweetgirl.magiccup1.view.recycleView.RecyclerViewActivity;
+import com.squareup.okhttp.Call;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.FormEncodingBuilder;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
+
+import java.io.IOException;
 
 
 public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClickListener{
@@ -33,9 +44,17 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
     private AlertDialog.Builder builder;
 
     private String story;
+    private String storyId;
+    private String storyResource;
     private String scene;
+    private String sceneId;
+    private String weatherId;
+    private String backgroundId;
+
     private String letter;
     private String letterContent;
+
+    private String user_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,12 +121,12 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
         {
             case MY_REQUEST_CODE1:
                 story=data.getExtras().getString("data1");    //选择的第二幕
-                String id=data.getExtras().getString("dataId");
-                String resource=data.getExtras().getString("dataResource");
+                String storyId=data.getExtras().getString("dataId");
+                String storyResource=data.getExtras().getString("dataResource");
 
                 L.d(TAG,"第二幕选择的是"+story);
-                L.d(TAG,"场景id"+id);
-                L.d(TAG,"场景资源"+resource);
+                L.d(TAG,"场景id"+storyId);
+                L.d(TAG,"场景资源"+storyResource);
 
                 btn_gift_story.setText(story);
                 break;
@@ -126,6 +145,7 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
                 break;
         }
     }
+
 
     //显示基本Dialog
     private void showSimpleDialog(View view) {
@@ -154,6 +174,65 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
         builder.setCancelable(true);
         AlertDialog dialog=builder.create();
         dialog.show();
+    }
+
+    //从sharedPreferences文件中读取存储的user_id
+    private void getUserId(){
+        SharedPreferences preferences= PreferenceManager.
+                getDefaultSharedPreferences(this);
+        user_id=preferences.getString("user_id","");
+        L.i(TAG,""+user_id);
+    }
+    //[4]提交选择的结果到服务器
+    public boolean doPost(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    getUserId();
+                    enqueue();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+        return true;
+    }
+    private void enqueue(){
+        //[1]拿到OkHttpClient
+        OkHttpClient client = new OkHttpClient();
+
+        //[2]构造Request
+        RequestBody requestBody = new FormEncodingBuilder()
+                .add("user_id",user_id)
+                .add("text", letterContent)
+                .add("scene2_id", storyId)
+                .add("scene31_id", sceneId)
+                .add("scene32_id", weatherId)
+                .add("scene33_id", backgroundId)
+                .add("scene4_id", "643abd25-ffec-11e6-9354-a4db303d2fd7")
+                .build();
+
+        Request request = new Request.Builder()
+                .url("http://10.110.101.201:8010/api/between")
+                .post(requestBody)
+                .build();
+
+        //[3]将Request封装为call
+        Call call=client.newCall(request);
+        //[4]执行call
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+                L.i(TAG,"onFailure"+e.getMessage());
+                e.printStackTrace();
+            }
+            @Override
+            public void onResponse(Response response) throws IOException {
+                String res=response.body().string();
+                L.i(TAG,"onResponse"+res);
+            }
+        });
     }
 
     private void CreateUnityData(){

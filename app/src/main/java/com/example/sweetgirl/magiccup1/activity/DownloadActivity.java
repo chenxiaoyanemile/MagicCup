@@ -9,9 +9,13 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.sweetgirl.magiccup1.R;
+import com.example.sweetgirl.magiccup1.event.UnityResourceEvent;
 import com.example.sweetgirl.magiccup1.util.FileDownloadThread;
 import com.example.sweetgirl.magiccup1.util.L;
 import com.example.sweetgirl.magiccup1.util.LogUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.net.URL;
@@ -21,11 +25,48 @@ public class DownloadActivity extends AppCompatActivity {
 
     private static final String TAG = LogUtil.makeLogTag(DownloadActivity.class);
 
+    private String resource1;
+    private String resource2;
+    private String resource31;
+    private String resource32;
+    private String resource33;
+    private String resource4;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download);
 
+        //注册订阅者
+        EventBus.getDefault().register(this);
+
+    }
+    //定义处理接收方法
+    @Subscribe
+    public void onEventMainThread(UnityResourceEvent event) {
+
+        resource1=event.getResource1();
+
+        resource2=event.getResource2();
+        resource31=event.getResource31();
+        resource32=event.getResource32();
+        resource33=event.getResource33();
+        resource4=event.getResource4();
+
+        L.d(TAG,"定制的资源"+resource1+resource4+resource33+resource32+resource31+resource2);
+
+    }
+    private void judgmentDownloadComplete(){
+
+    //匹配最后一个斜杆的位置
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     //下载文件
