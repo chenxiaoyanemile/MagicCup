@@ -46,6 +46,9 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
     private String story;
     private String storyId;
     private String storyResource;
+    private String UnityParameter;   //第二幕
+
+
     private String scene;
     private String sceneId;
     private String weatherId;
@@ -62,6 +65,9 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_my_make_gift);
 
         initView();
+        initData();
+
+
     }
     //[1]找到相关控件
     public void initView(){
@@ -78,6 +84,13 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
     }
     //[2]设置默认值
     public void initData(){
+        storyId="9776bc5e-cdda-40d3-b031-f142d0d1d760";
+        sceneId="ab1cdab7-1fca-4ce3-8ef7-777a8dksa";
+        weatherId="ab1cdab7-1fca-4ce3-8ef7-777a8d7dk";
+        backgroundId="ab1cdab7-1fca-4ce3-8ef7-777a8djxa";
+        letterContent="I LOVE YOU";
+        L.d(TAG,"默认值");
+
 
     }
     //[3]响应点击事件
@@ -86,28 +99,26 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
         switch (view.getId()){
             case R.id.btn_gift_story:
                 Intent intent1=new Intent(MyMakeGiftActivity.this,RecyclerViewActivity.class);
-                //startActivity(intent1);
+
                 startActivityForResult(intent1, MY_REQUEST_CODE1);
                 L.i(TAG,"选择故事");
                 break;
             case R.id.btn_gift_scene:
                 Intent intent2=new Intent(MyMakeGiftActivity.this,MyGiftScene2Activity.class);
-                //startActivity(intent2);
+
                 startActivityForResult(intent2, MY_REQUEST_CODE2);
                 L.i(TAG,"选择情景");
                 break;
             case R.id.btn_gift_letter:
                 Intent intent3=new Intent(MyMakeGiftActivity.this,MyGiftScene3Activity.class);
-                //startActivity(intent3);
+
                 startActivityForResult(intent3, MY_REQUEST_CODE3);
                 L.i(TAG,"写信");
                 break;
             case R.id.btn_gift_preview:
                 showSimpleDialog(view);
-                //Toast.makeText(getApplicationContext(), "加载中...", Toast.LENGTH_SHORT).show();
-                //Intent intent4=new Intent(MyMakeGiftActivity.this,ShowARActivity.class);
-                //startActivity(intent4);
-                L.i(TAG,"写信");
+
+                L.i(TAG,"预览");
                 break;
 
         }
@@ -123,6 +134,8 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
                 story=data.getExtras().getString("data1");    //选择的第二幕
                 String storyId=data.getExtras().getString("dataId");
                 String storyResource=data.getExtras().getString("dataResource");
+
+                UnityParameter=GetData(storyResource);   //unity 参数
 
                 L.d(TAG,"第二幕选择的是"+story);
                 L.d(TAG,"场景id"+storyId);
@@ -146,6 +159,16 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    //截取文件名
+    public String GetData(String url){
+        //http://ojphnknti.bkt.clouddn.com/scene1/
+        String res=url.substring(url.lastIndexOf("/")+1);
+        L.d(TAG,res);
+
+        return res;
+
+
+    }
 
     //显示基本Dialog
     private void showSimpleDialog(View view) {
@@ -158,9 +181,12 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
         builder.setPositiveButton(R.string.postive_button, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+
                 Toast.makeText(getApplicationContext(), "开始预览，加载中...", Toast.LENGTH_LONG).show();
-                Intent intent4=new Intent(MyMakeGiftActivity.this,ShowARActivity.class);
-                startActivity(intent4);
+                getUserId();
+
+                //Intent intent4=new Intent(MyMakeGiftActivity.this,ShowARActivity.class);
+                //startActivity(intent4);
             }
         });
         builder.setNegativeButton(R.string.negative_button, new DialogInterface.OnClickListener() {
@@ -181,6 +207,7 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
         SharedPreferences preferences= PreferenceManager.
                 getDefaultSharedPreferences(this);
         user_id=preferences.getString("user_id","");
+        doPost();
         L.i(TAG,""+user_id);
     }
     //[4]提交选择的结果到服务器
@@ -214,7 +241,7 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://10.110.101.201:8010/api/between")
+                .url("http://139.199.190.245:8010/api/between")
                 .post(requestBody)
                 .build();
 
@@ -239,7 +266,7 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
 
         TallScene scene = new TallScene();
 
-        scene.getSecondScene().setAction("secondanimation.assetbundle");   //story
+        scene.getSecondScene().setAction(UnityParameter);   //story
         scene.getSecondScene().setBackground("");
 
         scene.getThirdScene().setAction("ACHuge.assetbundle");      //scene

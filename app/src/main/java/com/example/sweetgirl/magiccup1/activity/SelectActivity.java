@@ -13,8 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sweetgirl.magiccup1.R;
-import com.example.sweetgirl.magiccup1.model.TallScene;
-import com.example.sweetgirl.magiccup1.util.CreateJson;
 import com.example.sweetgirl.magiccup1.util.L;
 import com.example.sweetgirl.magiccup1.util.LogUtil;
 import com.squareup.okhttp.Call;
@@ -29,7 +27,7 @@ import java.io.IOException;
 
 public class SelectActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private static final String LOGTAG = LogUtil.makeLogTag(SelectActivity.class);
+    private static final String TAG = LogUtil.makeLogTag(SelectActivity.class);
     private String user_id;
 
     private Button btn_select_my_boy;
@@ -652,33 +650,24 @@ public class SelectActivity extends AppCompatActivity implements View.OnClickLis
                 Toast.makeText(getApplicationContext(), "请选择星座", Toast.LENGTH_LONG).show();
             }else
             {
-                L.i(LOGTAG, "确定选择的星座");
-                if (doPost())
-                {
-                    sex1 =btn_select_my_boy.getText().toString();
-                    sex2 =btn_select_he_girl.getText().toString();
-                    L.i(LOGTAG,"默认性别"+ sex1 + sex2);
-                    L.i(LOGTAG,"完成选择进入主页");
+
+                    L.i(TAG, "确定选择的星座"+sex1+sex2+constellation1+constellation2);
+
+                    doPost();
+
                     Toast.makeText(getApplicationContext(), "提交成功", Toast.LENGTH_LONG).show();
                     Intent intent=new Intent(this,MainPageActivity.class);
                     startActivity(intent);
                     finish();
-                }else
-                {
+
                     Toast.makeText(getApplicationContext(), "服务器响应异常，请稍后再试!", Toast.LENGTH_LONG).show();
-                }
+
             }
         }
     }
-    //从sharedPreferences文件中读取存储的user_id
-    private void getUserId(){
-        SharedPreferences preferences= PreferenceManager.
-                getDefaultSharedPreferences(this);
-        user_id=preferences.getString("user_id","");
-        L.i(LOGTAG,""+user_id);
-    }
+
     //[4]提交选择的结果到服务器
-    public boolean doPost(){
+    public void doPost(){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -690,7 +679,14 @@ public class SelectActivity extends AppCompatActivity implements View.OnClickLis
                 }
             }
         }).start();
-        return true;
+
+    }
+    //从sharedPreferences文件中读取存储的user_id
+    private void getUserId(){
+        SharedPreferences preferences= PreferenceManager.
+                getDefaultSharedPreferences(this);
+        user_id=preferences.getString("user_id","user_id");
+        L.i(TAG,""+user_id);
     }
     private void enqueue(){
         //[1]拿到OkHttpClient
@@ -704,8 +700,11 @@ public class SelectActivity extends AppCompatActivity implements View.OnClickLis
                 .add("constellation2", constellation2)
                 .build();
 
+        String path="http://139.199.190.245:8010/api/user/"+user_id;
+        //http://139.199.190.245:8010/api/user/50fd89bd-bf39-46b5-8bfd-ff2ba4174f7d
+
         Request request = new Request.Builder()
-                .url("http://10.110.101.201:8010/api/user/"+user_id+"/true")
+                .url(path)
                 .post(requestBody)
                 .build();
 
@@ -715,13 +714,20 @@ public class SelectActivity extends AppCompatActivity implements View.OnClickLis
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-                L.i(LOGTAG,"onFailure"+e.getMessage());
+
+                SelectActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(), "你在没有网络的异次元空间。。。", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                L.i(TAG,"onFailure"+e.getMessage());
                 e.printStackTrace();
             }
             @Override
             public void onResponse(Response response) throws IOException {
                 String res=response.body().string();
-                L.i(LOGTAG,"onResponse"+res);
+                L.i(TAG,"onResponse"+res);
             }
         });
     }
