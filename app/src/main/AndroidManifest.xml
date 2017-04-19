@@ -42,15 +42,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".activity.DownloadActivity">
+        <activity android:name=".activity.DownloadActivity">
             <intent-filter>
-                <action android:name="com.example.sweetgirl.magiccup1.ACCTION_START"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.example.sweetgirl.magiccup1.ACCTION_START" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity android:name=".activity.SelectActivity" />
         <activity android:name=".activity.MainPageActivity" />
         <activity android:name=".activity.MyRecordActivity" />
@@ -65,9 +63,8 @@
         <activity android:name=".activity.MultiTypeActivity" />
         <activity android:name=".activity.ShowARActivity" />
         <activity android:name=".view.recycleView.RecyclerViewActivity" />
-        <activity android:name=".view.recycleView.SceneTwoRecyclerViewActivity" >
-
-        </activity>
+        <activity android:name=".view.recycleView.SceneTwoRecyclerViewActivity"></activity>
+        <activity android:name=".activity.PreviewActivity"></activity>
     </application>
 
 </manifest>

@@ -24,9 +24,7 @@ import com.example.sweetgirl.magiccup1.Bean.ScanCodeResult;
 import com.example.sweetgirl.magiccup1.R;
 import com.example.sweetgirl.magiccup1.app.MyApplication;
 import com.example.sweetgirl.magiccup1.event.UnityResourceEvent;
-import com.example.sweetgirl.magiccup1.model.DataBean;
 import com.example.sweetgirl.magiccup1.model.Relation;
-import com.example.sweetgirl.magiccup1.model.ScanNumber;
 import com.example.sweetgirl.magiccup1.model.Scene1;
 import com.example.sweetgirl.magiccup1.model.Scene2;
 import com.example.sweetgirl.magiccup1.model.Scene31;
@@ -57,7 +55,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/*http://139.199.190.245:8010/api/users/2
+/*http://139.199.190.245:8010/api/users/1
 * 1.扫描二维码
 * 2.获取用户id
 * 3.获取关联信息

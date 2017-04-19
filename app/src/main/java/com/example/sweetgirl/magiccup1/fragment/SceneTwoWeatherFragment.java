@@ -24,6 +24,7 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONTokener;
 
 import java.io.IOException;
@@ -42,6 +43,7 @@ public class SceneTwoWeatherFragment extends Fragment {
     private String mName;
     private String mId;
     private String mResource;
+    private String mImage;
 
 
     ArrayList<Item> mItem=new ArrayList<>();
@@ -69,8 +71,11 @@ public class SceneTwoWeatherFragment extends Fragment {
                 mName=mItem.get(position).getName();
                 mId=mItem.get(position).getId();
                 mResource=mItem.get(position).getResource();
+                mImage=mItem.get(position).getImage();
 
                 L.d(TAG,"选择了背景"+mName+mId+mResource);
+
+                EventBus.getDefault().post(new Item("mName","mImage","mId","mResource"));
 
                 Toast.makeText(getActivity(),"你选择了"+mName,Toast.LENGTH_SHORT).show();
             }
@@ -131,7 +136,7 @@ public class SceneTwoWeatherFragment extends Fragment {
         OkHttpClient client = new OkHttpClient();
         //[2]构造Request   "http://119.29.222.54:8010/api/scene/1
         Request request = new Request.Builder()
-                .url("http://139.199.190.245:8010/api/scene/31")
+                .url("http://139.199.190.245:8010/api/scene/33")
                 .build();
         //[3]将Request封装为call
         Call call=client.newCall(request);

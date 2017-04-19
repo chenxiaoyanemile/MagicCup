@@ -100,7 +100,7 @@ public class MyGiftScene2Activity extends AppCompatActivity implements View.OnCl
     //[2]初始化底部按钮
     public void initTab(){
         if(sceneTwoWeatherFragment==null){
-            sceneTwoWeatherFragment=new SceneTwoWeatherFragment();
+            sceneTwoWeatherFragment=new SceneTwoWeatherFragment();   //天气
         }
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.dep_fragment,sceneTwoWeatherFragment).commit();
@@ -117,14 +117,14 @@ public class MyGiftScene2Activity extends AppCompatActivity implements View.OnCl
     @SuppressLint("CommitTransaction")
     public void clickBackground(){
         if(backgroundFragment==null){
-            backgroundFragment=new SceneTwoBackgroundFragment();
+            backgroundFragment=new SceneTwoBackgroundFragment();   //背景
         }
         addOrShowFragment(getSupportFragmentManager().beginTransaction(),backgroundFragment);
     }
     @SuppressLint("CommitTransaction")
     public void clickScene(){
         if(sceneFragment==null){
-            sceneFragment=new SceneTwoSceneFragment();
+            sceneFragment=new SceneTwoSceneFragment();       //情景
         }
         addOrShowFragment(getSupportFragmentManager().beginTransaction(),sceneFragment);
     }
