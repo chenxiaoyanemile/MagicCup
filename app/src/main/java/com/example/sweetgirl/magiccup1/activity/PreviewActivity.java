@@ -11,8 +11,13 @@ import com.example.sweetgirl.magiccup1.util.CreateJson;
 import com.example.sweetgirl.magiccup1.util.L;
 import com.example.sweetgirl.magiccup1.util.LogUtil;
 import com.unity3d.player.UnityPlayer;
+import com.unity3d.player.UnityPlayerNativeActivity;
 
-public class PreviewActivity extends AppCompatActivity {
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+public class PreviewActivity extends UnityPlayerNativeActivity {
 
     private static final String TAG = LogUtil.makeLogTag(PreviewActivity.class);
 
@@ -29,6 +34,9 @@ public class PreviewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preview);
+
+        EventBus.getDefault().register(this);
+
 
         scan=(LinearLayout)findViewById(R.id.scan);
 
@@ -52,16 +60,21 @@ public class PreviewActivity extends AppCompatActivity {
 
         UnityPlayer.UnitySendMessage("Directional Light","ReceiveJson",first);
         L.i(TAG,"传送数据给ar");
-        //ShowARActivity.this.finish();
-        // L.i(TAG,"结束android,开启ar");
-        //file:///storage/emulated/0/Android/data/com.example.sweetgirl.magiccup1/files
-        //path:/storage/emulated/0/Android/data/com.example.sweetgirl.magiccup1/files/
-        String path2="jar:file://"+getBaseContext().getExternalFilesDir("")+"/";
-        UnityPlayer.UnitySendMessage("Directional Light","PlaySceneAll","");
-        L.i(TAG,"PlaySceneAll");
 
-        //View view=.getView();
-        //scan.addView(view);
+        View view=mUnityPlayer.getView();
+        scan.addView(view);
         L.i(TAG,"展示ar");
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public String helloEventBus(String message){
+
+        return message;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

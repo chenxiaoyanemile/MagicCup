@@ -1,12 +1,12 @@
 package com.example.sweetgirl.magiccup1.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,26 +14,29 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.sweetgirl.magiccup1.Bean.Item;
+
+import com.example.sweetgirl.magiccup1.Bean.SelectGiftResponseData;
+import com.example.sweetgirl.magiccup1.Bean.TatalSelectData;
+import com.example.sweetgirl.magiccup1.Bean.UserId;
 import com.example.sweetgirl.magiccup1.R;
 import com.example.sweetgirl.magiccup1.model.TallScene;
 import com.example.sweetgirl.magiccup1.util.CreateJson;
+import com.example.sweetgirl.magiccup1.util.CreateSelectDataJson;
 import com.example.sweetgirl.magiccup1.util.FileDownloadThread;
 import com.example.sweetgirl.magiccup1.util.L;
 import com.example.sweetgirl.magiccup1.util.LogUtil;
 import com.example.sweetgirl.magiccup1.view.recycleView.RecyclerViewActivity;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.FormEncodingBuilder;
+import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
-import com.unity3d.player.UnityPlayer;
+
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -56,6 +59,8 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
     //声明一个AlertDialog构造器
     private AlertDialog.Builder builder;
 
+    private String scene1_id;
+
     private String story;
     private String storyId;
     private String storyResource;
@@ -75,14 +80,21 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
     private String letter;
     private String letterContent;
 
+    private String scene4_id;
+
     private String user_id;
+
+    private String url="http://139.199.190.245:8010/api/between";
+    private String jsonData;
+
+    private UserId userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_make_gift);
 
-        EventBus.getDefault().register(this);  //设置订阅者
+        //EventBus.getDefault().register(this);  //设置订阅者
 
         initView();
         initData();
@@ -91,6 +103,7 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
     }
     //[1]找到相关控件
     public void initView(){
+
         btn_gift_story=(Button)findViewById(R.id.btn_gift_story);
         btn_gift_scene=(Button)findViewById(R.id.btn_gift_scene);
         btn_gift_letter=(Button)findViewById(R.id.btn_gift_letter);
@@ -104,13 +117,26 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
     }
     //[2]设置默认值
     public void initData(){
+        userId=new UserId();
+
+        scene1_id="9776bc5e-cdda-40d3-b031-f142d0d1d760";
+
         storyId="9776bc5e-cdda-40d3-b031-f142d0d1d760";
+        storyResource="http://ojphnknti.bkt.clouddn.com/scene1/DYM.assetbundle";
+
         sceneId="ab1cdab7-1fca-4ce3-8ef7-777a8dksa";
+        sceneResource="http://ojphnknti.bkt.clouddn.com/scene32/ACHuge.assetbundle";
+
         weatherId="ab1cdab7-1fca-4ce3-8ef7-777a8d7dk";
+        weatherResource="http://ojphnknti.bkt.clouddn.com/scene33/TMAfternoon.assetbundle";
+
         backgroundId="ab1cdab7-1fca-4ce3-8ef7-777a8djxa";
+        backgroundResource="http://ojphnknti.bkt.clouddn.com/scene31/BGYinXing.assetbundle";
+
         letterContent="I LOVE YOU";
         L.d(TAG,"默认值");
 
+        scene4_id="ab1cdab7-1fca-4ce3-8ef7-777ajxjw";
 
     }
     //[3]响应点击事件
@@ -173,7 +199,7 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
 
                 letterContent=data.getExtras().getString("data4");  //信的内容
 
-                L.d(TAG,letterContent);
+                L.d(TAG,"信的内容"+letterContent);
                 btn_gift_letter.setText(letter);
                 break;
         }
@@ -206,13 +232,16 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
                 getUserId();   //获取到用户id;
                 L.d(TAG,"获取到用户id");
 
+                CreateRequestData();  //将所选信息汇聚称json数据
+                L.d(TAG,"将所选信息汇聚称json数据");
+
                 doPost();      //提交选择的项到服务器
                 L.d(TAG,"提交选择的项到服务器");
 
                 doGet();  //下载unity资源
                 L.d(TAG,"下载unity资源");
 
-                CreateUnityData();   //预览选择的信息
+                //CreateUnityData();   //预览选择的信息
                 L.d(TAG,"预览选择的信息");
 
 
@@ -236,19 +265,41 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
 
     //从sharedPreferences文件中读取存储的user_id
     private void getUserId(){
-        SharedPreferences preferences= PreferenceManager.
-                getDefaultSharedPreferences(this);
-        user_id=preferences.getString("user_id","");
-        L.i(TAG,""+user_id);
-        doPost();
+
+        SharedPreferences preferences=getSharedPreferences("user", Context.MODE_PRIVATE);
+        user_id=preferences.getString("user_id", "user_id");
+
+        L.i(TAG,"从sharedPreferences文件中读取存储的user_id"+user_id);
+
     }
-    //[4]提交选择的结果到服务器
+
+    //将所选信息创建json值
+    public String CreateRequestData(){
+
+        TatalSelectData tatalSelectData=new TatalSelectData();
+
+        tatalSelectData.setUser_id(user_id);
+        tatalSelectData.setText(letterContent);
+        tatalSelectData.setScene1_id(scene1_id);
+        tatalSelectData.setScene2_id(storyId);
+        tatalSelectData.setScene31_id(sceneId);
+        tatalSelectData.setScene32_id(weatherId);
+        tatalSelectData.setScene33_id(backgroundId);
+        tatalSelectData.setScene4_id(scene4_id);
+
+
+        jsonData= CreateSelectDataJson.CreateSelectDataJson(tatalSelectData);
+
+        return jsonData;
+    }
+
+    //[4]提交选择的结果到服务器   doPost();
     public boolean doPost(){
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    enqueue();
+                    SendDataToPost(url,jsonData);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -256,41 +307,98 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
         }).start();
         return true;
     }
-    private void enqueue(){
-        //[1]拿到OkHttpClient
+    //提交数据到服务器
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+    private void SendDataToPost(String url, String json){
         OkHttpClient client = new OkHttpClient();
-
-        //[2]构造Request
-        RequestBody requestBody = new FormEncodingBuilder()
-                .add("user_id",user_id)
-                .add("text", letterContent)
-                .add("scene2_id", storyId)
-                .add("scene31_id", sceneId)
-                .add("scene32_id", weatherId)
-                .add("scene33_id", backgroundId)
-                .add("scene4_id", "643abd25-ffec-11e6-9354-a4db303d2fd7")
-                .build();
-
+        RequestBody body = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
-                .url("http://139.199.190.245:8010/api/between")
-                .post(requestBody)
+                .url(url)
+                .post(body)
                 .build();
-
         //[3]将Request封装为call
-        Call call=client.newCall(request);
+        Call call = client.newCall(request);
         //[4]执行call
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-                L.i(TAG,"onFailure"+e.getMessage());
+
+                L.i(TAG, "onFailure" + e.getMessage());
                 e.printStackTrace();
+
             }
+
             @Override
             public void onResponse(Response response) throws IOException {
-                String res=response.body().string();
-                L.i(TAG,"onResponse"+res);
+                String result = response.body().string();
+                parseSuc(result);
+                L.i(TAG, "onResponse" + result);
             }
         });
+
+    }
+
+  /*  OkHttpClient client = new OkHttpClient();
+    String post(String url, String json) throws IOException {
+        RequestBody body = RequestBody.create(JSON, json);
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+
+
+         *//* Response response = client.newCall(request).execute();
+        L.d(TAG,"120");
+            if (response.isSuccessful()) {
+                L.d(TAG,"12");
+                String suc=response.body().string();
+                L.d(TAG,"JINEU"+suc);
+
+                parseSuc(suc);
+                L.d(TAG,"123");
+                return suc;
+            }
+            else {
+                throw new IOException("Unexpected code " + response);
+            }*//*
+        //[3]将Request封装为call
+        Call call = client.newCall(request);
+        //[4]执行call
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+
+                L.i(TAG, "onFailure" + e.getMessage());
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                String res = response.body().string();
+                L.i(TAG, "onResponse" + res);
+            }
+        });
+
+
+    }*/
+
+
+    public void parseSuc(String s){
+
+        L.d(TAG,"解析返回提交选项后返回的数据");
+
+        try{
+            L.d(TAG,""+s);
+            //json数据解析成一个对象
+            SelectGiftResponseData selectGiftResponseData= com.alibaba.fastjson.JSON.parseObject(s,SelectGiftResponseData.class);
+            String message = selectGiftResponseData.getMsg();
+            L.i("message"," "+message);
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     //下载选好的数据资源
@@ -306,8 +414,7 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
                     doDownload(downloadUrl1,fileName1);
                     L.i(TAG,"第一个下载完成");
 
-                    Toast.makeText(MyMakeGiftActivity.this, "下载资源完成！", Toast.LENGTH_SHORT).show();
-
+                    //Toast.makeText(MyMakeGiftActivity.this, "下载资源完成！", Toast.LENGTH_SHORT).show();
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -464,27 +571,14 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
 
         String first= CreateJson.createJson(scene);
 
-        UnityPlayer.UnitySendMessage("Directional Light","ReceiveJson",first);
-        L.i(TAG,"传送数据给ar");
+        EventBus.getDefault().post(first);
+
+        Intent intent4=new Intent(MyMakeGiftActivity.this,PreviewActivity.class);
+        startActivity(intent4);
+
+        //UnityPlayer.UnitySendMessage("Directional Light","ReceiveJson",first);
+        //L.i(TAG,"传送数据给ar");
     }
 
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void helloEventBus(Item message){
-
-        sceneId=message.getId();
-
-        L.d(TAG,"返回的情景ID"+sceneId);
-
-        sceneResource=message.getResource();
-        L.d(TAG,"返回的情景ID"+sceneResource);
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
 
 }

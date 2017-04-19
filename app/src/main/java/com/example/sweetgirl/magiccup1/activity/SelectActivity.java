@@ -1,5 +1,6 @@
 package com.example.sweetgirl.magiccup1.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sweetgirl.magiccup1.R;
+import com.example.sweetgirl.magiccup1.util.App;
 import com.example.sweetgirl.magiccup1.util.L;
 import com.example.sweetgirl.magiccup1.util.LogUtil;
 import com.squareup.okhttp.Call;
@@ -69,6 +71,9 @@ public class SelectActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select);
         mInflater = LayoutInflater.from(this);
+
+        getUserId();
+        L.d(TAG,"获取到user_id");
 
         initView();
 
@@ -672,7 +677,7 @@ public class SelectActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void run() {
                 try {
-                    getUserId();
+
                     enqueue();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -683,10 +688,17 @@ public class SelectActivity extends AppCompatActivity implements View.OnClickLis
     }
     //从sharedPreferences文件中读取存储的user_id
     private void getUserId(){
-        SharedPreferences preferences= PreferenceManager.
+
+        SharedPreferences preferences=getSharedPreferences("user", Context.MODE_PRIVATE);
+        String user_id=preferences.getString("user_id", "user_id");
+
+        /*App instance=new App(context);
+        user_id=instance.getUser_id();
+*/
+        /*SharedPreferences preferences= PreferenceManager.
                 getDefaultSharedPreferences(this);
-        user_id=preferences.getString("user_id","user_id");
-        L.i(TAG,""+user_id);
+        user_id=preferences.getString("user_id","user_id");*/
+        L.i(TAG,"获取本地的"+user_id);
     }
     private void enqueue(){
         //[1]拿到OkHttpClient
@@ -702,6 +714,7 @@ public class SelectActivity extends AppCompatActivity implements View.OnClickLis
 
         String path="http://139.199.190.245:8010/api/user/"+user_id;
         //http://139.199.190.245:8010/api/user/50fd89bd-bf39-46b5-8bfd-ff2ba4174f7d
+        //http://139.199.190.245:8010/api/user/4f4a9479-b666-4214-94b0-79be39c7e997
 
         Request request = new Request.Builder()
                 .url(path)

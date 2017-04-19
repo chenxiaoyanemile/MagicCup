@@ -1,6 +1,7 @@
 package com.example.sweetgirl.magiccup1.activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.example.sweetgirl.magiccup1.Bean.ScanCodeResult;
 
+import com.example.sweetgirl.magiccup1.Bean.UserId;
 import com.example.sweetgirl.magiccup1.R;
 import com.example.sweetgirl.magiccup1.app.MyApplication;
 import com.example.sweetgirl.magiccup1.event.UnityResourceEvent;
@@ -34,8 +36,11 @@ import com.example.sweetgirl.magiccup1.model.Scene4;
 import com.example.sweetgirl.magiccup1.model.ShowAllScene;
 import com.example.sweetgirl.magiccup1.model.ShowScene;
 import com.example.sweetgirl.magiccup1.model.UserBean;
+import com.example.sweetgirl.magiccup1.util.App;
 import com.example.sweetgirl.magiccup1.util.L;
 import com.example.sweetgirl.magiccup1.util.LogUtil;
+import com.example.sweetgirl.magiccup1.util.SharedPreferenceHelper;
+import com.example.sweetgirl.magiccup1.util.SharedPreferencesUtils;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
@@ -70,6 +75,9 @@ public class StartActivity extends AppCompatActivity {
     private static final String TAG = LogUtil.makeLogTag(StartActivity.class);
 
     private SharedPreferences preferences;
+
+    private SharedPreferencesUtils sharedPreferencesUtils;
+
     private String res;    //返回的json数据转成String
 
     private String result;   //扫描二维码结果
@@ -90,6 +98,8 @@ public class StartActivity extends AppCompatActivity {
     private String resource32;
     private String resource33;
     private String resource4;
+
+     UserId userId=new UserId();
 
 
     @Override
@@ -356,8 +366,8 @@ public class StartActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     try {
-                        parserJson(res);
-                        saveData(user_id);
+                        parserJson(res);   //解析成功返回的带user_id的数据
+                        saveData(user_id);   //保存user_id
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -397,11 +407,14 @@ public class StartActivity extends AppCompatActivity {
         try{
 
             UserBean data=JSON.parseObject(jsonData,ScanCodeResult.class).getUser();
+
             user_id=data.getUser_id();
 
             relationship(); //获取关联信息
 
              L.i(TAG,"user_id"+user_id);
+
+
         }catch(Exception e){
                 e.printStackTrace();
         }
@@ -409,19 +422,48 @@ public class StartActivity extends AppCompatActivity {
 
     //[6]保存数据
     private void saveData(String data){
-        //[1]保存ID，获得对象
+
+        SharedPreferences preferences=getSharedPreferences("user",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor=preferences.edit();
+        editor.putString("user_id", user_id);
+        editor.commit();
+        L.i(TAG,"保存用户id"+user_id);
+
+        /*App instance=new App(context);
+        instance.saveUser_id(data);
+        L.i(TAG,"保存用户id"+user_id);*/
+
+       /* SharedPreferencesUtils  sharedPreferencesUtils;
+        sharedPreferencesUtils=new SharedPreferencesUtils();
+        sharedPreferencesUtils.putValue(StartActivity.this,user_id,data);
+
+        L.i(TAG,"保存用户id"+user_id);
+*/
+
+        /*preferences=getSharedPreferences("test", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(user_id, user_id);   //保存用户id
+        editor.putBoolean("firstStart", false);   //保存扫描次数
+        editor.apply();
+
+        L.i(TAG,"保存用户id"+user_id);
+        L.i("保存结果","firstStart");
+*/
+        /*//[1]保存ID，获得对象
         MyApplication myApplication = (MyApplication) getApplication();
         //更改全局变量的值
         myApplication.setUser_id(data);
 
         L.i("保存全局变量的值",""+user_id);
 
+       // userId.setUser_id(user_id);
+
         //[2]保存第几次扫描
         preferences = getSharedPreferences("count", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean("firstStart", false);
         editor.apply();
-        L.i("保存结果","firstStart");
+        L.i("保存结果","firstStart");*/
     }
     //[7]获取关联信息
     private boolean relationship(){
