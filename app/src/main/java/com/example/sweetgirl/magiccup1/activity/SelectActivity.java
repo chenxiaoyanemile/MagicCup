@@ -3,7 +3,6 @@ package com.example.sweetgirl.magiccup1.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sweetgirl.magiccup1.R;
-import com.example.sweetgirl.magiccup1.util.App;
 import com.example.sweetgirl.magiccup1.util.L;
 import com.example.sweetgirl.magiccup1.util.LogUtil;
 import com.squareup.okhttp.Call;
@@ -692,12 +690,6 @@ public class SelectActivity extends AppCompatActivity implements View.OnClickLis
         SharedPreferences preferences=getSharedPreferences("user", Context.MODE_PRIVATE);
         String user_id=preferences.getString("user_id", "user_id");
 
-        /*App instance=new App(context);
-        user_id=instance.getUser_id();
-*/
-        /*SharedPreferences preferences= PreferenceManager.
-                getDefaultSharedPreferences(this);
-        user_id=preferences.getString("user_id","user_id");*/
         L.i(TAG,"获取本地的"+user_id);
     }
     private void enqueue(){

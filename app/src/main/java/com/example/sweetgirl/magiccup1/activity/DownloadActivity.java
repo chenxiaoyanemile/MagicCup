@@ -1,6 +1,8 @@
 package com.example.sweetgirl.magiccup1.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
@@ -9,13 +11,10 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.sweetgirl.magiccup1.R;
-import com.example.sweetgirl.magiccup1.event.UnityResourceEvent;
 import com.example.sweetgirl.magiccup1.util.FileDownloadThread;
 import com.example.sweetgirl.magiccup1.util.L;
 import com.example.sweetgirl.magiccup1.util.LogUtil;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.net.URL;
@@ -38,36 +37,79 @@ public class DownloadActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download);
 
-        //注册订阅者
-        EventBus.getDefault().register(this);
+        getUserResource();  //获取传过的数据
 
-    }
-    //定义处理接收方法
-    @Subscribe
-    public void onEventMainThread(UnityResourceEvent event) {
+        L.d(TAG,"获取传过的数据");
 
-        resource1=event.getResource1();
+        GetResourceData(); //下载资源
 
-        resource2=event.getResource2();
-        resource31=event.getResource31();
-        resource32=event.getResource32();
-        resource33=event.getResource33();
-        resource4=event.getResource4();
+        L.d(TAG,"下载资源");
 
-        L.d(TAG,"定制的资源"+resource1+resource4+resource33+resource32+resource31+resource2);
 
-    }
-    private void judgmentDownloadComplete(){
-
-    //匹配最后一个斜杆的位置
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
+
+    //从sharedPreferences文件中读取存储的user_id
+    private void getUserResource(){
+
+        SharedPreferences preferences=getSharedPreferences("gift", Context.MODE_PRIVATE);
+        resource1=preferences.getString("resource1", "resource1");
+        resource2=preferences.getString("resource2", "resource2");
+        resource31=preferences.getString("resource31", "resource31");
+        resource32=preferences.getString("resource32", "resource32");
+        resource33=preferences.getString("resource33", "resource33");
+        resource4=preferences.getString("resource4", "resource4");
+
+        L.i(TAG,"从sharedPreferences文件中读取存储的resource1"+resource1);
+
     }
+
+
+    private void GetResourceData(){
+
+        String fileName1=judgmentDownloadComplete(resource1);
+        doDownload(resource1,fileName1);
+
+        L.d(TAG,"第1个资源下载完成"+fileName1);
+
+        String fileName2=judgmentDownloadComplete(resource2);
+        doDownload(resource2,fileName2);
+        L.d(TAG,"第2个资源下载完成"+fileName2);
+
+        String fileName31=judgmentDownloadComplete(resource31);
+        doDownload(resource31,fileName31);
+        L.d(TAG,"第3个资源下载完成"+fileName31);
+
+        String fileName32=judgmentDownloadComplete(resource32);
+        doDownload(resource32,fileName32);
+
+        L.d(TAG,"第4个资源下载完成"+fileName32);
+
+        String fileName33=judgmentDownloadComplete(resource33);
+        doDownload(resource33,fileName33);
+
+        L.d(TAG,"第5个资源下载完成"+fileName33);
+
+        String fileName4=judgmentDownloadComplete(resource4);
+        doDownload(resource4,fileName4);
+
+        L.d(TAG,"第6个资源下载完成"+fileName4);
+
+
+    }
+
+    private String judgmentDownloadComplete(String url){
+
+        //匹配最后一个斜杆的位置
+        //http://ojphnknti.bkt.clouddn.com/scene1/
+        String res=url.substring(url.lastIndexOf("/")+1);
+        L.d(TAG,res);
+
+        return res;
+
+    }
+
 
     //下载文件
     private void doDownload(String downloadUrl,String fileName){
@@ -81,8 +123,8 @@ public class DownloadActivity extends AppCompatActivity {
             file.mkdir();
         }
         // 简单起见，我先把URL和文件名称写死，其实这些都可以通过HttpHeader获取到
-        downloadUrl = "http://oexlqeny2.bkt.clouddn.com/scene0.zip";
-        fileName = "scene1";
+       // downloadUrl = "http://oexlqeny2.bkt.clouddn.com/scene0.zip";
+        //fileName = "scene1";
         int threadNum = 5;
         String filepath = path + fileName;
         L.d(TAG, "download file  path:" + filepath);
@@ -101,7 +143,7 @@ public class DownloadActivity extends AppCompatActivity {
             int progress=msg.getData().getInt("size");
             int temp=100;
             if (progress==100){
-                Toast.makeText(getApplicationContext(),"加载完成！",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"加载资源中！",Toast.LENGTH_SHORT).show();
             }
 
             //mProgressbar.setProgress(msg.getData().getInt("size"));

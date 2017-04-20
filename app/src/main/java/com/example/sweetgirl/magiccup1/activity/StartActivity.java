@@ -1,7 +1,6 @@
 package com.example.sweetgirl.magiccup1.activity;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -24,9 +23,7 @@ import com.example.sweetgirl.magiccup1.Bean.ScanCodeResult;
 
 import com.example.sweetgirl.magiccup1.Bean.UserId;
 import com.example.sweetgirl.magiccup1.R;
-import com.example.sweetgirl.magiccup1.app.MyApplication;
 import com.example.sweetgirl.magiccup1.event.UnityResourceEvent;
-import com.example.sweetgirl.magiccup1.model.Relation;
 import com.example.sweetgirl.magiccup1.model.Scene1;
 import com.example.sweetgirl.magiccup1.model.Scene2;
 import com.example.sweetgirl.magiccup1.model.Scene31;
@@ -36,10 +33,8 @@ import com.example.sweetgirl.magiccup1.model.Scene4;
 import com.example.sweetgirl.magiccup1.model.ShowAllScene;
 import com.example.sweetgirl.magiccup1.model.ShowScene;
 import com.example.sweetgirl.magiccup1.model.UserBean;
-import com.example.sweetgirl.magiccup1.util.App;
 import com.example.sweetgirl.magiccup1.util.L;
 import com.example.sweetgirl.magiccup1.util.LogUtil;
-import com.example.sweetgirl.magiccup1.util.SharedPreferenceHelper;
 import com.example.sweetgirl.magiccup1.util.SharedPreferencesUtils;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
@@ -50,8 +45,6 @@ import com.uuzuche.lib_zxing.activity.CaptureActivity;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 
-
-import org.greenrobot.eventbus.EventBus;
 
 
 import java.io.IOException;
@@ -80,11 +73,14 @@ public class StartActivity extends AppCompatActivity {
 
     private String res;    //返回的json数据转成String
 
-    private String result;   //扫描二维码结果
+    private String res1;   //返回的关联信息
+
+    private String result="123";   //扫描二维码结果
 
     int REQUEST_CODE;
+    private int code=1;
 
-    private String message;   //第一次扫描后的返回信息
+    private String message="success";   //第一次扫描后的返回信息
     //private String url="http://139.199.190.245:8010/api/user/"+result+"/true";   //扫描二维码
     private String url;
     private String user_id;         //用户id http://139.199.190.245:8010/api/between/0c40b024-c1c1-4d65-85b3-e8b881bca7fa
@@ -92,14 +88,9 @@ public class StartActivity extends AppCompatActivity {
 
     ArrayList<UnityResourceEvent> list=new ArrayList<>();
 
-    private String resource1;
-    private String resource2;
-    private String resource31;
-    private String resource32;
-    private String resource33;
-    private String resource4;
 
      UserId userId=new UserId();
+
 
 
     @Override
@@ -114,8 +105,9 @@ public class StartActivity extends AppCompatActivity {
         preferences = getSharedPreferences("count", Context.MODE_PRIVATE);
 
         init();
+
         L.d(TAG,"界面");
-       insertDummyContactWrapper();
+        insertDummyContactWrapper();
         L.d(TAG,"请求权限");
     }
 
@@ -331,7 +323,6 @@ public class StartActivity extends AppCompatActivity {
             message = scanNumber.getMessage();
             L.i("message"," "+scanNumber.getMessage());
             if (message==null){
-
                 StartActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -361,32 +352,23 @@ public class StartActivity extends AppCompatActivity {
             });
         }
         else if (message.equals("success")){
+
             L.i(TAG,message);
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        parserJson(res);   //解析成功返回的带user_id的数据
-                        saveData(user_id);   //保存user_id
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
+            parserJson(res);     //解析成功返回的带user_id的数据
+
+            L.d(TAG,"解析成功返回的带user_id的数据");
+
+            saveData(user_id);   //保存user_id
+            L.d(TAG,"保存user_id");
+
+            getMessage();        //获取关联信息
+            L.d(TAG,"获取关联信息");
+
             //判断是否已经选择
-            if (relationship()){
-                //存在对方赠送的礼物
 
-                L.i(TAG,"查看对方送的礼物");
-            }
-            else {
-                Intent intent = new Intent(StartActivity.this, SelectActivity.class);
-                startActivity(intent);
-                finish();
+            L.d(TAG,code+"判断是否已经选择");
 
-                L.i(TAG, "选择星座");
-            }
         }
         else if (message.equals("Not First")){
             L.i(TAG,message);
@@ -410,10 +392,7 @@ public class StartActivity extends AppCompatActivity {
 
             user_id=data.getUser_id();
 
-            relationship(); //获取关联信息
-
-             L.i(TAG,"user_id"+user_id);
-
+            L.i(TAG,"user_id"+user_id);
 
         }catch(Exception e){
                 e.printStackTrace();
@@ -429,47 +408,8 @@ public class StartActivity extends AppCompatActivity {
         editor.commit();
         L.i(TAG,"保存用户id"+user_id);
 
-        /*App instance=new App(context);
-        instance.saveUser_id(data);
-        L.i(TAG,"保存用户id"+user_id);*/
-
-       /* SharedPreferencesUtils  sharedPreferencesUtils;
-        sharedPreferencesUtils=new SharedPreferencesUtils();
-        sharedPreferencesUtils.putValue(StartActivity.this,user_id,data);
-
-        L.i(TAG,"保存用户id"+user_id);
-*/
-
-        /*preferences=getSharedPreferences("test", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(user_id, user_id);   //保存用户id
-        editor.putBoolean("firstStart", false);   //保存扫描次数
-        editor.apply();
-
-        L.i(TAG,"保存用户id"+user_id);
-        L.i("保存结果","firstStart");
-*/
-        /*//[1]保存ID，获得对象
-        MyApplication myApplication = (MyApplication) getApplication();
-        //更改全局变量的值
-        myApplication.setUser_id(data);
-
-        L.i("保存全局变量的值",""+user_id);
-
-       // userId.setUser_id(user_id);
-
-        //[2]保存第几次扫描
-        preferences = getSharedPreferences("count", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean("firstStart", false);
-        editor.apply();
-        L.i("保存结果","firstStart");*/
     }
-    //[7]获取关联信息
-    private boolean relationship(){
-        getMessage();
-        return false;
-    }
+   //获取关联信息
     private  void getMessage(){
         new Thread(new Runnable() {
             @Override
@@ -502,7 +442,7 @@ public class StartActivity extends AppCompatActivity {
                 StartActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(), "没有找到关联信息",
+                        Toast.makeText(getApplicationContext(), "服务器异常。。。",
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -512,82 +452,123 @@ public class StartActivity extends AppCompatActivity {
             }
             @Override
             public void onResponse(Response response) throws IOException {
-                res=response.body().string();
-                L.i(TAG,"onResponse"+res);
-                ParseJson(res);
-                L.d(TAG,"返回的关联信息"+res);
+
+                res1=response.body().string();
+
+                ParseJson(res1);
+
+
+
+                L.d(TAG,"返回的关联信息"+res1);
             }
         });
     }
-    //[4]解析数据
+    //[4]解析关联数据
     private void ParseJson(String jsonData) {
+
         try{
-            Relation relation=JSON.parseObject(jsonData,Relation.class);
-            String message=relation.getMessage();
-            if (message.equals("userid not found"))
+
+            ShowScene showScene=JSON.parseObject(jsonData,ShowScene.class);
+
+
+            code=showScene.getCode();
+
+
+            if (code==200)
             {
-                L.i(TAG,message);
+                //json数据解析成一个对象
+                ShowAllScene allScene=JSON.parseObject(jsonData,ShowScene.class).getData();
+                String text=allScene.getText();
+                L.d(TAG,text);
+
+                Scene1 scene1=JSON.parseObject(jsonData,ShowScene.class).getData().getDbScene1();
+                String resource1=scene1.getResource();
+                L.d(TAG,resource1);
+
+
+                Scene2 scene2=JSON.parseObject(jsonData,ShowScene.class).getData().getDbScene2();
+                String resource2=scene2.getResource();
+                L.d(TAG,resource2);
+
+
+                Scene31 scene31=JSON.parseObject(jsonData,ShowScene.class).getData().getDbScene31();
+                String resource31=scene31.getResource();
+                L.d(TAG,resource31);
+
+
+                Scene32 scene32=JSON.parseObject(jsonData,ShowScene.class).getData().getDbScene32();
+                String resource32=scene32.getResource();
+                L.d(TAG,resource32);
+
+
+                Scene33 scene33=JSON.parseObject(jsonData,ShowScene.class).getData().getDbScene33();
+                String resource33=scene33.getResource();
+                L.d(TAG,resource33);
+
+
+                Scene4 scene4=JSON.parseObject(jsonData,ShowScene.class).getData().getDbScene4();
+                String resource4=scene4.getResource();
+                L.d(TAG,resource4);
+
+                saveSelectData(text,resource1,resource2,resource31,resource32,resource33,resource4);
+
+                StartActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //存在对方赠送的礼物
+                        Intent intent1 = new Intent(StartActivity.this, DownloadActivity.class);
+                        startActivity(intent1);
+                        finish();
+                        L.i(TAG,"查看对方送的礼物");
+
+                    }
+                });
+
+
+            }
+            else
+            {
+                L.i(TAG,"没有定制的礼物");
                 StartActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Toast.makeText(getApplicationContext(), "没有对方赠送的礼物，赶紧去定制礼物送给对方吧",
                                 Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(StartActivity.this, SelectActivity.class);
+                        startActivity(intent);
+                        finish();
+                        L.i(TAG, "选择星座");
+
                     }
                 });
-            }
-            else{
-                //json数据解析成一个对象
-                ShowScene showScene=JSON.parseObject(jsonData,Relation.class).getShowScene();
-                //String text=showScene.getText();
-                ShowAllScene allScene=JSON.parseObject(jsonData,ShowScene.class).getData();
-
-
-                Scene1 scene1=JSON.parseObject(jsonData,ShowAllScene.class).getDbScene1();
-                 resource1=scene1.getResource();
-                L.d(TAG,resource1);
-                //doDownload(resource1,"scene1");
-
-                Scene2 scene2=JSON.parseObject(jsonData,ShowAllScene.class).getDbScene2();
-                 resource2=scene2.getResource();
-                L.d(TAG,resource2);
-                // doDownload(resource2,"scene2");
-
-                Scene31 scene31=JSON.parseObject(jsonData,ShowAllScene.class).getDbScene31();
-                 resource31=scene31.getResource();
-                L.d(TAG,resource31);
-                //doDownload(resource31,"scene31");
-
-                Scene32 scene32=JSON.parseObject(jsonData,ShowAllScene.class).getDbScene32();
-                 resource32=scene32.getResource();
-                L.d(TAG,resource32);
-                // doDownload(resource32,"scene32");
-
-                Scene33 scene33=JSON.parseObject(jsonData,ShowAllScene.class).getDbScene33();
-                 resource33=scene33.getResource();
-                L.d(TAG,resource33);
-                //doDownload(resource33,"scene33");
-
-                Scene4 scene4=JSON.parseObject(jsonData,ShowAllScene.class).getDbScene4();
-                 resource4=scene4.getResource();
-                L.d(TAG,resource4);
-                //doDownload(resource4,"scene4");
-
-                final UnityResourceEvent ue = new UnityResourceEvent();
-                ue.setResource1(resource1);
-                ue.setResource2(resource2);
-                ue.setResource31(resource31);
-                ue.setResource32(resource32);
-                ue.setResource33(resource33);
-                ue.setResource4(resource4);
-                EventBus.getDefault().post(ue);
-                L.d(TAG,"Unity 数据");
-                finish();
 
             }
 
-        }catch(Exception e){
+
+        }
+
+        catch(Exception e){
+
             e.printStackTrace();
         }
+
+    }
+
+    //[6]保存数据
+    private void saveSelectData(String text,String resource1,String resource2,String resource31,
+        String resource32,String resource33,String resource4){
+
+        SharedPreferences preferences=getSharedPreferences("gift",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor=preferences.edit();
+        editor.putString("text", text);
+        editor.putString("resource1", resource1);
+        editor.putString("resource2", resource2);
+        editor.putString("resource31", resource31);
+        editor.putString("resource32", resource32);
+        editor.putString("resource33", resource33);
+        editor.putString("resource4", resource4);
+        editor.apply();
+        L.i(TAG,"保存用户text"+text+resource1);
 
     }
 

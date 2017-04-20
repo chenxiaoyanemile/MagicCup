@@ -67,5 +67,4 @@ public class ShowARActivity extends UnityPlayerNativeActivity {
         L.i(TAG,"展示ar");
     }
 }
-    //file:///storage/emulated/0/Android/data/com.example.sweetgirl.magiccup1/files
-    //path:/storage/emulated/0/Android/data/com.example.sweetgirl.magiccup1/files/
+

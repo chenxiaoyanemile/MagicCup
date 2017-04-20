@@ -121,8 +121,11 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
 
         scene1_id="9776bc5e-cdda-40d3-b031-f142d0d1d760";
 
+
+
         storyId="9776bc5e-cdda-40d3-b031-f142d0d1d760";
         storyResource="http://ojphnknti.bkt.clouddn.com/scene1/DYM.assetbundle";
+        UnityParameter="DYM.assetbundle";
 
         sceneId="ab1cdab7-1fca-4ce3-8ef7-777a8dksa";
         sceneResource="http://ojphnknti.bkt.clouddn.com/scene32/ACHuge.assetbundle";
@@ -339,53 +342,8 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
 
     }
 
-  /*  OkHttpClient client = new OkHttpClient();
-    String post(String url, String json) throws IOException {
-        RequestBody body = RequestBody.create(JSON, json);
-        Request request = new Request.Builder()
-                .url(url)
-                .post(body)
-                .build();
-
-
-         *//* Response response = client.newCall(request).execute();
-        L.d(TAG,"120");
-            if (response.isSuccessful()) {
-                L.d(TAG,"12");
-                String suc=response.body().string();
-                L.d(TAG,"JINEU"+suc);
-
-                parseSuc(suc);
-                L.d(TAG,"123");
-                return suc;
-            }
-            else {
-                throw new IOException("Unexpected code " + response);
-            }*//*
-        //[3]将Request封装为call
-        Call call = client.newCall(request);
-        //[4]执行call
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Request request, IOException e) {
-
-                L.i(TAG, "onFailure" + e.getMessage());
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Response response) throws IOException {
-                String res = response.body().string();
-                L.i(TAG, "onResponse" + res);
-            }
-        });
-
-
-    }*/
-
 
     public void parseSuc(String s){
-
         L.d(TAG,"解析返回提交选项后返回的数据");
 
         try{
