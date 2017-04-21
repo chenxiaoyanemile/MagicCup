@@ -1,5 +1,7 @@
 package com.example.sweetgirl.magiccup1.fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -29,6 +31,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static cn.alien95.util.Utils.getSharedPreferences;
+
 
 public class SceneTwoSceneFragment extends Fragment {
 
@@ -38,12 +42,11 @@ public class SceneTwoSceneFragment extends Fragment {
     private SwipeRefreshLayout mRefreshLayout;
     private SceneTwoRecyclerViewAdapter sceneTwoRecyclerViewAdapter;
 
-    private String mName;
-    private String mId;
-    private String mResource;
+    private String mName="第三幕拥抱";
+    private String mId="ab1cdab7-1fca-4ce3-8ef7-777a8dsjx";
+    private String mResource="http://ojphnknti.bkt.clouddn.com/scene32/ACHuge.assetbundle";
 
     ArrayList<Item> mItem=new ArrayList<>();
-
 
 
 
@@ -70,6 +73,8 @@ public class SceneTwoSceneFragment extends Fragment {
                 mResource=mItem.get(position).getResource();
 
                 L.d(TAG,"选择了背景"+mName+mId+mResource);
+               // saveData(mName,mId,mResource);     //保存用户选择的信息
+
                 Toast.makeText(getActivity(),"你选择了"+mName,Toast.LENGTH_SHORT).show();
             }
         });
@@ -89,6 +94,9 @@ public class SceneTwoSceneFragment extends Fragment {
             }
         });
 
+       saveData(mName,mId,mResource);     //保存用户选择的信息
+        // L.d(TAG,"用户的选择保存到本地");
+
         return view;
     }
 
@@ -97,6 +105,22 @@ public class SceneTwoSceneFragment extends Fragment {
         mRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.layout_swipe_refresh);
 
     }
+
+    //[6]保存数据
+    private void saveData(String data,String idData,String resourceData){
+
+        SharedPreferences preferences=this.getActivity().getSharedPreferences("SceneTwo", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor=preferences.edit();
+        editor.putString("sceneName", data);
+        editor.putString("sceneId",idData);
+        editor.putString("sceneResource",resourceData);
+        editor.apply();
+        L.i(TAG,"保存用户选择的 scene"+data+idData+resourceData);
+
+    }
+
+
+
     public void initData(){
         doGet();
         L.i(TAG,"初始化数据");
