@@ -12,14 +12,14 @@
     tools:context="com.example.sweetgirl.magiccup1.activity.DownloadActivity">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:orientation="vertical"
         android:id="@+id/scan">
     </LinearLayout>
 
     <Button
-        android:text="加载资源中..."
+        android:text="@string/add_resource"
         android:textSize="20sp"
         android:textColor="@color/text_g"
         android:layout_width="204dp"

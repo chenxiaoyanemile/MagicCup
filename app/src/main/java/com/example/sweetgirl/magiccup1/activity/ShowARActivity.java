@@ -1,6 +1,8 @@
 package com.example.sweetgirl.magiccup1.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -68,6 +70,21 @@ public class ShowARActivity extends UnityPlayerNativeActivity {
         View view=mUnityPlayer.getView();
         show_scan.addView(view);
         L.i(TAG,"展示ar");
+    }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            System.out.println("按下了back键");
+            Intent intent=new Intent(ShowARActivity.this,MainPageActivity.class);
+            startActivity(intent);
+            return false;
+        }else {
+            return super.onKeyDown(keyCode, event);
+        }
+
     }
 }
 

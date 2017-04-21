@@ -1,6 +1,7 @@
 package com.example.sweetgirl.magiccup1.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -108,5 +109,13 @@ public class MainPageActivity extends AppCompatActivity {
             transaction.hide(currentFragment).show(fragment).commit();
         }
         currentFragment = fragment;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(Intent.ACTION_MAIN);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.addCategory(Intent.CATEGORY_HOME);
+        startActivity(i);
     }
 }

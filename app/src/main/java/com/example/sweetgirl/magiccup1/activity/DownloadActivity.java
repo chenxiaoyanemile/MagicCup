@@ -2,11 +2,13 @@ package com.example.sweetgirl.magiccup1.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -369,6 +371,20 @@ public class DownloadActivity extends UnityPlayerNativeActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            System.out.println("按下了back键");
+            Intent intent=new Intent(DownloadActivity.this,MyMakeGiftActivity.class);
+            startActivity(intent);
+            return false;
+        }else {
+            return super.onKeyDown(keyCode, event);
+        }
+
     }
 
 }
