@@ -79,7 +79,9 @@ public class SceneTwoWeatherFragment extends Fragment {
 
                 L.d(TAG,"选择了背景"+mName+mId+mResource);
 
-                //saveData(mName,mId,mResource);  //保存用户的选择
+                saveData(mName,mId,mResource);  //保存用户的选择
+
+                L.d(TAG,"用户的选择保存到本地"+mName+mId+mResource);
 
                 Toast.makeText(getActivity(),"你选择了"+mName,Toast.LENGTH_SHORT).show();
             }
@@ -100,8 +102,7 @@ public class SceneTwoWeatherFragment extends Fragment {
             }
         });
 
-        saveData(mName,mId,mResource);  //保存用户的选择
-        L.d(TAG,"用户的选择保存到本地");
+
         return view;
     }
 

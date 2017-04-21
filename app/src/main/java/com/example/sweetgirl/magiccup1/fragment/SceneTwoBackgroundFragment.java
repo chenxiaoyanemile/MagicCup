@@ -32,7 +32,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static cn.alien95.util.Utils.getSharedPreferences;
 
 
 public class SceneTwoBackgroundFragment extends Fragment {
@@ -75,7 +74,7 @@ public class SceneTwoBackgroundFragment extends Fragment {
                 mId=mItem.get(position).getId();
                 mResource=mItem.get(position).getResource();
 
-                //saveData(mName,mId,mResource);   //保存选在的情景
+                saveData(mName,mId,mResource);   //保存选在的情景
 
                 L.d(TAG,"选择了背景"+mName+mId+mResource);
                 Toast.makeText(getActivity(),"你选择了"+mName,Toast.LENGTH_SHORT).show();
@@ -97,7 +96,7 @@ public class SceneTwoBackgroundFragment extends Fragment {
             }
         });
 
-        saveData(mName,mId,mResource);   //保存选在的情景
+        //saveData(mName,mId,mResource);   //保存选在的情景
         L.d(TAG,"用户的选择保存到本地");
 
         return view;

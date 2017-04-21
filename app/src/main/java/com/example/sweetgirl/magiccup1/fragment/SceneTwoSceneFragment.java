@@ -73,7 +73,8 @@ public class SceneTwoSceneFragment extends Fragment {
                 mResource=mItem.get(position).getResource();
 
                 L.d(TAG,"选择了背景"+mName+mId+mResource);
-               // saveData(mName,mId,mResource);     //保存用户选择的信息
+
+               saveData(mName,mId,mResource);     //保存用户选择的信息
 
                 Toast.makeText(getActivity(),"你选择了"+mName,Toast.LENGTH_SHORT).show();
             }
@@ -94,7 +95,7 @@ public class SceneTwoSceneFragment extends Fragment {
             }
         });
 
-       saveData(mName,mId,mResource);     //保存用户选择的信息
+       //saveData(mName,mId,mResource);     //保存用户选择的信息
         // L.d(TAG,"用户的选择保存到本地");
 
         return view;
