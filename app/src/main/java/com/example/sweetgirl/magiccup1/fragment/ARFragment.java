@@ -2,7 +2,6 @@ package com.example.sweetgirl.magiccup1.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.ProviderInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,7 +16,6 @@ import android.widget.Toast;
 
 import com.example.sweetgirl.magiccup1.R;
 import com.example.sweetgirl.magiccup1.activity.ShowARActivity;
-import com.example.sweetgirl.magiccup1.activity.StartActivity;
 import com.example.sweetgirl.magiccup1.util.FileDownloadThread;
 import com.example.sweetgirl.magiccup1.util.L;
 import com.example.sweetgirl.magiccup1.util.LogUtil;
@@ -39,6 +37,8 @@ public class ARFragment extends Fragment {
 
     private boolean DownloadComplete;
 
+    private int judgeNumber=0;
+
     private Message msg;
 
     @Override
@@ -47,12 +47,15 @@ public class ARFragment extends Fragment {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_ar, container, false);
         init(view);
-        //doGet();
+
+       doGet();
+
+
         return view;
     }
 
     public void init(View view){
-        ar_btn_scan=(Button)view.findViewById(R.id.ar_btn_scan);
+        ar_btn_scan=(Button)view.findViewById(R.id.btn_unity);
         pb_show_download=(ProgressBar)view.findViewById(R.id.pb_show_download);
         tv_download_msg=(TextView)view.findViewById(R.id.tv_download_msg);
 
@@ -60,7 +63,8 @@ public class ARFragment extends Fragment {
         ar_btn_scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (DownloadComplete){
+                if (judgeNumber==1){
+                    Toast.makeText(getActivity(), "下载完成！", Toast.LENGTH_SHORT).show();
                     Intent intent=new Intent(getActivity(), ShowARActivity.class);
                     startActivity(intent);
 
@@ -104,11 +108,21 @@ public class ARFragment extends Fragment {
         final String downloadUrl9 = "http://ojphnknti.bkt.clouddn.com/scene31/Cloud.assetbundle";
         final String fileName9="Cloud.assetbundle";
 
+        judgeNumber=1;
+
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
+
+                    doDownload(downloadUrl7,fileName7);
+                    L.i(TAG,"第七个下载完成");
+                    doDownload(downloadUrl8,fileName8);
+                    L.i(TAG,"第八个下载完成");
+                    doDownload(downloadUrl9,fileName9);
+                    L.i(TAG,"第九个下载完成");
+
                     doDownload(downloadUrl1,fileName1);
                     L.i(TAG,"第一个下载完成");
                     doDownload(downloadUrl2,fileName2);
@@ -123,12 +137,6 @@ public class ARFragment extends Fragment {
                     L.i(TAG,"第五个下载完成");
                     doDownload(downloadUrl6,fileName6);
                     L.i(TAG,"第六个下载完成");
-                    doDownload(downloadUrl7,fileName7);
-                    L.i(TAG,"第七个下载完成");
-                    doDownload(downloadUrl8,fileName8);
-                    L.i(TAG,"第八个下载完成");
-                    doDownload(downloadUrl9,fileName9);
-                    L.i(TAG,"第九个下载完成");
 
                     DownloadComplete=true;
                     Toast.makeText(getActivity(), "下载完成！", Toast.LENGTH_SHORT).show();
@@ -140,6 +148,8 @@ public class ARFragment extends Fragment {
             }
         }).start();
     }
+
+
 
 
     //下载文件

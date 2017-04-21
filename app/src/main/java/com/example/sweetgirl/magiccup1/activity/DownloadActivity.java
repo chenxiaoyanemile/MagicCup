@@ -6,36 +6,64 @@ import android.content.SharedPreferences;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.sweetgirl.magiccup1.R;
+
+import com.example.sweetgirl.magiccup1.model.TallScene;
+import com.example.sweetgirl.magiccup1.util.CreateJson;
 import com.example.sweetgirl.magiccup1.util.FileDownloadThread;
 import com.example.sweetgirl.magiccup1.util.L;
 import com.example.sweetgirl.magiccup1.util.LogUtil;
+import com.unity3d.player.UnityPlayer;
+import com.unity3d.player.UnityPlayerNativeActivity;
 
 
 import java.io.File;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class DownloadActivity extends AppCompatActivity {
+public class DownloadActivity extends UnityPlayerNativeActivity {
 
     private static final String TAG = LogUtil.makeLogTag(DownloadActivity.class);
 
-    private String resource1;
-    private String resource2;
-    private String resource31;
-    private String resource32;
-    private String resource33;
-    private String resource4;
+
+    private LinearLayout scan;  //边框\
+    private Button btn_unity;
+
+    private String resource1="http://ojphnknti.bkt.clouddn.com/scene1/Piscesman.assetbundle";   //星座男
+    private String resource2 = "http://ojphnknti.bkt.clouddn.com/scene1/VirgoWoman.assetbundle";   //星座女
+    private String backgroundResource;   //背景
+    private String sceneResource;   //动作
+    private String weatherResource;  //天气，时间
+    private String resource4="http://ojphnknti.bkt.clouddn.com/scene4/huapen.assetbundle";  //固定的
+
+
+    public String text="I love you";  //
+    public String fileName1="Piscesman.assetbundle";    //暂定
+    public String fileName2="VirgoWoman.assetbundle";   //暂定
+    public String fileName31="BGYinXing.assetbundle";    //背景
+    public String fileName32="ACHuge.assetbundle";    //动作
+    public String fileName33="ACHuge.assetbundle";   //天气，时间
+    public String fileName4="huapen.assetbundle";  //固定
+
+
+    private int judgeDownload=0;  //判断下载
+
+    private String UnityJsonData;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download);
+
+        scan=(LinearLayout)findViewById(R.id.scan);
+        btn_unity=(Button)findViewById(R.id.btn_unity);
 
         getUserResource();  //获取传过的数据
 
@@ -46,58 +74,162 @@ public class DownloadActivity extends AppCompatActivity {
         L.d(TAG,"下载资源");
 
 
+        btn_unity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (judgeDownload==1){
+
+                    L.d(TAG,UnityJsonData);
+                    UnityPlayer.UnitySendMessage("Directional Light","ReceiveJson",UnityJsonData);
+                    L.i(TAG,"传送数据给ar");
+                    //ShowARActivity.this.finish();
+                    // L.i(TAG,"结束android,开启ar");
+                    //file:///storage/emulated/0/Android/data/com.example.sweetgirl.magiccup1/files
+                    //path:/storage/emulated/0/Android/data/com.example.sweetgirl.magiccup1/files/
+                    //String path2="jar:file://"+getBaseContext().getExternalFilesDir("")+"/";
+                    UnityPlayer.UnitySendMessage("Directional Light","PlaySceneAll","");
+                    L.i(TAG,"PlaySceneAll");
+
+                    View view=mUnityPlayer.getView();
+                    scan.addView(view);
+                    L.i(TAG,"展示ar");
+                    btn_unity.setVisibility(view.GONE);
+
+
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(),"加载资源中！请稍等。。。",Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+
 
     }
-
 
     //从sharedPreferences文件中读取存储的user_id
     private void getUserResource(){
 
-        SharedPreferences preferences=getSharedPreferences("gift", Context.MODE_PRIVATE);
-        resource1=preferences.getString("resource1", "resource1");
-        resource2=preferences.getString("resource2", "resource2");
-        resource31=preferences.getString("resource31", "resource31");
-        resource32=preferences.getString("resource32", "resource32");
-        resource33=preferences.getString("resource33", "resource33");
-        resource4=preferences.getString("resource4", "resource4");
+        SharedPreferences preferences=getSharedPreferences("SceneTwo", Context.MODE_PRIVATE);
+        text=preferences.getString("text","text");
+        backgroundResource=preferences.getString("backgroundResource", "backgroundResource");
+        sceneResource=preferences.getString("sceneResource", "sceneResource");
+        weatherResource=preferences.getString("weatherResource", "weatherResource");
 
-        L.i(TAG,"从sharedPreferences文件中读取存储的resource1"+resource1);
+        L.i(TAG,"从sharedPreferences文件中读取存储的resource1"+text+backgroundResource+sceneResource+weatherResource);
+
+        //back    action
+        //scene    time
+        // weather   back
+
 
     }
-
 
     private void GetResourceData(){
 
-        String fileName1=judgmentDownloadComplete(resource1);
-        doDownload(resource1,fileName1);
 
-        L.d(TAG,"第1个资源下载完成"+fileName1);
+        fileName1=judgmentDownloadComplete(resource1);
 
-        String fileName2=judgmentDownloadComplete(resource2);
-        doDownload(resource2,fileName2);
-        L.d(TAG,"第2个资源下载完成"+fileName2);
+        fileName2=judgmentDownloadComplete(resource2);
 
-        String fileName31=judgmentDownloadComplete(resource31);
-        doDownload(resource31,fileName31);
-        L.d(TAG,"第3个资源下载完成"+fileName31);
 
-        String fileName32=judgmentDownloadComplete(resource32);
-        doDownload(resource32,fileName32);
+        fileName31=judgmentDownloadComplete(backgroundResource);  //action
 
-        L.d(TAG,"第4个资源下载完成"+fileName32);
 
-        String fileName33=judgmentDownloadComplete(resource33);
-        doDownload(resource33,fileName33);
 
-        L.d(TAG,"第5个资源下载完成"+fileName33);
+        fileName32=judgmentDownloadComplete(sceneResource);   //time
 
-        String fileName4=judgmentDownloadComplete(resource4);
-        doDownload(resource4,fileName4);
 
-        L.d(TAG,"第6个资源下载完成"+fileName4);
+        fileName33=judgmentDownloadComplete(weatherResource);   //back
+
+
+        fileName4=judgmentDownloadComplete(resource4);
+
+
+        final String downloadUrl7 = "http://ojphnknti.bkt.clouddn.com/scene1/DYM.assetbundle";
+        final String fileName7="DYM.assetbundle";
+
+        final String downloadUrl8 = "http://ojphnknti.bkt.clouddn.com/scene4/disimu.assetbundle";
+        final String fileName8="disimu.assetbundle";
+
+        final String downloadUrl9 = "http://ojphnknti.bkt.clouddn.com/scene31/Cloud.assetbundle";
+        final String fileName9="Cloud.assetbundle";
+
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+
+                    doDownload(downloadUrl7,fileName7);
+                    L.i(TAG,"第七个下载完成");
+                    doDownload(downloadUrl8,fileName8);
+                    L.i(TAG,"第八个下载完成");
+                    doDownload(downloadUrl9,fileName9);
+                    L.i(TAG,"第九个下载完成");
+
+                    doDownload(resource1,fileName1);
+                    L.i(TAG,"第一个下载完成"+fileName1);
+
+                    doDownload(resource2,fileName2);
+                    L.i(TAG,"第二个下载完成"+fileName2);
+
+                    doDownload(backgroundResource,fileName31);
+                    L.i(TAG,"第三个下载完成"+fileName31);
+
+                    doDownload(sceneResource,fileName32);
+                    L.i(TAG,"第四个下载完成"+fileName32);
+
+                    doDownload(weatherResource,fileName33);
+                    L.i(TAG,"第五个下载完成"+fileName33);
+
+                    doDownload(resource4,fileName4);
+                    L.i(TAG,"第六个下载完成"+fileName4);
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+        CreateUnityJsonData(fileName1,fileName2,fileName33,fileName31,fileName32,text,fileName4);
+        L.d(TAG,"CreateUnityJsonData");
+
+        judgeDownload=1;
+
+        btn_unity.setText("资源加载完成，请点击我！");
+
+        Toast.makeText(getApplicationContext(),"资源加载完成",Toast.LENGTH_SHORT).show();
 
 
     }
+
+    private String CreateUnityJsonData(String sex1,String sex2,String background,String action,String time,String text,String file4){
+
+        TallScene scene = new TallScene();
+        scene.getFirstScene().setSexwoman(sex2);   //性别女
+        scene.getFirstScene().setSexman(sex1);    //性别男
+
+        scene.getSecondScene().setAction("");    //没有
+        scene.getSecondScene().setBackground("");
+
+        scene.getThirdScene().setBackground(background);   //背景（树）
+        scene.getThirdScene().setAction(action);   //情景（躺)
+        scene.getThirdScene().setText("字幕");                   //字幕，暂时不用传
+        scene.getThirdScene().setTime(time);        //天气（早上）
+
+        scene.getFourScene().setText(text);   //那封信
+        scene.getFourScene().setInjection(file4);   //喷花，暂时固定
+
+        UnityJsonData= CreateJson.createJson(scene);
+        return UnityJsonData;
+
+    }
+
 
     private String judgmentDownloadComplete(String url){
 
@@ -114,19 +246,22 @@ public class DownloadActivity extends AppCompatActivity {
     //下载文件
     private void doDownload(String downloadUrl,String fileName){
         // 获取SD卡路径
-        String path = Environment.getExternalStorageDirectory()
-                + "/data/";
-        L.d(TAG, "download file  path:" + path);
-        File file = new File(path);
+        String path2=getBaseContext().getExternalFilesDir("")+"/";
+
+        //获取当前应用的安装目录路径path:/storage/emulated/0/Android/data/com.example.sweetgirl.magiccup1/files/
+
+        //String path = getActivity().getApplicationContext().getFilesDir().getAbsolutePath();
+
+        L.d(TAG, "download file  path:" + path2);
+        File file = new File(path2);
         // 如果SD卡目录不存在创建
         if (!file.exists()) {
             file.mkdir();
         }
         // 简单起见，我先把URL和文件名称写死，其实这些都可以通过HttpHeader获取到
-       // downloadUrl = "http://oexlqeny2.bkt.clouddn.com/scene0.zip";
-        //fileName = "scene1";
+
         int threadNum = 5;
-        String filepath = path + fileName;
+        String filepath = path2+fileName;
         L.d(TAG, "download file  path:" + filepath);
         downloadTask task = new downloadTask(downloadUrl, threadNum, filepath);
         task.start();
@@ -140,21 +275,30 @@ public class DownloadActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             //[获取下载文件大小]
-            int progress=msg.getData().getInt("size");
-            int temp=100;
-            if (progress==100){
-                Toast.makeText(getApplicationContext(),"加载资源中！",Toast.LENGTH_SHORT).show();
+            //int progress=msg.getData().getInt("size");
+            //int temp=100;
+           /* if (progress==100){
+                Toast.makeText(getActivity(),"加载完成！",Toast.LENGTH_SHORT).show();
             }
 
-            //mProgressbar.setProgress(msg.getData().getInt("size"));
+            pb_show_download.setProgress(msg.getData().getInt("size"));*/
 
-            //float temp = (float) mProgressbar.getProgress()
-            //  (float) mProgressbar.getMax();
+            /*float temp1 = (float) pb_show_download.getProgress()
+            (float) pb_show_download.getMax();*/
 
-           /* int progress = 100;
+           /*int progress = 100;
             if (progress == 100) {
                 Toast.makeText(getApplicationContext(), "加载完成！", Toast.LENGTH_LONG).show();
             }*/
+            //pb_show_download.setProgress(msg.getData().getInt("size"));
+
+            // float temp = (float) pb_show_download.getProgress() / (float) pb_show_download.getMax();
+
+            //int progress = (int) (temp * 100);
+            // if (progress == 100) {
+            //Toast.makeText(getActivity(), "下载完成！", Toast.LENGTH_LONG).show();
+            // }
+            //tv_download_msg.setText("下载进度:" + progress + " %");
 
         }
     };

@@ -1,12 +1,9 @@
 package com.example.sweetgirl.magiccup1.activity;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,12 +14,8 @@ import android.widget.Toast;
 
 import com.example.sweetgirl.magiccup1.Bean.SelectGiftResponseData;
 import com.example.sweetgirl.magiccup1.Bean.TatalSelectData;
-import com.example.sweetgirl.magiccup1.Bean.UserId;
 import com.example.sweetgirl.magiccup1.R;
-import com.example.sweetgirl.magiccup1.model.TallScene;
-import com.example.sweetgirl.magiccup1.util.CreateJson;
 import com.example.sweetgirl.magiccup1.util.CreateSelectDataJson;
-import com.example.sweetgirl.magiccup1.util.FileDownloadThread;
 import com.example.sweetgirl.magiccup1.util.L;
 import com.example.sweetgirl.magiccup1.util.LogUtil;
 import com.example.sweetgirl.magiccup1.view.recycleView.RecyclerViewActivity;
@@ -35,13 +28,8 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 
-import org.greenrobot.eventbus.EventBus;
-
-
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.net.URLConnection;
+
 
 
 public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClickListener{
@@ -63,22 +51,19 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
 
     private String story;
     private String storyId;
-    private String storyResource;
-    private String UnityParameter;   //第二幕
+
 
 
     private String scene;
     private String sceneId;
-    private String sceneResource;
+
 
     private String weatherId;
-    private String weatherResource;
 
     private String backgroundId;
-    private String backgroundResource;
 
     private String letter;
-    private String letterContent;
+    private String letterContent;           //传送给unity的
 
     private String scene4_id;
 
@@ -87,14 +72,13 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
     private String url="http://139.199.190.245:8010/api/between";
     private String jsonData;
 
-    private UserId userId;
+    private int judgeCode=0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_make_gift);
-
-        //EventBus.getDefault().register(this);  //设置订阅者
 
         initView();
         initData();
@@ -117,26 +101,23 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
     }
     //[2]设置默认值
     public void initData(){
-        userId=new UserId();
+
 
         scene1_id="9776bc5e-cdda-40d3-b031-f142d0d1d760";
 
-
-
         storyId="9776bc5e-cdda-40d3-b031-f142d0d1d760";
-        storyResource="http://ojphnknti.bkt.clouddn.com/scene1/DYM.assetbundle";
-        UnityParameter="DYM.assetbundle";
+
 
         sceneId="ab1cdab7-1fca-4ce3-8ef7-777a8dksa";
-        sceneResource="http://ojphnknti.bkt.clouddn.com/scene32/ACHuge.assetbundle";
+
 
         weatherId="ab1cdab7-1fca-4ce3-8ef7-777a8d7dk";
-        weatherResource="http://ojphnknti.bkt.clouddn.com/scene33/TMAfternoon.assetbundle";
+
 
         backgroundId="ab1cdab7-1fca-4ce3-8ef7-777a8djxa";
-        backgroundResource="http://ojphnknti.bkt.clouddn.com/scene31/BGYinXing.assetbundle";
 
         letterContent="I LOVE YOU";
+
         L.d(TAG,"默认值");
 
         scene4_id="ab1cdab7-1fca-4ce3-8ef7-777ajxjw";
@@ -165,6 +146,7 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
                 L.i(TAG,"写信");
                 break;
             case R.id.btn_gift_preview:
+
                 showSimpleDialog(view);
 
                 L.i(TAG,"预览");
@@ -182,20 +164,20 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
             case MY_REQUEST_CODE1:
                 story=data.getExtras().getString("data1");    //选择的第二幕
                 storyId=data.getExtras().getString("dataId");
-                storyResource=data.getExtras().getString("dataResource");
 
-                UnityParameter=GetData(storyResource);   //unity 参数
 
                 L.d(TAG,"第二幕选择的是"+story);
                 L.d(TAG,"场景id"+storyId);
-                L.d(TAG,"场景资源"+storyResource);
+
 
                 btn_gift_story.setText(story);
                 break;
             case MY_REQUEST_CODE2:
+
                 scene=data.getExtras().getString("data2");  //选择的天气、背景、情景
 
                 btn_gift_scene.setText(scene);
+
                 break;
             case MY_REQUEST_CODE3:
                 letter=data.getExtras().getString("data3");
@@ -208,16 +190,6 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    //截取文件名
-    public String GetData(String url){
-        //http://ojphnknti.bkt.clouddn.com/scene1/
-        String res=url.substring(url.lastIndexOf("/")+1);
-        L.d(TAG,res);
-
-        return res;
-
-
-    }
 
     //显示基本Dialog
     private void showSimpleDialog(View view) {
@@ -231,26 +203,31 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                Toast.makeText(getApplicationContext(), "开始预览，加载中...", Toast.LENGTH_LONG).show();
+
                 getUserId();   //获取到用户id;
                 L.d(TAG,"获取到用户id");
+
+                getBackData();   //获取返回的值
 
                 CreateRequestData();  //将所选信息汇聚称json数据
                 L.d(TAG,"将所选信息汇聚称json数据");
 
-                doPost();      //提交选择的项到服务器
+
                 L.d(TAG,"提交选择的项到服务器");
 
-                doGet();  //下载unity资源
-                L.d(TAG,"下载unity资源");
+                if (doPost()){
 
-                //CreateUnityData();   //预览选择的信息
-                L.d(TAG,"预览选择的信息");
+                    Intent intent=new Intent(MyMakeGiftActivity.this,DownloadActivity.class);
+                    startActivity(intent);
+                    L.d(TAG,"预览选择的信息");
 
+                }
 
+                else {
 
-                //Intent intent4=new Intent(MyMakeGiftActivity.this,ShowARActivity.class);
-                //startActivity(intent4);
+                    Toast.makeText(getApplicationContext(), "预览失败", Toast.LENGTH_LONG).show();
+                }
+
             }
         });
         builder.setNegativeButton(R.string.negative_button, new DialogInterface.OnClickListener() {
@@ -276,6 +253,20 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
 
     }
 
+    //从sharedPreferences文件中读取存储的选择的信息
+    private void getBackData(){
+
+        SharedPreferences preferences=getSharedPreferences("SceneTwo", Context.MODE_PRIVATE);
+
+        sceneId=preferences.getString("sceneId", "sceneId");
+
+        weatherId=preferences.getString("weatherId", "weatherId");
+
+        backgroundId=preferences.getString("backgroundId", "backgroundId");
+
+        L.i(TAG,"从sharedPreferences文件中读取存储的sceneId"+sceneId+weatherId+backgroundId);
+
+    }
     //将所选信息创建json值
     public String CreateRequestData(){
 
@@ -290,7 +281,6 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
         tatalSelectData.setScene33_id(backgroundId);
         tatalSelectData.setScene4_id(scene4_id);
 
-
         jsonData= CreateSelectDataJson.CreateSelectDataJson(tatalSelectData);
 
         return jsonData;
@@ -298,6 +288,7 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
 
     //[4]提交选择的结果到服务器   doPost();
     public boolean doPost(){
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -357,185 +348,6 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
             e.printStackTrace();
         }
 
-    }
-
-    //下载选好的数据资源
-    private  void doGet(){
-        final String downloadUrl1 = storyResource;
-        final String fileName1=UnityParameter;
-
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    doDownload(downloadUrl1,fileName1);
-                    L.i(TAG,"第一个下载完成");
-
-                    //Toast.makeText(MyMakeGiftActivity.this, "下载资源完成！", Toast.LENGTH_SHORT).show();
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
-
-
-    //下载文件
-    private void doDownload(String downloadUrl,String fileName){
-        // 获取SD卡路径
-        String path2=getBaseContext().getExternalFilesDir("")+"/";
-
-        //获取当前应用的安装目录路径path:/storage/emulated/0/Android/data/com.example.sweetgirl.magiccup1/files/
-
-        //String path = getActivity().getApplicationContext().getFilesDir().getAbsolutePath();
-
-        L.d(TAG, "download file  path:" + path2);
-        File file = new File(path2);
-        // 如果SD卡目录不存在创建
-        if (!file.exists()) {
-            file.mkdir();
-        }
-        // 简单起见，我先把URL和文件名称写死，其实这些都可以通过HttpHeader获取到
-
-        int threadNum = 5;
-        String filepath = path2+fileName;
-        L.d(TAG, "download file  path:" + filepath);
-        downloadTask task = new downloadTask(downloadUrl, threadNum, filepath);
-        task.start();
-    }
-
-    /**
-     * 使用Handler更新UI界面信息
-     */
-    @SuppressLint("HandlerLeak")
-    Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            //[获取下载文件大小]
-            //int progress=msg.getData().getInt("size");
-            //int temp=100;
-           /* if (progress==100){
-                Toast.makeText(getActivity(),"加载完成！",Toast.LENGTH_SHORT).show();
-            }
-
-            pb_show_download.setProgress(msg.getData().getInt("size"));*/
-
-            /*float temp1 = (float) pb_show_download.getProgress()
-            (float) pb_show_download.getMax();*/
-
-           /*int progress = 100;
-            if (progress == 100) {
-                Toast.makeText(getApplicationContext(), "加载完成！", Toast.LENGTH_LONG).show();
-            }*/
-            //pb_show_download.setProgress(msg.getData().getInt("size"));
-
-            // float temp = (float) pb_show_download.getProgress() / (float) pb_show_download.getMax();
-
-            //int progress = (int) (temp * 100);
-            // if (progress == 100) {
-            //Toast.makeText(getActivity(), "下载完成！", Toast.LENGTH_LONG).show();
-            // }
-            //tv_download_msg.setText("下载进度:" + progress + " %");
-
-        }
-    };
-    //多线程下载
-    class downloadTask extends Thread {
-        private String downloadUrl;// 下载链接地址
-        private int threadNum;// 开启的线程数
-        private String filePath;// 保存文件路径地址
-        private int blockSize;// 每一个线程的下载量
-
-        public downloadTask(String downloadUrl, int threadNum, String fileptah) {
-            this.downloadUrl = downloadUrl;
-            this.threadNum = threadNum;
-            this.filePath = fileptah;
-        }
-
-        @Override
-        public void run() {
-            FileDownloadThread[] threads = new FileDownloadThread[threadNum];
-            try {
-                URL url = new URL(downloadUrl);
-                L.d(TAG, "download file http path:" + downloadUrl);
-                URLConnection conn = url.openConnection();
-                // 读取下载文件总大小
-                int fileSize = conn.getContentLength();
-                if (fileSize <= 0) {
-                    System.out.println("读取文件失败");
-                    return;
-                }
-
-                // 计算每条线程下载的数据长度
-                blockSize = (fileSize % threadNum) == 0 ? fileSize / threadNum
-                        : fileSize / threadNum + 1;
-
-                L.d(TAG, "fileSize:" + fileSize + "  blockSize:");
-
-                File file = new File(filePath);
-                for (int i = 0; i < threads.length; i++) {
-                    // 启动线程，分别下载每个线程需要下载的部分
-                    threads[i] = new FileDownloadThread(url, file, blockSize,
-                            (i + 1));
-                    threads[i].setName("Thread:" + i);
-                    threads[i].start();
-                }
-
-                boolean isfinished = false;
-                int downloadedAllSize = 0;
-                while (!isfinished) {
-                    isfinished = true;
-                    // 当前所有线程下载总量
-                    downloadedAllSize = 0;
-                    for (int i = 0; i < threads.length; i++) {
-                        downloadedAllSize += threads[i].getDownloadLength();
-                        if (!threads[i].isCompleted()) {
-                            isfinished = false;
-                        }
-                    }
-                    // 通知handler去更新视图组件
-                    Message msg = new Message();
-                    msg.getData().putInt("size", downloadedAllSize);
-                    mHandler.sendMessage(msg);
-                    // Log.d(TAG, "current downloadSize:" + downloadedAllSize);
-                    Thread.sleep(1000);// 休息1秒后再读取下载进度
-                }
-                L.d(TAG, " all of downloadSize:" + downloadedAllSize);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void CreateUnityData(){
-
-        TallScene scene = new TallScene();
-        scene.getFirstScene().setSexwoman("Piscesman.assetbundle");
-        scene.getFirstScene().setSexman("VirgoWoman.assetbundle");
-
-        scene.getSecondScene().setAction(UnityParameter);
-        scene.getSecondScene().setBackground("");
-
-        scene.getThirdScene().setAction("ACHuge.assetbundle");
-        scene.getThirdScene().setBackground("BGYinXing.assetbundle");
-        scene.getThirdScene().setText(letterContent);
-        scene.getThirdScene().setTime("ACHuge.assetbundle");
-
-        scene.getFourScene().setText(letterContent);
-        scene.getFourScene().setInjection("huapen.assetbundle");
-
-        String first= CreateJson.createJson(scene);
-
-        EventBus.getDefault().post(first);
-
-        Intent intent4=new Intent(MyMakeGiftActivity.this,PreviewActivity.class);
-        startActivity(intent4);
-
-        //UnityPlayer.UnitySendMessage("Directional Light","ReceiveJson",first);
-        //L.i(TAG,"传送数据给ar");
     }
 
 

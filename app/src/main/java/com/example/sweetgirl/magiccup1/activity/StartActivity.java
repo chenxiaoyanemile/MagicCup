@@ -405,7 +405,7 @@ public class StartActivity extends AppCompatActivity {
         SharedPreferences preferences=getSharedPreferences("user",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor=preferences.edit();
         editor.putString("user_id", user_id);
-        editor.commit();
+        editor.apply();
         L.i(TAG,"保存用户id"+user_id);
 
     }
@@ -558,14 +558,14 @@ public class StartActivity extends AppCompatActivity {
     private void saveSelectData(String text,String resource1,String resource2,String resource31,
         String resource32,String resource33,String resource4){
 
-        SharedPreferences preferences=getSharedPreferences("gift",Context.MODE_PRIVATE);
+        SharedPreferences preferences=getSharedPreferences("SceneTwo",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor=preferences.edit();
         editor.putString("text", text);
         editor.putString("resource1", resource1);
         editor.putString("resource2", resource2);
-        editor.putString("resource31", resource31);
-        editor.putString("resource32", resource32);
-        editor.putString("resource33", resource33);
+        editor.putString("backgroundResource", resource31);   //背景
+        editor.putString("sceneResource", resource32);    //动作
+        editor.putString("weatherResource", resource33);   //天气，时间
         editor.putString("resource4", resource4);
         editor.apply();
         L.i(TAG,"保存用户text"+text+resource1);

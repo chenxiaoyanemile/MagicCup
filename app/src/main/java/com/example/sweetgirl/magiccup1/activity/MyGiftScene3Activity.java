@@ -1,6 +1,8 @@
 package com.example.sweetgirl.magiccup1.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -33,11 +35,20 @@ public class MyGiftScene3Activity extends AppCompatActivity {
         set_toolbar_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = MyGiftScene3Activity.this.getIntent();
-                intent.putExtra("data3", "3、默认效果");
-                intent.putExtra("data4",letter);
-                setResult(RESULT_OK, intent);
-                finish();
+
+                if (letter.equals(null))
+                {
+                    Toast.makeText(getApplicationContext(), "请输入您想要说的话", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "提交成功", Toast.LENGTH_SHORT).show();
+                    Intent intent = MyGiftScene3Activity.this.getIntent();
+                    intent.putExtra("data3", "3、默认效果");
+                    intent.putExtra("data4",letter);
+                    setResult(RESULT_OK, intent);
+                    finish();
+
+                }
             }
         });
 
@@ -54,9 +65,24 @@ public class MyGiftScene3Activity extends AppCompatActivity {
                 {
                     Toast.makeText(getApplicationContext(), "请输入您想要说的话", Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(getApplicationContext(), "提交成功", Toast.LENGTH_SHORT).show();
+                else {
+                    Toast.makeText(getApplicationContext(), "提交成功", Toast.LENGTH_SHORT).show();
+                    saveSelectData(letter);
+
+                }
             }
         });
+    }
+
+    //[6]保存数据
+    private void saveSelectData(String text){
+
+        SharedPreferences preferences=getSharedPreferences("SceneTwo", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor=preferences.edit();
+        editor.putString("text", letter);
+        editor.apply();
+        L.i(TAG,"保存用户text"+letter);
+
     }
 
     //手机系统返回键
@@ -65,11 +91,18 @@ public class MyGiftScene3Activity extends AppCompatActivity {
         L.i(TAG, "back键 ");
         if (keyCode == KeyEvent.KEYCODE_BACK) {
 
-            Intent intent = MyGiftScene3Activity.this.getIntent();
-            intent.putExtra("data3", "3、默认效果");
-            intent.putExtra("data4",letter);
-            setResult(RESULT_OK, intent);
-            this.finish();
+            if (letter.equals(null))
+            {
+                Toast.makeText(getApplicationContext(), "请输入您想要说的话", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Toast.makeText(getApplicationContext(), "提交成功", Toast.LENGTH_SHORT).show();
+                Intent intent = MyGiftScene3Activity.this.getIntent();
+                intent.putExtra("data3", "3、默认效果");
+                intent.putExtra("data4",letter);
+                setResult(RESULT_OK, intent);
+                this.finish();
+            }
             return true;
         }
         else {

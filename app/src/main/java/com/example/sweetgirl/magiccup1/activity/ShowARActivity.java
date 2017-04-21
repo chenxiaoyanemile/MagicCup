@@ -19,12 +19,15 @@ public class ShowARActivity extends UnityPlayerNativeActivity {
 
     private static final String TAG = LogUtil.makeLogTag(ShowARActivity.class);
 
-    private LinearLayout scan;
-    private String sex1="Piscesman.assetbundle";
-    private String sex2="VirgoWoman.assetbundle";
+    private LinearLayout show_scan;  //边框
+    private String sex1="Piscesman.assetbundle";   //星座1
+    private String sex2="VirgoWoman.assetbundle";   //星座2
     private String action;
     private String background;
     private String time;
+
+
+
 
 
     @Override
@@ -32,7 +35,7 @@ public class ShowARActivity extends UnityPlayerNativeActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_ar);
 
-        scan=(LinearLayout)findViewById(R.id.scan);
+        show_scan=(LinearLayout)findViewById(R.id.show_scan);
 
 
         TallScene scene = new TallScene();
@@ -55,15 +58,15 @@ public class ShowARActivity extends UnityPlayerNativeActivity {
         UnityPlayer.UnitySendMessage("Directional Light","ReceiveJson",first);
         L.i(TAG,"传送数据给ar");
         //ShowARActivity.this.finish();
-       // L.i(TAG,"结束android,开启ar");
+        // L.i(TAG,"结束android,开启ar");
         //file:///storage/emulated/0/Android/data/com.example.sweetgirl.magiccup1/files
         //path:/storage/emulated/0/Android/data/com.example.sweetgirl.magiccup1/files/
-        String path2="jar:file://"+getBaseContext().getExternalFilesDir("")+"/";
+        //String path2="jar:file://"+getBaseContext().getExternalFilesDir("")+"/";
         UnityPlayer.UnitySendMessage("Directional Light","PlaySceneAll","");
         L.i(TAG,"PlaySceneAll");
 
         View view=mUnityPlayer.getView();
-        scan.addView(view);
+        show_scan.addView(view);
         L.i(TAG,"展示ar");
     }
 }
