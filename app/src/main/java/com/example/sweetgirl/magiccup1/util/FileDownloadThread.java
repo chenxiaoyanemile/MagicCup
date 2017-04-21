@@ -23,6 +23,12 @@ public class FileDownloadThread extends Thread{
     /** 线程下载数据长度 */
     private int blockSize;
 
+    /*private Callback callback;
+
+    public void setCallback(Callback callback) {
+        this.callback = callback;
+    }*/
+
     /**
      *
      * @param downloadUrl:文件下载地址
@@ -66,6 +72,7 @@ public class FileDownloadThread extends Thread{
                 downloadLength += len;
             }
             isCompleted = true;
+            //callback.onSuccess();
            L.d(TAG, "current thread task has finished,all size:"
                     + downloadLength);
 
@@ -102,4 +109,8 @@ public class FileDownloadThread extends Thread{
     public int getDownloadLength() {
         return downloadLength;
     }
+
+  /*  public interface Callback{
+        void onSuccess();
+    }*/
 }
