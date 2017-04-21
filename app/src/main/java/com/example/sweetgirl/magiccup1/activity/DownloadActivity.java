@@ -4,14 +4,13 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.sweetgirl.magiccup1.R;
@@ -22,26 +21,27 @@ import com.example.sweetgirl.magiccup1.util.FileDownloadThread;
 import com.example.sweetgirl.magiccup1.util.L;
 import com.example.sweetgirl.magiccup1.util.LogUtil;
 import com.unity3d.player.UnityPlayer;
-import com.unity3d.player.UnityPlayerNativeActivity;
+import com.unity3d.player.UnityPlayerActivity;
 
 
 import java.io.File;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class DownloadActivity extends UnityPlayerNativeActivity {
+public class DownloadActivity extends UnityPlayerActivity {
 
     private static final String TAG = LogUtil.makeLogTag(DownloadActivity.class);
 
 
-    private LinearLayout scan;  //边框\
+    private RelativeLayout scan;  //边框\
     private Button btn_unity;
 
     private String resource1="http://ojphnknti.bkt.clouddn.com/scene1/Piscesman.assetbundle";   //星座男
     private String resource2 = "http://ojphnknti.bkt.clouddn.com/scene1/VirgoWoman.assetbundle";   //星座女
     private String backgroundResource;   //背景
     private String sceneResource;   //动作
-    private String weatherResource;  //天气，时间
+    private String weatherResource;  //天气，\
+    // 时间
     private String resource4="http://ojphnknti.bkt.clouddn.com/scene4/huapen.assetbundle";  //固定的
 
 
@@ -56,6 +56,9 @@ public class DownloadActivity extends UnityPlayerNativeActivity {
 
     private int judgeDownload=0;  //判断下载
 
+    private String[] arFileName;
+    private String[] arUrl;
+
     private String UnityJsonData;
 
 
@@ -64,7 +67,7 @@ public class DownloadActivity extends UnityPlayerNativeActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download);
 
-        scan=(LinearLayout)findViewById(R.id.scan);
+        scan=(RelativeLayout)findViewById(R.id.scan);
         btn_unity=(Button)findViewById(R.id.btn_unity);
 
         getUserResource();  //获取传过的数据
@@ -80,7 +83,7 @@ public class DownloadActivity extends UnityPlayerNativeActivity {
             @Override
             public void onClick(View v) {
 
-                if (judgeDownload==1){
+                if (judgeDownload==8){
 
                     L.d(TAG,UnityJsonData);
                     UnityPlayer.UnitySendMessage("Directional Light","ReceiveJson",UnityJsonData);
@@ -123,11 +126,6 @@ public class DownloadActivity extends UnityPlayerNativeActivity {
 
         L.i(TAG,"从sharedPreferences文件中读取存储的resource1"+text+backgroundResource+sceneResource+weatherResource);
 
-        //back    action
-        //scene    time
-        // weather   back
-
-
     }
 
     private void GetResourceData(){
@@ -161,36 +159,39 @@ public class DownloadActivity extends UnityPlayerNativeActivity {
         final String fileName9="Cloud.assetbundle";
 
 
+        arFileName=new String[]{
+                fileName1,fileName2,fileName31,
+                fileName32,fileName33,fileName4,
+                fileName7,fileName8,fileName9
+        };
+
+        arUrl=new String[]{
+                resource1,resource2,backgroundResource,
+                sceneResource,weatherResource,resource4,
+                downloadUrl7,downloadUrl8,downloadUrl9
+        };
+
+
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
 
-                    doDownload(downloadUrl7,fileName7);
-                    L.i(TAG,"第七个下载完成");
-                    doDownload(downloadUrl8,fileName8);
-                    L.i(TAG,"第八个下载完成");
-                    doDownload(downloadUrl9,fileName9);
-                    L.i(TAG,"第九个下载完成");
+                    for (int i=0;i<9;i++){
+                        doDownload(arUrl[i],arFileName[i]);
+                        L.d(TAG,"第"+i+"下载完成");
+                    }
 
-                    doDownload(resource1,fileName1);
-                    L.i(TAG,"第一个下载完成"+fileName1);
+                    if (judgeDownload==8){
+                        DownloadActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
 
-                    doDownload(resource2,fileName2);
-                    L.i(TAG,"第二个下载完成"+fileName2);
-
-                    doDownload(backgroundResource,fileName31);
-                    L.i(TAG,"第三个下载完成"+fileName31);
-
-                    doDownload(sceneResource,fileName32);
-                    L.i(TAG,"第四个下载完成"+fileName32);
-
-                    doDownload(weatherResource,fileName33);
-                    L.i(TAG,"第五个下载完成"+fileName33);
-
-                    doDownload(resource4,fileName4);
-                    L.i(TAG,"第六个下载完成"+fileName4);
-
+                                btn_unity.setText("资源加载完成，请点击我！");
+                                Toast.makeText(getApplicationContext(),"资源加载完成",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -198,14 +199,15 @@ public class DownloadActivity extends UnityPlayerNativeActivity {
             }
         }).start();
 
+
         CreateUnityJsonData(fileName1,fileName2,fileName33,fileName31,fileName32,text,fileName4);
         L.d(TAG,"CreateUnityJsonData");
 
-        judgeDownload=1;
+        //judgeDownload=1;
 
-        btn_unity.setText("资源加载完成，请点击我！");
+        //btn_unity.setText("资源加载完成，请点击我！");
 
-        Toast.makeText(getApplicationContext(),"资源加载完成",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(),"资源加载完成",Toast.LENGTH_SHORT).show();
 
 
     }
@@ -277,30 +279,14 @@ public class DownloadActivity extends UnityPlayerNativeActivity {
         @Override
         public void handleMessage(Message msg) {
             //[获取下载文件大小]
-            //int progress=msg.getData().getInt("size");
+            int progress=msg.getData().getInt("size");
+
             //int temp=100;
-           /* if (progress==100){
-                Toast.makeText(getActivity(),"加载完成！",Toast.LENGTH_SHORT).show();
+        if (progress==100){
+               judgeDownload++;
+            L.d(TAG,"第judgeDownload=个下载完成"+judgeDownload);
             }
 
-            pb_show_download.setProgress(msg.getData().getInt("size"));*/
-
-            /*float temp1 = (float) pb_show_download.getProgress()
-            (float) pb_show_download.getMax();*/
-
-           /*int progress = 100;
-            if (progress == 100) {
-                Toast.makeText(getApplicationContext(), "加载完成！", Toast.LENGTH_LONG).show();
-            }*/
-            //pb_show_download.setProgress(msg.getData().getInt("size"));
-
-            // float temp = (float) pb_show_download.getProgress() / (float) pb_show_download.getMax();
-
-            //int progress = (int) (temp * 100);
-            // if (progress == 100) {
-            //Toast.makeText(getActivity(), "下载完成！", Toast.LENGTH_LONG).show();
-            // }
-            //tv_download_msg.setText("下载进度:" + progress + " %");
 
         }
     };
@@ -319,7 +305,9 @@ public class DownloadActivity extends UnityPlayerNativeActivity {
 
         @Override
         public void run() {
+
             FileDownloadThread[] threads = new FileDownloadThread[threadNum];
+
             try {
                 URL url = new URL(downloadUrl);
                 L.d(TAG, "download file http path:" + downloadUrl);
@@ -346,6 +334,14 @@ public class DownloadActivity extends UnityPlayerNativeActivity {
                     threads[i].start();
                 }
 
+              /*  fileDownloadThread.setCallback(new FileDownloadThread.Callback() {
+                    @Override
+                    public void onSuccess() {
+                        i++;
+                        doDownload();
+                    }
+                });
+*/
                 boolean isfinished = false;
                 int downloadedAllSize = 0;
                 while (!isfinished) {
@@ -362,7 +358,7 @@ public class DownloadActivity extends UnityPlayerNativeActivity {
                     Message msg = new Message();
                     msg.getData().putInt("size", downloadedAllSize);
                     mHandler.sendMessage(msg);
-                    // Log.d(TAG, "current downloadSize:" + downloadedAllSize);
+                    L.d(TAG, "current downloadSize:" + downloadedAllSize);
                     Thread.sleep(1000);// 休息1秒后再读取下载进度
                 }
                 L.d(TAG, " all of downloadSize:" + downloadedAllSize);

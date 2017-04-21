@@ -77,7 +77,7 @@ public class StartActivity extends AppCompatActivity {
 
     private String result="123";   //扫描二维码结果
 
-    int REQUEST_CODE;
+    int REQUEST_CODE=20;
     private int code=1;
 
     private String message="success";   //第一次扫描后的返回信息
@@ -258,13 +258,16 @@ public class StartActivity extends AppCompatActivity {
     //[2]处理扫描结果
     @Override
     public void onActivityResult(int requestCode, int resultCode, final Intent data) {
-        REQUEST_CODE = 20;
+        L.d(TAG,"第一次扫描是否有返回");
+
         if (requestCode == REQUEST_CODE) {
             if (null != data) {
+                L.d(TAG,"第一次扫描是否有返回");
                 Bundle bundle = data.getExtras();
                 if (bundle == null) {
                     return;
                 }
+                L.d(TAG,"第一次扫描是否有返回");
                 if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
                     result = bundle.getString(CodeUtils.RESULT_STRING);
                     L.i("扫描结果：", result);

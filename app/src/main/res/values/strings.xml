@@ -65,7 +65,7 @@
     <string name="Capricorn"> 摩羯座</string>
 
     <!-- 对话框所需要的字符串资源-->
-    <string name="dialog_message">提交成功</string>
+    <string name="dialog_message">确认提交？</string>
     <string name="postive_button">确定</string>
     <string name="negative_button">取消</string>
 
