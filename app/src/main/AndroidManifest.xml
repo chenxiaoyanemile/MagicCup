@@ -32,7 +32,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".activity.StartActivity">
+        <activity android:name=".activity.StartActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,24 +47,40 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.SelectActivity" />
-        <activity android:name=".activity.MainPageActivity" />
-        <activity android:name=".activity.MyRecordActivity" />
-        <activity android:name=".activity.MyMakeGiftActivity" />
-        <activity android:name=".outdated.MyGiftScene1Activity" />
-        <activity android:name=".activity.MyGiftScene2Activity" />
-        <activity android:name=".activity.MyGiftScene3Activity" />
-        <activity android:name=".activity.MyHelpActivity" />
-        <activity android:name=".activity.MySetActivity" />
-        <activity android:name=".activity.MySetAboutActivity" />
-        <activity android:name=".activity.MySetBackActivity" />
-        <activity android:name=".activity.MultiTypeActivity" />
-        <activity android:name=".activity.ShowARActivity" />
-        <activity android:name=".view.recycleView.RecyclerViewActivity" />
-        <activity android:name=".view.recycleView.SceneTwoRecyclerViewActivity">
+        <activity android:name=".activity.SelectActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MainPageActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MyRecordActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MyMakeGiftActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".outdated.MyGiftScene1Activity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MyGiftScene2Activity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MyGiftScene3Activity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MyHelpActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MySetActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MySetAboutActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MySetBackActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MultiTypeActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.ShowARActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".view.recycleView.RecyclerViewActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".view.recycleView.SceneTwoRecyclerViewActivity"
+            android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".activity.PreviewActivity">
+        <activity android:name=".activity.PreviewActivity"
+            android:screenOrientation="portrait">
 
         </activity>
     </application>

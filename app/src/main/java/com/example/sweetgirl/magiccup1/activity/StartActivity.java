@@ -69,6 +69,8 @@ public class StartActivity extends AppCompatActivity {
 
     private SharedPreferences preferences;
 
+    private int count;
+
     private SharedPreferencesUtils sharedPreferencesUtils;
 
     private String res;    //返回的json数据转成String
@@ -99,12 +101,28 @@ public class StartActivity extends AppCompatActivity {
         ZXingLibrary.initDisplayOpinion(this);
         setContentView(R.layout.activity_start);
 
-        //注册订阅者
-      //  EventBus.getDefault().register(this);
-
         preferences = getSharedPreferences("count", Context.MODE_PRIVATE);
+        count =preferences.getInt("count",0);
 
-        init();
+        Button btn_start_scan = (Button) findViewById(R.id.btn_start_scan);
+
+        btn_start_scan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (count==0) {
+                    L.i(TAG, "扫码");
+                    Intent intent1 = new Intent(StartActivity.this, CaptureActivity.class);
+                    startActivityForResult(intent1, REQUEST_CODE);
+                } else {
+                    L.i(TAG, "主页");
+                    Intent intent = new Intent(StartActivity.this, MainPageActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+
+            }
+        });
 
         L.d(TAG,"界面");
         insertDummyContactWrapper();
@@ -233,7 +251,7 @@ public class StartActivity extends AppCompatActivity {
         }
     }
 
-    //[1]初始化控件
+   /* //[1]初始化控件
     public void init(){
         Button btn_start_scan = (Button) findViewById(R.id.btn_start_scan);
 
@@ -254,7 +272,7 @@ public class StartActivity extends AppCompatActivity {
 
             }
         });
-    }
+    }*/
     //[2]处理扫描结果
     @Override
     public void onActivityResult(int requestCode, int resultCode, final Intent data) {
@@ -405,10 +423,14 @@ public class StartActivity extends AppCompatActivity {
     //[6]保存数据
     private void saveData(String data){
 
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt("count", ++count);
+        editor.commit();
+
         SharedPreferences preferences=getSharedPreferences("user",Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor=preferences.edit();
-        editor.putString("user_id", user_id);
-        editor.apply();
+        SharedPreferences.Editor editor1=preferences.edit();
+        editor1.putString("user_id", user_id);
+        editor1.apply();
         L.i(TAG,"保存用户id"+user_id);
 
     }

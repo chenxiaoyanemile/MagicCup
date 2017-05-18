@@ -199,7 +199,7 @@ public class ARFragment extends Fragment {
             if (progress == 100) {
                 Toast.makeText(getApplicationContext(), "加载完成！", Toast.LENGTH_LONG).show();
             }*/
-            pb_show_download.setProgress(msg.getData().getInt("size"));
+           // pb_show_download.setProgress(msg.getData().getInt("size"));
 
            // float temp = (float) pb_show_download.getProgress() / (float) pb_show_download.getMax();
 

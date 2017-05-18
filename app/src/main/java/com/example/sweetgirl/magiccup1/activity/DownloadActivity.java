@@ -187,7 +187,7 @@ public class DownloadActivity extends UnityPlayerActivity {
                             @Override
                             public void run() {
 
-                                btn_unity.setText("资源加载完成，请点击我！");
+                                btn_unity.setText("资源加载完成");
                                 Toast.makeText(getApplicationContext(),"资源加载完成",Toast.LENGTH_SHORT).show();
                             }
                         });

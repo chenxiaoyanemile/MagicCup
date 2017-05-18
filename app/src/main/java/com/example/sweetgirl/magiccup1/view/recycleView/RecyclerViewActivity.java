@@ -38,7 +38,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
     private MyRecycleViewAdapter mmAdapter;
 
 
-    private String mName;
+    private String mName="1.选择故事";
     private String mId;
     private String mResource;
 
@@ -103,7 +103,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = RecyclerViewActivity.this.getIntent();
-                intent.putExtra("data1", "1、"+mName);
+                intent.putExtra("data1", "1."+mName);
                 intent.putExtra("dataId",mId);
                 intent.putExtra("dataResource",mResource);
                 setResult(RESULT_OK, intent);

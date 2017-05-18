@@ -43,7 +43,7 @@ public class MyGiftScene3Activity extends AppCompatActivity {
                 else {
                     Toast.makeText(getApplicationContext(), "提交成功", Toast.LENGTH_SHORT).show();
                     Intent intent = MyGiftScene3Activity.this.getIntent();
-                    intent.putExtra("data3", "3、默认效果");
+                    intent.putExtra("data3", "3.默认效果");
                     intent.putExtra("data4",letter);
                     setResult(RESULT_OK, intent);
                     finish();

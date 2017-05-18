@@ -50,7 +50,7 @@ public class MyGiftScene2Activity extends AppCompatActivity implements View.OnCl
             @Override
             public void onClick(View v) {
                 Intent intent = MyGiftScene2Activity.this.getIntent();
-                intent.putExtra("data2", "2、天气");
+                intent.putExtra("data2", "2.天气、情景、背景");
                 setResult(RESULT_OK, intent);
                 finish();
             }

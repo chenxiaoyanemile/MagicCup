@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 
@@ -43,6 +44,8 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
     private Button btn_gift_scene;
     private Button btn_gift_letter;
     private Button btn_gift_preview;
+
+    private ImageView set_toolbar_back;
 
     //声明一个AlertDialog构造器
     private AlertDialog.Builder builder;
@@ -93,10 +96,14 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
         btn_gift_letter=(Button)findViewById(R.id.btn_gift_letter);
         btn_gift_preview=(Button)findViewById(R.id.btn_gift_preview);
 
+        set_toolbar_back=(ImageView)findViewById(R.id.set_toolbar_back);
+
         btn_gift_story.setOnClickListener(this);
         btn_gift_scene.setOnClickListener(this);
         btn_gift_letter.setOnClickListener(this);
         btn_gift_preview.setOnClickListener(this);
+
+        set_toolbar_back.setOnClickListener(this);
 
     }
     //[2]设置默认值
@@ -127,6 +134,11 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View view){
         switch (view.getId()){
+            case R.id.set_toolbar_back:
+                Intent intent=new Intent(MyMakeGiftActivity.this,MainPageActivity.class);
+                startActivity(intent);
+
+                break;
             case R.id.btn_gift_story:
                 Intent intent1=new Intent(MyMakeGiftActivity.this,RecyclerViewActivity.class);
 
@@ -171,6 +183,7 @@ public class MyMakeGiftActivity extends AppCompatActivity implements View.OnClic
 
 
                 btn_gift_story.setText(story);
+
                 break;
             case MY_REQUEST_CODE2:
 
