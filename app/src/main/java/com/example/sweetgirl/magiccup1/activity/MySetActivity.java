@@ -4,9 +4,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sweetgirl.magiccup1.R;
@@ -19,6 +18,8 @@ public class MySetActivity extends AppCompatActivity implements View.OnClickList
     private RelativeLayout view_set_clean;
     private RelativeLayout view_set_feedback;
     private RelativeLayout view_set_about;
+
+    private ImageView set_toolbar_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,18 @@ public class MySetActivity extends AppCompatActivity implements View.OnClickList
         view_set_clean=(RelativeLayout)findViewById(R.id.view_set_clear);
         view_set_feedback=(RelativeLayout)findViewById(R.id.view_set_feedback);
         view_set_about=(RelativeLayout)findViewById(R.id.view_set_about);
+
+        set_toolbar_back=(ImageView)findViewById(R.id.set_toolbar_back);
+
+        set_toolbar_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MySetActivity.this,MainPageActivity.class);
+                startActivity(intent);
+                finish();
+
+            }
+        });
 
         view_set_clean.setOnClickListener(this);
         view_set_feedback.setOnClickListener(this);

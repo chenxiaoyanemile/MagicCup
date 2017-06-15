@@ -31,7 +31,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static cn.alien95.util.Utils.getSharedPreferences;
 
 
 public class SceneTwoSceneFragment extends Fragment {
@@ -63,8 +62,10 @@ public class SceneTwoSceneFragment extends Fragment {
         sceneTwoRecyclerViewAdapter=new SceneTwoRecyclerViewAdapter(getActivity());
         recyclerView.setLayoutManager(mLinearLayoutManager);
         recyclerView.addItemDecoration(new SpaceItemDecoration(12,8,12,30));
+
         recyclerView.setAdapter(sceneTwoRecyclerViewAdapter);
         sceneTwoRecyclerViewAdapter.setItems(mItem);
+
         sceneTwoRecyclerViewAdapter.setOnItemClickListener(new SceneTwoRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, int position) {

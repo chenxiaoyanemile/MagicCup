@@ -60,15 +60,15 @@
         android:background="@drawable/edit_view_shape"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:hint="@string/email"
+        android:text="@string/email"
         android:textSize="14sp"
-        android:gravity="left"
+        android:gravity="center_vertical"
         android:textColor="@color/text_p"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
         android:ems="10"
         android:id="@+id/editText2"
-        tools:ignore="RtlHardcoded" />
+        tools:ignore="RtlHardcoded,TextFields" />
 
     <Button
         android:background="@mipmap/bg_sb"
